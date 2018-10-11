@@ -1,2 +1,6 @@
 language: csharp
-solution: PlanningPoker.sln
+mono: none
+dotnet: 2.1.2
+script:
+ - dotnet restore
+ - dotnet build
