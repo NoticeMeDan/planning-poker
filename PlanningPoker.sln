@@ -3,6 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.WebApi", "PlanningPoker.WebApi\PlanningPoker.WebApi.csproj", "{75DACB7E-7069-4C59-8BC5-991E1A465280}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3482A07B-FF98-46B2-81DA-DD6F6FB37088}"
+	ProjectSection(SolutionItems) = preProject
+		.travis.yml = .travis.yml
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
