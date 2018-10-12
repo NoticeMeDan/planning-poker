@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.WebApi.Tests", "PlanningPoker.WebApi.Tests\PlanningPoker.WebApi.Tests.csproj", "{45F5B5AC-D760-431E-87F3-BE6F095668ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,5 +21,9 @@ Global
 		{75DACB7E-7069-4C59-8BC5-991E1A465280}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75DACB7E-7069-4C59-8BC5-991E1A465280}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75DACB7E-7069-4C59-8BC5-991E1A465280}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45F5B5AC-D760-431E-87F3-BE6F095668ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45F5B5AC-D760-431E-87F3-BE6F095668ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45F5B5AC-D760-431E-87F3-BE6F095668ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45F5B5AC-D760-431E-87F3-BE6F095668ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
