@@ -7,3 +7,5 @@ script:
  - dotnet build PlanningPoker.WebApi.Tests
  # Will fail when running dotnet test, as it cant find tests in non-test project. See: https://github.com/Microsoft/vstest/issues/1129
  - dotnet vstest PlanningPoker.WebApi.Tests/bin/Debug/netcoreapp2.1/PlanningPoker.WebApi.Tests.dll
+notifications:
+  email: false
