@@ -41,20 +41,14 @@ namespace PlanningPoker.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PlanningPoker API V1"));
             }
             else
             {
                 app.UseHsts();
             }
-
-            // TODO: Should only be enabled in development
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PlanningPoker API V1");
-            });
             
-            /*app.UseHttpsRedirection();*/
             app.UseMvc();
         }
     }
