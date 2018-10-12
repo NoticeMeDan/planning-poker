@@ -4,15 +4,15 @@ using Android.OS;
 
 namespace PlanningPoker.App
 {
-    [Activity(Label = "PlanningPoker.App", MainLauncher = true, Icon = "@drawable/icon")]
-    public class MainActivity : Activity
-    {
-        protected override void OnCreate(Bundle bundle)
-        {
-            base.OnCreate(bundle);
+	[Activity(Label = "PlanningPoker.App", MainLauncher = true, Icon = "@drawable/icon")]
+	public class MainActivity : Activity
+	{
+		protected override void OnCreate(Bundle bundle)
+		{
+			base.OnCreate(bundle);
 
-            // Set our view from the "main" layout resource
-            // SetContentView (Resource.Layout.Main);
-        }
-    }
+			// Set our view from the "main" layout resource
+			// SetContentView (Resource.Layout.Main);
+		}
+	}
 }
