@@ -10,8 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Swashbuckle.AspNetCore">
-      <Version>3.0.0</Version>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0">
     </PackageReference>
   </ItemGroup>
 
