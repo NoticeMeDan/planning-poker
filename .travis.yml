@@ -5,7 +5,9 @@ script:
  - dotnet restore
  - dotnet build PlanningPoker.WebApi
  - dotnet build PlanningPoker.WebApi.Tests
+ - dotnet build PlanningPoker.Entities
  # Will fail when running dotnet test, as it cant find tests in non-test project. See: https://github.com/Microsoft/vstest/issues/1129
  - dotnet vstest PlanningPoker.WebApi.Tests/bin/Debug/netcoreapp2.1/PlanningPoker.WebApi.Tests.dll
+ - dotnet vstest PlanningPoker.Entities.Tests/bin/Debug/netcoreapp2.1/PlanningPoker.Entities.Tests.dll
 notifications:
   email: false
