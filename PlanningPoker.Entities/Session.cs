@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
 namespace PlanningPoker.Entities
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     public class Session : BaseEntity
     {
         [Required]

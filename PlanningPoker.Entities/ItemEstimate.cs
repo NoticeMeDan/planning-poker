@@ -1,7 +1,7 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace PlanningPoker.Entities
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class ItemEstimate : BaseEntity
     {
         [Required]

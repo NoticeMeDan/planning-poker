@@ -1,12 +1,14 @@
-using System.ComponentModel.DataAnnotations;
 
 namespace PlanningPoker.Entities
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class User : BaseEntity
     {
         [Required]
         public bool IsHost { get; set; }
 
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
