@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PlanningPoker.Entities
 {
-    public class Session
+    public class Session : BaseEntity
     {
-        public int Id { get; set; }
-        
+        [Required]
+        [StringLength(7)]
         public string SessionKey { get; set; }
 
         [Required]

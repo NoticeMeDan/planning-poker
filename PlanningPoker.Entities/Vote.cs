@@ -2,10 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PlanningPoker.Entities
 {
-    public class Vote
+    public class Vote : BaseEntity
     {
-        public int Id { get; set; }
-
         [Required]
         public int UserId { get; set; }
 

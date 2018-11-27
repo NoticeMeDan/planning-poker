@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PlanningPoker.Entities
 {
-    public class Round
+    public class Round : BaseEntity
     {
-        public int Id { get; set; }
-
         [Required]
         public ICollection<Vote> Votes { get; set; }
     }

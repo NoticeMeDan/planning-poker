@@ -2,10 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PlanningPoker.Entities
 {
-    public class ItemEstimate
+    public class ItemEstimate : BaseEntity
     {
-        public int Id { get; set; }
-
         [Required]
         public int Estimate { get; set; }
 
