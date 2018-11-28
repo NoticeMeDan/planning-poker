@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<forms:TabbedPage
+<forms:ContentPage
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:forms="http://xamarin.com/schemas/2014/forms"
     xmlns:views="clr-namespace:PlanningPoker.App.Views"
-    xmlns:welcomeScreen="clr-namespace:PlanningPoker.App.Views.WelcomeScreen;assembly=PlanningPoker.App"
-    x:Class="PlanningPoker.App.Views.WelcomeScreen.WelcomeScreen"
+    x:Class="PlanningPoker.App.Views.WelcomeScreen.Create"
+    Title="Create"
+    Padding="10,0,10,0"
+>
 
-    >
-    <welcomeScreen:Join />
-    <welcomeScreen:Create />
+    <forms:StackLayout>
+        <forms:Button Text="Login" Clicked="HandleClicked"></forms:Button>
+    </forms:StackLayout>
 
-</forms:TabbedPage>
+</forms:ContentPage>

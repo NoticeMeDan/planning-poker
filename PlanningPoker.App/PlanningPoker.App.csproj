@@ -15,6 +15,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Include="Views\WelcomeScreen\Create.xaml">
+      <SubType>Designer</SubType>
+      <Generator></Generator>
+    </Page>
+    <Page Include="Views\WelcomeScreen\Join.xaml">
+      <SubType>Designer</SubType>
+      <Generator></Generator>
+    </Page>
     <Page Include="Views\WelcomeScreen\WelcomeScreen.xaml">
       <SubType>Designer</SubType>
       <Generator></Generator>
