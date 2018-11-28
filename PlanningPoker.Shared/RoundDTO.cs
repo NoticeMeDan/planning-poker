@@ -7,5 +7,7 @@ namespace PlanningPoker.Shared
     class RoundDTO
     {
         public int Id { get; set; }
+
+        public ICollection<VoteDTO> Votes { get; set; }
     }
 }
