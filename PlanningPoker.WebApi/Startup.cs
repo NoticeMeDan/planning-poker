@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PlanningPoker.Entities;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace PlanningPoker.WebApi
@@ -21,8 +23,8 @@ namespace PlanningPoker.WebApi
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-//			services.AddDbContext<SessionContext>(options =>
-//				options.UseSqlServer(Configuration.GetConnectionString("PlanningPokerDatabase")));
+			services.AddDbContext<PlanningPokerContext>(options =>
+				options.UseSqlServer(Configuration.GetConnectionString("PlanningPokerDatabase")));
 
             // TODO: Should only be enabled in development
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info {Title = "PlanningPoker API", Version = "v1"}));

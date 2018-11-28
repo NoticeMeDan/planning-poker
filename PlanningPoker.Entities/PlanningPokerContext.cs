@@ -11,5 +11,13 @@ namespace PlanningPoker.Entities
         public DbSet<Summary> Summaries { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Vote> Votes { get; set; }
+
+        public PlanningPokerContext(DbContextOptions options) : base(options)
+        {}
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+        }
     }
 }
