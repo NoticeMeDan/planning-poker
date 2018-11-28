@@ -21,3 +21,7 @@ If you wish to nuke your database and start fresh, run the following:
 `docker-compose up`
 
 When in doubt, just ask Elias <3.
+
+#### Create new migration
+* Go into the `PlanningPoker.Entities` project.
+* Run `dotnet ef migrations add -s ../PlanningPoker.WebApi [migrationName]`
