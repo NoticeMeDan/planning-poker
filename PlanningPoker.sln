@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.Shared", "Pla
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.Services", "PlanningPoker.Services\PlanningPoker.Services.csproj", "{6FDB4E76-EA80-44AD-91E0-7755A9FD9B22}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.Services.Tests", "PlanningPoker.Services.Tests\PlanningPoker.Services.Tests.csproj", "{75A4BB1B-76CF-4E7F-B655-59069C2DFE53}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{6FDB4E76-EA80-44AD-91E0-7755A9FD9B22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FDB4E76-EA80-44AD-91E0-7755A9FD9B22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FDB4E76-EA80-44AD-91E0-7755A9FD9B22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75A4BB1B-76CF-4E7F-B655-59069C2DFE53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75A4BB1B-76CF-4E7F-B655-59069C2DFE53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75A4BB1B-76CF-4E7F-B655-59069C2DFE53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75A4BB1B-76CF-4E7F-B655-59069C2DFE53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,6 +88,7 @@ Global
 		{33B26536-7BE6-4B92-B000-8FAE187DCDEC} = {671BC047-91D6-412A-81DC-2B815C7D8A00}
 		{AB828A7D-0237-45B1-8562-59EA94B680EF} = {671BC047-91D6-412A-81DC-2B815C7D8A00}
 		{6FDB4E76-EA80-44AD-91E0-7755A9FD9B22} = {671BC047-91D6-412A-81DC-2B815C7D8A00}
+		{75A4BB1B-76CF-4E7F-B655-59069C2DFE53} = {671BC047-91D6-412A-81DC-2B815C7D8A00}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C41E91F8-0BAF-4400-8C20-4089531EAB6B}
