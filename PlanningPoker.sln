@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		.editorconfig = .editorconfig
 		docker-compose.yaml = docker-compose.yaml
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.WebApi.Tests", "PlanningPoker.WebApi.Tests\PlanningPoker.WebApi.Tests.csproj", "{45F5B5AC-D760-431E-87F3-BE6F095668ED}"
