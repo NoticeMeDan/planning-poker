@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlanningPoker.Entities;
 
 namespace PlanningPoker.Entities.Migrations
 {
     [DbContext(typeof(PlanningPokerContext))]
-    partial class PlanningPokerContextModelSnapshot : ModelSnapshot
+    [Migration("20181128174742_ItemsFixMigration")]
+    partial class ItemsFixMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
