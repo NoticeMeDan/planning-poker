@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace PlanningPoker.Shared
 {
-    class SummaryDTO
+    using System.Collections.Generic;
+
+    public class SummaryDTO
     {
         public int Id { get; set; }
 
