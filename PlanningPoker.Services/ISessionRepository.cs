@@ -6,13 +6,13 @@ namespace PlanningPoker.Services
 {
     public interface ISessionRepository
     {
-        Task<SessionDTO> CreateAsync(SessionDTO session);
+        Task<SessionDTO> CreateAsync(SessionCreateUpdateDTO session);
 
         Task<SessionDTO> FindAsync(int sessionId);
 
         IQueryable<SessionDTO> Read();
 
-        Task<bool> UpdateAsync(SessionDTO session);
+        Task<bool> UpdateAsync(SessionCreateUpdateDTO session);
 
         Task<bool> DeleteAsync(int sessionID);
     }
