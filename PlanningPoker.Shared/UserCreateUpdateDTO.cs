@@ -8,7 +8,7 @@ namespace PlanningPoker.Shared
 
         [Required]
         public bool IsHost { get; set; }
-        
+
         [EmailAddress]
         public string Email { get; set; }
 
