@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace PlanningPoker.Entities
 {
-    using System.Collections.Generic;
-
     public class Item : BaseEntity
     {
         [Required]
@@ -12,5 +11,10 @@ namespace PlanningPoker.Entities
         public string Description { get; set; }
 
         public ICollection<Round> Rounds { get; set; }
+
+        public Item()
+        {
+            Rounds = new HashSet<Round>();
+        }
     }
 }
