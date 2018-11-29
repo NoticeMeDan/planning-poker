@@ -28,7 +28,6 @@ namespace PlanningPoker.App
             InitializeComponent();
 
             _lazyProvider = new Lazy<IServiceProvider>(() => ConfigureServices());
-            MainPage = new MainPage();
             publicClientApplication = new PublicClientApplication(settings.ClientId)
             {
                 RedirectUri = $"msal{settings.ClientId}://auth",

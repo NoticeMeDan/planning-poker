@@ -28,13 +28,14 @@
     <Compile Remove="Models\HomeMenuItem.cs" />
     <Compile Remove="Models\Item.cs" />
     <Compile Remove="Services\IDataStore.cs" />
+    <Compile Remove="Views\MainPage.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Page Include="Views\WelcomeScreen\Create.xaml">
+    <Page Include="Views\WelcomeScreen\CreateSession.xaml">
       <SubType>Designer</SubType>
       <Generator></Generator>
     </Page>
@@ -46,5 +47,8 @@
       <SubType>Designer</SubType>
       <Generator></Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="Views\MainPage.xaml" />
   </ItemGroup>
 </Project>

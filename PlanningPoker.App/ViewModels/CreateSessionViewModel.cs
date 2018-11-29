@@ -12,7 +12,7 @@ using Xamarin.Forms.Xaml;
 
 namespace PlanningPoker.App.ViewModels
 {
-    public class CreateViewModel : BaseViewModel
+    public class CreateSessionViewModel : BaseViewModel
     {
         public ICommand LoginCommand { get; set; }
 

@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:forms="http://xamarin.com/schemas/2014/forms"
     xmlns:views="clr-namespace:PlanningPoker.App.Views"
-    x:Class="PlanningPoker.App.Views.WelcomeScreen.Create"
+    x:Class="PlanningPoker.App.Views.WelcomeScreen.CreateSession"
     Title="Create"
     Padding="10,0,10,0"
 >

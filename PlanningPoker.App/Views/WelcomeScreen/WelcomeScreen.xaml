@@ -9,6 +9,6 @@
 
     >
     <welcomeScreen:Join />
-    <welcomeScreen:Create />
+    <welcomeScreen:CreateSession />
 
 </forms:TabbedPage>
