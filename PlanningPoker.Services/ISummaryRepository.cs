@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PlanningPoker.Services
 {
-    interface ISummaryRepository
+    public interface ISummaryRepository
     {
         Task<SummaryDTO> CreateAsync(SummaryDTO summary);
 

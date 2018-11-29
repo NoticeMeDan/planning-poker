@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace PlanningPoker.Services
 {
-    interface IUserRepository
+    public interface IUserRepository
     {
         Task<UserDTO> CreateAsync(UserDTO user);
 
