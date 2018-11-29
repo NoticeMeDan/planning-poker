@@ -7,13 +7,13 @@ namespace PlanningPoker.Services
 {
     public interface ISummaryRepository
     {
-        Task<SummaryDTO> CreateAsync(SummaryDTO summary);
+        Task<SummaryDTO> CreateAsync(SummaryCreateUpdateDTO summary);
 
         Task<SummaryDTO> FindAsync(int summaryId);
 
         IQueryable<SummaryDTO> Read();
 
-        Task<bool> UpdateAsync(SummaryDTO summary);
+        Task<bool> UpdateAsync(SummaryCreateUpdateDTO summary);
 
         Task<bool> DeleteAsync(int summaryId);
     }
