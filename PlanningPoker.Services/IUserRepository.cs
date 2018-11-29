@@ -1,4 +1,3 @@
-
 namespace PlanningPoker.Services
 {
     using System.Linq;

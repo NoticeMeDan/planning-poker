@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-
 namespace PlanningPoker.Shared
 {
+    using System.Collections.Generic;
+
     public class SummaryDTO
     {
         public int Id { get; set; }

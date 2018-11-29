@@ -1,6 +1,5 @@
 
 using PlanningPoker.Shared;
-
 namespace PlanningPoker.Services
 {
     using System.Linq;
