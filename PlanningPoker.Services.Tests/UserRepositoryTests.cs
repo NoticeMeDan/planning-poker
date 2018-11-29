@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PlanningPoker.Services.Tests
 {
-    class UserRepositoryTests
+    public class UserRepositoryTests
     {
     }
 }

@@ -2,7 +2,7 @@
 
 namespace PlanningPoker.Services.Tests
 {
-    class SessionRepositoryTests
+    public class SessionRepositoryTests
     {
         [Fact]
         public void True_is_true()
