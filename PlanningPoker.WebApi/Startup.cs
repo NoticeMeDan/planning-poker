@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Net;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PlanningPoker.Entities;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace PlanningPoker.WebApi
 {
@@ -26,8 +31,14 @@ namespace PlanningPoker.WebApi
                 sharedOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
             .AddAzureAdBearer(options => Configuration.Bind("AzureAd", options));
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddMvc();
+
+
+			services.AddDbContext<PlanningPokerContext>(options =>
+				options.UseSqlServer(Configuration.GetConnectionString("PlanningPokerDatabase")));
+
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info {Title = "PlanningPoker API", Version = "v1"}));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

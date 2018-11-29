@@ -7,6 +7,7 @@ using PlanningPoker.App.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using PlanningPoker.App.Views;
+using PlanningPoker.App.Views.WelcomeScreen;
 using Xamarin.Android.Net;
 using Xamarin.Forms.Internals;
 
@@ -35,7 +36,7 @@ namespace PlanningPoker.App
 
             DependencyResolver.ResolveUsing(type => Container.GetService(type));
 
-            MainPage = new MainPage();
+            MainPage = new WelcomeScreen();
         }
 
         protected override void OnStart()
