@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace PlanningPoker.Entities
 {
-    using System.Collections.Generic;
-
     public class Item : BaseEntity
     {
         [Required]

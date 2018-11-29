@@ -27,7 +27,6 @@ namespace PlanningPoker.WebApi
 			services.AddDbContext<PlanningPokerContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("PlanningPokerDatabase")));
 
-            // TODO: Should only be enabled in development
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info {Title = "PlanningPoker API", Version = "v1"}));
         }
 
