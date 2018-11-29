@@ -10,7 +10,7 @@
 >
 
     <forms:StackLayout>
-        <forms:Button Text="Login" Clicked="HandleClicked"></forms:Button>
+        <forms:Button Text="Login" Clicked="HandleLoginClicked"></forms:Button>
     </forms:StackLayout>
 
 </forms:ContentPage>
