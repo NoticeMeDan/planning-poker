@@ -1,9 +1,15 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace PlanningPoker.WebApi
 {
@@ -19,13 +25,13 @@ namespace PlanningPoker.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddAuthentication(sharedOptions =>
+            {
+                sharedOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddAzureAdBearer(options => Configuration.Bind("AzureAd", options));
 
-//			services.AddDbContext<SessionContext>(options =>
-//				options.UseSqlServer(Configuration.GetConnectionString("PlanningPokerDatabase")));
-
-            // TODO: Should only be enabled in development
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info {Title = "PlanningPoker API", Version = "v1"}));
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,15 +40,9 @@ namespace PlanningPoker.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PlanningPoker API V1"));
-            }
-            else
-            {
-                app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc();
         }
     }
