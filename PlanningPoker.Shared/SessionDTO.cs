@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PlanningPoker.Shared
 {
-    class SessionDTO
+    public class SessionDTO
     {
         public int Id { get; set; }
 
