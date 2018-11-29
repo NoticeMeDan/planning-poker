@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using PlanningPoker.App.Views;
+using PlanningPoker.App.Views.WelcomeScreen;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace PlanningPoker.App
@@ -14,7 +15,7 @@ namespace PlanningPoker.App
             InitializeComponent();
 
 
-            MainPage = new MainPage();
+            MainPage = new WelcomeScreen();
         }
 
         protected override void OnStart()

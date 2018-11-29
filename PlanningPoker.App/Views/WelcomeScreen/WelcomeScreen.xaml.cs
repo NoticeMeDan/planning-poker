@@ -1,15 +1,11 @@
-﻿using System;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace PlanningPoker.App.Views
-{
+namespace PlanningPoker.App.Views.WelcomeScreen {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AboutPage : ContentPage
-    {
-        public AboutPage()
-        {
+    public partial class WelcomeScreen : TabbedPage {
+
+        public WelcomeScreen() {
             InitializeComponent();
         }
     }
