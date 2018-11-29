@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlanningPoker.Entities", "P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.Shared", "PlanningPoker.Shared\PlanningPoker.Shared.csproj", "{AB828A7D-0237-45B1-8562-59EA94B680EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.Entities.Tests", "PlanningPoker.Entities.Tests\PlanningPoker.Entities.Tests.csproj", "{9EF49BEE-9675-4564-A04E-0541F0BBE40E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{AB828A7D-0237-45B1-8562-59EA94B680EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB828A7D-0237-45B1-8562-59EA94B680EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB828A7D-0237-45B1-8562-59EA94B680EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EF49BEE-9675-4564-A04E-0541F0BBE40E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EF49BEE-9675-4564-A04E-0541F0BBE40E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EF49BEE-9675-4564-A04E-0541F0BBE40E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EF49BEE-9675-4564-A04E-0541F0BBE40E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +74,7 @@ Global
 		{5CE4026D-49F3-4000-A05C-A09EC3862D8E} = {F34B7FAE-FF0C-4338-AA71-7F3A867227C8}
 		{C7EA6CAF-F0D6-44DF-A0B0-C4F34B743911} = {671BC047-91D6-412A-81DC-2B815C7D8A00}
 		{AB828A7D-0237-45B1-8562-59EA94B680EF} = {671BC047-91D6-412A-81DC-2B815C7D8A00}
+		{9EF49BEE-9675-4564-A04E-0541F0BBE40E} = {671BC047-91D6-412A-81DC-2B815C7D8A00}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C41E91F8-0BAF-4400-8C20-4089531EAB6B}

@@ -7,5 +7,10 @@ namespace PlanningPoker.Entities
     {
         [Required]
         public ICollection<Vote> Votes { get; set; }
+
+        public Round()
+        {
+            Votes = new HashSet<Vote>();
+        }
     }
 }
