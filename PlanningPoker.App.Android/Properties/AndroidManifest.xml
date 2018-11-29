@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.noticemedan.PlanningPoker_App">
-    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="27" />
-    <application android:label="PlanningPoker.App.Android">
-<activity android:name="microsoft.identity.client.BrowserTabActivity">
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="msale1ab0ad7-71d7-47a4-a01a-0d78e2a5cf22" android:host="auth" />
-      </intent-filter>
-    </activity>
-    </application>
+	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="27" />
+	<application android:label="PlanningPoker.App.Android">
+		<activity android:name="microsoft.identity.client.BrowserTabActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:scheme="msale1ab0ad7-71d7-47a4-a01a-0d78e2a5cf22" android:host="auth" />
+			</intent-filter>
+		</activity>
+	</application>
 </manifest>

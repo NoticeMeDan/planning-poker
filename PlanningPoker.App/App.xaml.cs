@@ -19,13 +19,13 @@ namespace PlanningPoker.App
         public static PublicClientApplication publicClientApplication = null;
         public static UIParent UiParent { get; set; }
         private readonly Lazy<IServiceProvider> _lazyProvider;
-
+        private Settings settings = new Settings();
+        
         public IServiceProvider Container => _lazyProvider.Value;
 
         public App()
         {
             InitializeComponent();
-            var settings = new Settings();
 
             _lazyProvider = new Lazy<IServiceProvider>(() => ConfigureServices());
             MainPage = new MainPage();
@@ -34,7 +34,7 @@ namespace PlanningPoker.App
                 RedirectUri = $"msal{settings.ClientId}://auth",
             };
 
-            DependencyResolver.ResolveUsing(type => Container.GetService(type));
+            DependencyResolver.ResolveUsing(Container.GetService);
 
             MainPage = new WelcomeScreen();
         }
@@ -65,7 +65,6 @@ namespace PlanningPoker.App
 
             var httpClient = new HttpClient(handler) { BaseAddress = settings.BackendUrl };
 
-            //services.AddSingleton<IPublicClientApplication>(publicClientApplication);
             services.AddSingleton(_ => new HttpClient(handler) { BaseAddress = settings.BackendUrl});
 
             return services.BuildServiceProvider();

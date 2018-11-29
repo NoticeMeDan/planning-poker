@@ -49,6 +49,7 @@ namespace PlanningPoker.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
         }

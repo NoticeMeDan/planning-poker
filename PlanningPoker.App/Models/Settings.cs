@@ -5,7 +5,6 @@ namespace PlanningPoker.App.Models
 {
     public class Settings : ISettings
     {
-        //TODO: Replace with *.azurewebsites.net url after deploying backend to Azure
         public Uri BackendUrl => new Uri("http://localhost:5001/");
 
         public string ClientId => "e1ab0ad7-71d7-47a4-a01a-0d78e2a5cf22";

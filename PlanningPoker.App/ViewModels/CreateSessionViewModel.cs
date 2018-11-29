@@ -16,9 +16,6 @@ namespace PlanningPoker.App.ViewModels
     {
         public ICommand LoginCommand { get; set; }
 
-        public CreateViewModel()
-        {
-        }
 
         public async void ExecuteLoginCommand()
         {
@@ -30,13 +27,15 @@ namespace PlanningPoker.App.ViewModels
                 IAccount firstAccount = accounts.FirstOrDefault();
                 authResult = await App.publicClientApplication.AcquireTokenSilentAsync(settings.Scopes, firstAccount);
                 await RefreshUserDataAsync(authResult.AccessToken).ConfigureAwait(false);
-                //Device.BeginInvokeOnMainThread(() => { btnSignInSignOut.Text = "Sign out"; });
+                // TODO: Redirect to new page
+                //Device.BeginInvokeOnMainThread(() => { });
             }
             catch (MsalUiRequiredException ex)
             {
                 authResult = await App.publicClientApplication.AcquireTokenAsync(settings.Scopes, App.UiParent);
                 await RefreshUserDataAsync(authResult.AccessToken);
-                //Device.BeginInvokeOnMainThread(() => { btnSignInSignOut.Text = "Sign out"; });
+                // TODO: Redirect to new page
+                //Device.BeginInvokeOnMainThread(() => { });
             }
             catch (Exception ex)
             {
@@ -46,7 +45,6 @@ namespace PlanningPoker.App.ViewModels
 
         public async Task RefreshUserDataAsync(string token)
         {
-            //get data from API
             HttpClient client = new HttpClient();
             HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, "https://graph.microsoft.com/v1.0/me");
             message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", token);
@@ -55,26 +53,7 @@ namespace PlanningPoker.App.ViewModels
             if (response.IsSuccessStatusCode)
             {
                 JObject user = JObject.Parse(responseString);
-
-                //slUser.IsVisible = true;
-
-                //Device.BeginInvokeOnMainThread(() =>
-                //{
-
-                //    lblDisplayName.Text = user["displayName"].ToString();
-                //    lblGivenName.Text = user["givenName"].ToString();
-                //    lblId.Text = user["id"].ToString();
-                //    lblSurname.Text = user["surname"].ToString();
-                //    lblUserPrincipalName.Text = user["userPrincipalName"].ToString();
-
-                //    // just in case
-                //    btnSignInSignOut.Text = "Sign out";
-                //});
             }
-            //else
-            //{
-            //    await this.DisplayAlert("Something went wrong with the API call", responseString, "Dismiss");
-            //}
         }
     }
 }
