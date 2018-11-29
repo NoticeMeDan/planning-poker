@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace PlanningPoker.Shared
-{    
+{
     public class UserCreateUpdateDTO
     {
         public int Id { get; set; }

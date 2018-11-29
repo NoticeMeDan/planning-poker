@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace PlanningPoker.Shared
-{    
+{
     public class SummaryCreateUpdateDTO
     {
         public int Id { get; set; }

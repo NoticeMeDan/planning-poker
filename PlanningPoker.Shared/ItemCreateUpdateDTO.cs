@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PlanningPoker.Shared
 {
-    
     public class ItemCreateUpdateDTO
     {
         public int Id { get; set; }
