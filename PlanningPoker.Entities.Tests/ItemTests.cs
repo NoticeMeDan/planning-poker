@@ -3,7 +3,7 @@ using Xunit;
 
 namespace PlanningPoker.Entities.Tests
 {
-    public class UnitTest1
+    public class ItemTests
     {
         [Fact]
         public void Rounds_is_HashSet_of_Round()
