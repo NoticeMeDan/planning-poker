@@ -1,0 +1,19 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace PlanningPoker.Shared
+{
+    public class UserCreateUpdateDTO
+    {
+        public int Id { get; set; }
+
+        [Required]
+        public bool IsHost { get; set; }
+        
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string Nickname { get; set; }
+    }
+}

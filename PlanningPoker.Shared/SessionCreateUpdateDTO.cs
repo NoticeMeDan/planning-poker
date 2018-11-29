@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PlanningPoker.Shared
 {
-    class SessionCreateUpdateDTO
+    public class SessionCreateUpdateDTO
     {
         public int Id { get; set; }
 

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PlanningPoker.Shared
 {
-    class RoundCreateUpdateDTO
+    public class RoundCreateUpdateDTO
     {
         public int Id { get; set; }
 
