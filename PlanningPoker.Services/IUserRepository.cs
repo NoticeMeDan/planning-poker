@@ -1,9 +1,10 @@
-using PlanningPoker.Shared;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PlanningPoker.Services
 {
+    using System.Linq;
+    using System.Threading.Tasks;
+    using PlanningPoker.Shared;
+
     public interface IUserRepository
     {
         Task<UserDTO> CreateAsync(UserCreateUpdateDTO user);

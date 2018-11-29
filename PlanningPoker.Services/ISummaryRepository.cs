@@ -1,10 +1,11 @@
 
 using PlanningPoker.Shared;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PlanningPoker.Services
 {
+    using System.Linq;
+    using System.Threading.Tasks;
+
     public interface ISummaryRepository
     {
         Task<SummaryDTO> CreateAsync(SummaryCreateUpdateDTO summary);
