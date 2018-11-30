@@ -5,19 +5,19 @@ using Xamarin.Forms.Xaml;
 
 namespace PlanningPoker.App.Views.WelcomeScreen {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class CreateSession : ContentPage
+    public partial class Login : ContentPage
     {
-        private readonly CreateSessionViewModel _createSessionViewModel;
+        private readonly JoinViewModel joinViewModel;
 
-        public CreateSession()
+        public Login()
         {
             InitializeComponent();
-            BindingContext = _createSessionViewModel = new CreateSessionViewModel();
+            this.BindingContext = this.joinViewModel = new JoinViewModel();
         }
 
         private void HandleLoginClicked(object sender, EventArgs e)
         {
-            _createSessionViewModel.ExecuteLoginCommand();
+            this.joinViewModel.ExecuteLoginCommand();
         }
     }
 }
