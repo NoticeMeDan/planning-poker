@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<forms:ContentPage
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:forms="http://xamarin.com/schemas/2014/forms"
-    xmlns:views="clr-namespace:PlanningPoker.App.Views"
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="PlanningPoker.App.Views.WelcomeScreen.Join"
     Title="Join"
     Padding="10,0,10,0"
 >
 
-    <forms:StackLayout>
-        <forms:Entry Text="Type Session Key"  HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" Margin="5" />
-        <forms:Button Text="Join" Clicked="HandleClicked"></forms:Button>
-    </forms:StackLayout>
+    <StackLayout>
+        <Entry Text="Type Session Key"  HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" Margin="5" />
+        <Button Text="Join" Clicked="HandleClicked"></Button>
+    </StackLayout>
 
-</forms:ContentPage>
+</ContentPage>
