@@ -7,17 +7,17 @@ namespace PlanningPoker.App.Views.WelcomeScreen {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Login : ContentPage
     {
-        private readonly JoinViewModel joinViewModel;
+        private readonly LoginViewModel _loginViewModel;
 
         public Login()
         {
             InitializeComponent();
-            this.BindingContext = this.joinViewModel = new JoinViewModel();
+            this.BindingContext = this._loginViewModel = new LoginViewModel();
         }
 
         private void HandleLoginClicked(object sender, EventArgs e)
         {
-            this.joinViewModel.ExecuteLoginCommand();
+            this._loginViewModel.ExecuteLoginCommand();
         }
     }
 }
