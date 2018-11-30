@@ -29,13 +29,16 @@
     <Compile Remove="Models\Item.cs" />
     <Compile Remove="Services\IDataStore.cs" />
     <Compile Remove="Views\MainPage.xaml.cs" />
+    <Compile Update="Views\WelcomeScreen\Login.xaml.cs">
+      <DependentUpon>JoinSession.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Page Include="Views\WelcomeScreen\CreateSession.xaml">
+    <Page Include="Views\WelcomeScreen\Login.xaml">
       <SubType>Designer</SubType>
       <Generator></Generator>
     </Page>
