@@ -19,12 +19,7 @@ namespace PlanningPoker.Services.Tests
             using (var context = await this.CreateContextAsync(connection))
             {
                 var repository = new SessionRepository(context);
-                var dto = new SessionCreateUpdateDTO()
-                {
-                    SessionKey = "A1B2C3D",
-                    Items = { new ItemDTO(), new ItemDTO() },
-                    Users = { new UserDTO() }
-                };
+                var dto = this.CreateDummySessionDTO();
 
                 var session = await repository.CreateAsync(dto);
 
@@ -43,12 +38,7 @@ namespace PlanningPoker.Services.Tests
             using (var context = await this.CreateContextAsync(connection))
             {
                 var repository = new SessionRepository(context);
-                var dto = new SessionCreateUpdateDTO()
-                {
-                    SessionKey = "A1B2C3D",
-                    Items = { new ItemDTO(), new ItemDTO() },
-                    Users = { new UserDTO() }
-                };
+                var dto = this.CreateDummySessionDTO();
 
                 var session = await repository.CreateAsync(dto);
 
@@ -63,12 +53,8 @@ namespace PlanningPoker.Services.Tests
             using (var connection = await this.CreateConnectionAsync())
             using (var context = await this.CreateContextAsync(connection))
             {
-                var entity = new Session
-                {
-                    SessionKey = "A1B2C3D",
-                    Items = new[] { new Item { Title = "item 1" }, new Item { Title = "item 2" } },
-                    Users = new[] { new User { IsHost = true, Nickname = "user 1" } }
-                };
+                var entity = this.CreateDummySessionEntity();
+
                 context.Sessions.Add(entity);
                 context.SaveChanges();
 
@@ -79,6 +65,100 @@ namespace PlanningPoker.Services.Tests
                 Assert.Equal(1, session.Id);
                 Assert.Equal("A1B2C3D", session.SessionKey);
                 Assert.Equal("item 1", session.Items.First().Title);
+            }
+        }
+
+        [Fact]
+        public async Task Read_returns_projection_of_all_sessions()
+        {
+            using (var connection = await this.CreateConnectionAsync())
+            using (var context = await this.CreateContextAsync(connection))
+            {
+                var entity = this.CreateDummySessionEntity();
+                context.Sessions.AddRange(entity);
+                context.SaveChanges();
+
+                var repository = new SessionRepository(context);
+
+                var sessions = repository.Read();
+
+                var session = await sessions.SingleAsync();
+
+                Assert.Equal(1, session.Id);
+                Assert.Equal("A1B2C3D", session.SessionKey);
+            }
+        }
+
+        [Fact]
+        public async Task UpdateAsync_given_non_existing_dto_returns_false()
+        {
+            using (var connection = await this.CreateConnectionAsync())
+            using (var context = await this.CreateContextAsync(connection))
+            {
+                var repository = new SessionRepository(context);
+                var dto = this.CreateDummySessionDTO();
+                dto.Id = 0;
+
+                var updated = await repository.UpdateAsync(dto);
+
+                Assert.False(updated);
+            }
+        }
+
+        [Fact]
+        public async Task UpdateAsync_given_existing_dto_updates_entity()
+        {
+            using (var connection = await this.CreateConnectionAsync())
+            using (var context = await this.CreateContextAsync(connection))
+            {
+                context.Sessions.Add(this.CreateDummySessionEntity());
+                context.SaveChanges();
+
+                var repository = new SessionRepository(context);
+                var dto = this.CreateDummySessionDTO();
+                dto.SessionKey = "ABCD123";
+
+                var updated = await repository.UpdateAsync(dto);
+
+                Assert.True(updated);
+
+                var entity = await context.Sessions.FindAsync(1);
+
+                Assert.Equal("ABCD123", entity.SessionKey);
+            }
+        }
+
+        [Fact]
+        public async Task DeleteAsync_given_existing_sessionId_deletes_and_returns_true()
+        {
+            using (var connection = await this.CreateConnectionAsync())
+            using (var context = await this.CreateContextAsync(connection))
+            {
+                var entity = this.CreateDummySessionEntity();
+                context.Sessions.Add(entity);
+                context.SaveChanges();
+
+                var id = entity.Id;
+
+                var repository = new SessionRepository(context);
+
+                var deleted = await repository.DeleteAsync(id);
+
+                Assert.True(deleted);
+            }
+        }
+
+        [Fact]
+        public async Task DeleteAsync_given_non_existing_sessionId_returns_false()
+        {
+            using (var connection = await this.CreateConnectionAsync())
+            using (var context = await this.CreateContextAsync(connection))
+            {
+                var repository = new SessionRepository(context);
+
+                var deleted = await repository.DeleteAsync(42);
+
+                Assert.False(deleted);
             }
         }
 
@@ -99,6 +179,26 @@ namespace PlanningPoker.Services.Tests
             await context.Database.EnsureCreatedAsync();
 
             return context;
+        }
+
+        private Session CreateDummySessionEntity()
+        {
+            return new Session
+            {
+                SessionKey = "A1B2C3D",
+                Items = new[] { new Item { Title = "item 1" }, new Item { Title = "item 2" } },
+                Users = new[] { new User { IsHost = true, Nickname = "user 1" } }
+            };
+        }
+
+        private SessionCreateUpdateDTO CreateDummySessionDTO()
+        {
+            return new SessionCreateUpdateDTO
+            {
+                SessionKey = "A1B2C3D",
+                Items = new[] { new ItemDTO { Title = "item 1" }, new ItemDTO { Title = "item 2" } },
+                Users = new[] { new UserDTO { IsHost = true, Nickname = "user 1" } }
+            };
         }
     }
 }
