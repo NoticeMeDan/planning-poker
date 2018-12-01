@@ -2,10 +2,18 @@ namespace PlanningPoker.Services
 {
     using System.Linq;
     using System.Threading.Tasks;
+    using PlanningPoker.Entities;
     using PlanningPoker.Shared;
 
     public class SessionRepository : ISessionRepository
     {
+        private readonly IPlanningPokerContext context;
+
+        public SessionRepository(IPlanningPokerContext planningPokerContext)
+        {
+            this.context = planningPokerContext;
+        }
+
         public Task<SessionDTO> CreateAsync(SessionCreateUpdateDTO session)
         {
             throw new System.NotImplementedException();
