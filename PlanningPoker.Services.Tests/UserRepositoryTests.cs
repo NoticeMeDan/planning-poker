@@ -1,7 +1,5 @@
 namespace PlanningPoker.Services.Tests
 {
-    using System.Data.Common;
-    using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.Data.Sqlite;
     using Microsoft.EntityFrameworkCore;
@@ -169,7 +167,7 @@ namespace PlanningPoker.Services.Tests
             }
         }
 
-        private async Task<DbConnection> CreateConnectionAsync()
+        private async Task<SqliteConnection> CreateConnectionAsync()
         {
             var connection = new SqliteConnection("DataSource=:memory:");
             await connection.OpenAsync();
@@ -177,7 +175,7 @@ namespace PlanningPoker.Services.Tests
             return connection;
         }
 
-        private async Task<IPlanningPokerContext> CreateContextAsync(DbConnection connection)
+        private async Task<IPlanningPokerContext> CreateContextAsync(SqliteConnection connection)
         {
             var builder = new DbContextOptionsBuilder<PlanningPokerContext>()
                               .UseSqlite(connection);
