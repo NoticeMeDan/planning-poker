@@ -26,6 +26,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlanningPoker.Entities", "PlanningPoker.Entities\PlanningPoker.Entities.csproj", "{C7EA6CAF-F0D6-44DF-A0B0-C4F34B743911}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlanningPoker.Shared", "PlanningPoker.Shared\PlanningPoker.Shared.csproj", "{AB828A7D-0237-45B1-8562-59EA94B680EF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C7EA6CAF-F0D6-44DF-A0B0-C4F34B743911} = {C7EA6CAF-F0D6-44DF-A0B0-C4F34B743911}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlanningPoker.Entities.Tests", "PlanningPoker.Entities.Tests\PlanningPoker.Entities.Tests.csproj", "{9EF49BEE-9675-4564-A04E-0541F0BBE40E}"
 EndProject

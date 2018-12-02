@@ -2,6 +2,7 @@ namespace PlanningPoker.Services
 {
     using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
     using PlanningPoker.Entities;
     using PlanningPoker.Shared;
 
@@ -14,29 +15,81 @@ namespace PlanningPoker.Services
             this.context = planningPokerContext;
         }
 
-        public Task<SessionDTO> CreateAsync(SessionCreateUpdateDTO session)
+        public async Task<SessionDTO> CreateAsync(SessionCreateUpdateDTO session)
         {
-            throw new System.NotImplementedException();
+            var entity = new Session
+            {
+                Items = session.Items,
+                Users = session.Users,
+                SessionKey = session.SessionKey
+            };
+
+            this.context.Sessions.Add(entity);
+            this.context.SaveChanges();
+
+            return await this.FindAsync(entity.Id);
         }
 
-        public Task<bool> DeleteAsync(int sessionID)
+        public async Task<bool> DeleteAsync(int sessionID)
         {
-            throw new System.NotImplementedException();
+            var entity = await this.context.Sessions.FindAsync(sessionID);
+
+            if (entity == null)
+            {
+                return false;
+            }
+
+            this.context.Sessions.Remove(entity);
+            this.context.SaveChanges();
+
+            return true;
         }
 
-        public Task<SessionDTO> FindAsync(int sessionId)
+        public async Task<SessionDTO> FindAsync(int sessionId)
         {
-            throw new System.NotImplementedException();
+            var entities = this.context.Sessions
+                .Where(s => s.Id == sessionId)
+                .Select(s => new SessionDTO
+                {
+                    Id = s.Id,
+                    Items = s.Items,
+                    Users = s.Users,
+                    SessionKey = s.SessionKey
+                });
+
+            return await entities.FirstOrDefaultAsync();
         }
 
         public IQueryable<SessionDTO> Read()
         {
-            throw new System.NotImplementedException();
+            var entities = this.context.Sessions
+                .Select(s => new SessionDTO
+                {
+                    Id = s.Id,
+                    Items = s.Items,
+                    Users = s.Users,
+                    SessionKey = s.SessionKey
+                });
+
+            return entities;
         }
 
-        public Task<bool> UpdateAsync(SessionCreateUpdateDTO session)
+        public async Task<bool> UpdateAsync(SessionCreateUpdateDTO session)
         {
-            throw new System.NotImplementedException();
+            var entity = await this.context.Sessions.FindAsync(session.Id);
+
+            if (entity == null)
+            {
+                return false;
+            }
+
+            entity.Items = session.Items;
+            entity.Users = session.Users;
+            entity.SessionKey = session.SessionKey;
+
+            this.context.SaveChanges();
+
+            return true;
         }
     }
 }

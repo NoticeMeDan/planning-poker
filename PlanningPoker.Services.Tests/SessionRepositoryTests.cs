@@ -1,5 +1,6 @@
 namespace PlanningPoker.Services.Tests
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.Data.Sqlite;
@@ -115,6 +116,7 @@ namespace PlanningPoker.Services.Tests
 
                 var repository = new SessionRepository(context);
                 var dto = this.CreateDummySessionDTO();
+                dto.Id = 1;
                 dto.SessionKey = "ABCD123";
 
                 var updated = await repository.UpdateAsync(dto);
@@ -185,8 +187,8 @@ namespace PlanningPoker.Services.Tests
             return new Session
             {
                 SessionKey = "A1B2C3D",
-                Items = new[] { new Item { Title = "item 1" }, new Item { Title = "item 2" } },
-                Users = new[] { new User { IsHost = true, Nickname = "user 1" } }
+                Items = new List<Item> { new Item { Title = "item 1" }, new Item { Title = "item 2" } },
+                Users = new List<User> { new User { IsHost = true, Nickname = "user 1" } }
             };
         }
 
@@ -195,8 +197,8 @@ namespace PlanningPoker.Services.Tests
             return new SessionCreateUpdateDTO
             {
                 SessionKey = "A1B2C3D",
-                Items = new[] { new ItemDTO { Title = "item 1" }, new ItemDTO { Title = "item 2" } },
-                Users = new[] { new UserDTO { IsHost = true, Nickname = "user 1" } }
+                Items = new List<Item> { new Item { Title = "item 1" }, new Item { Title = "item 2" } },
+                Users = new List<User> { new User { IsHost = true, Nickname = "user 1" } }
             };
         }
     }

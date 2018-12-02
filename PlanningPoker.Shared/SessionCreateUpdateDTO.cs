@@ -2,6 +2,7 @@ namespace PlanningPoker.Shared
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using PlanningPoker.Entities;
 
     public class SessionCreateUpdateDTO
     {
@@ -12,9 +13,9 @@ namespace PlanningPoker.Shared
         public string SessionKey { get; set; }
 
         [Required]
-        public ICollection<ItemDTO> Items { get; set; }
+        public ICollection<Item> Items { get; set; }
 
         [Required]
-        public ICollection<UserDTO> Users { get; set; }
+        public ICollection<User> Users { get; set; }
     }
 }
