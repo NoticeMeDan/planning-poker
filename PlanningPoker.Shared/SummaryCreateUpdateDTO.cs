@@ -1,5 +1,6 @@
 namespace PlanningPoker.Shared
 {
+    using PlanningPoker.Entities;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -8,7 +9,7 @@ namespace PlanningPoker.Shared
         public int Id { get; set; }
 
         [Required]
-        public ICollection<ItemEstimateDTO> ItemEstimates { get; set; }
+        public ICollection<ItemEstimate> ItemEstimates { get; set; }
 
         [Required]
         public int SessionId { get; set; }
