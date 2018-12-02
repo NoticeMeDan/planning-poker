@@ -3,6 +3,7 @@ namespace PlanningPoker.Services
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
     using PlanningPoker.Entities;
     using PlanningPoker.Shared;
 
@@ -45,9 +46,18 @@ namespace PlanningPoker.Services
             return true;
         }
 
-        public Task<UserDTO> FindAsync(int userId)
+        public async Task<UserDTO> FindAsync(int userId)
         {
-            throw new NotImplementedException();
+            var entities = this.context.Users
+                .Where(u => u.Id == userId)
+                .Select(u => new UserDTO
+                {
+                    IsHost = u.IsHost,
+                    Email = u.Email,
+                    Nickname = u.Nickname
+                });
+
+            return await entities.FirstOrDefaultAsync();
         }
 
         public IQueryable<UserDTO> Read()
