@@ -61,7 +61,15 @@ namespace PlanningPoker.Services
 
         public IQueryable<SummaryDTO> Read()
         {
-            throw new NotImplementedException();
+            var entities = this.context.Summaries
+                .Select(s => new SummaryDTO
+                {
+                    Id = s.Id,
+                    ItemEstimates = s.ItemEstimates,
+                    SessionId = s.SessionId
+                });
+
+            return entities;
         }
 
         public Task<bool> UpdateAsync(SummaryCreateUpdateDTO summary)
