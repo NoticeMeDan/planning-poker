@@ -1,6 +1,5 @@
 namespace PlanningPoker.Services
 {
-    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
@@ -52,6 +51,7 @@ namespace PlanningPoker.Services
                 .Where(u => u.Id == userId)
                 .Select(u => new UserDTO
                 {
+                    Id = userId,
                     IsHost = u.IsHost,
                     Email = u.Email,
                     Nickname = u.Nickname
@@ -65,6 +65,7 @@ namespace PlanningPoker.Services
             var entities = this.context.Users
                 .Select(u => new UserDTO
                 {
+                    Id = u.Id,
                     IsHost = u.IsHost,
                     Email = u.Email,
                     Nickname = u.Nickname

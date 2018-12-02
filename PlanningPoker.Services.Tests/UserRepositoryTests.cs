@@ -121,6 +121,7 @@ namespace PlanningPoker.Services.Tests
 
                 var repository = new UserRepository(context);
                 var dto = this.CreateDummyUserDTO();
+                dto.Id = 1;
                 dto.Nickname = "Dummy++";
 
                 var updated = await repository.UpdateAsync(dto);
