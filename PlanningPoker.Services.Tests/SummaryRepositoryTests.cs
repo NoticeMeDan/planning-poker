@@ -116,6 +116,7 @@ namespace PlanningPoker.Services.Tests
 
                 var repository = new SummaryRepository(context);
                 var dto = this.CreateDummySummaryDTO();
+                dto.Id = 1;
                 dto.SessionId = 45;
 
                 var updated = await repository.UpdateAsync(dto);
