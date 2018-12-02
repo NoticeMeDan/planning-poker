@@ -1,6 +1,5 @@
 namespace PlanningPoker.Services
 {
-    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
@@ -72,9 +71,22 @@ namespace PlanningPoker.Services
             return entities;
         }
 
-        public Task<bool> UpdateAsync(SummaryCreateUpdateDTO summary)
+        public async Task<bool> UpdateAsync(SummaryCreateUpdateDTO summary)
         {
-            throw new NotImplementedException();
+            var entity = await this.context.Summaries.FindAsync(summary.Id);
+
+            if (entity == null)
+            {
+                return false;
+            }
+
+            entity.Id = summary.Id;
+            entity.ItemEstimates = summary.ItemEstimates;
+            entity.SessionId = summary.SessionId;
+
+            this.context.SaveChanges();
+
+            return true;
         }
     }
 }
