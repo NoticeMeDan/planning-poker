@@ -30,9 +30,19 @@ namespace PlanningPoker.Services
             return await this.FindAsync(entity.Id);
         }
 
-        public Task<bool> DeleteAsync(int userId)
+        public async Task<bool> DeleteAsync(int userId)
         {
-            throw new NotImplementedException();
+            var entity = await this.context.Users.FindAsync(userId);
+
+            if (entity == null)
+            {
+                return false;
+            }
+
+            this.context.Users.Remove(entity);
+            this.context.SaveChanges();
+
+            return true;
         }
 
         public Task<UserDTO> FindAsync(int userId)
