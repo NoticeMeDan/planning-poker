@@ -29,9 +29,19 @@ namespace PlanningPoker.Services
             return await this.FindAsync(entity.Id);
         }
 
-        public Task<bool> DeleteAsync(int summaryId)
+        public async Task<bool> DeleteAsync(int summaryId)
         {
-            throw new NotImplementedException();
+            var entity = await this.context.Summaries.FindAsync(summaryId);
+
+            if (entity == null)
+            {
+                return false;
+            }
+
+            this.context.Summaries.Remove(entity);
+            this.context.SaveChanges();
+
+            return true;
         }
 
         public Task<SummaryDTO> FindAsync(int summaryId)
