@@ -1,5 +1,6 @@
 namespace PlanningPoker.Services.Tests
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.Data.Sqlite;
@@ -63,7 +64,7 @@ namespace PlanningPoker.Services.Tests
 
                 Assert.Equal(1, summary.Id);
                 Assert.Equal(42, summary.SessionId);
-                Assert.Equal("item 1", summary.Estimates.FirstOrDefault().ItemTitle);
+                Assert.Equal("item 1", summary.ItemEstimates.FirstOrDefault().ItemTitle);
             }
         }
 
@@ -184,7 +185,7 @@ namespace PlanningPoker.Services.Tests
         {
             return new Summary
             {
-                ItemEstimates = new[]
+                ItemEstimates = new List<ItemEstimate>
                 {
                     new ItemEstimate { Estimate = 5, ItemTitle = "item 1" },
                     new ItemEstimate { Estimate = 13, ItemTitle = "item 2" }
@@ -198,10 +199,10 @@ namespace PlanningPoker.Services.Tests
         {
             return new SummaryCreateUpdateDTO
             {
-                ItemEstimates = new[]
+                ItemEstimates = new List<ItemEstimate>
                 {
-                    new ItemEstimateDTO { Estimate = 5, ItemTitle = "item 1" },
-                    new ItemEstimateDTO { Estimate = 13, ItemTitle = "item 2" }
+                    new ItemEstimate { Estimate = 5, ItemTitle = "item 1" },
+                    new ItemEstimate { Estimate = 13, ItemTitle = "item 2" }
                 },
 
                 SessionId = 42
