@@ -73,9 +73,23 @@ namespace PlanningPoker.Services
             return entities;
         }
 
-        public Task<bool> UpdateAsync(UserCreateUpdateDTO user)
+        public async Task<bool> UpdateAsync(UserCreateUpdateDTO user)
         {
-            throw new NotImplementedException();
+            var entity = await this.context.Users.FindAsync(user.Id);
+
+            if (entity == null)
+            {
+                return false;
+            }
+
+            entity.Id = user.Id;
+            entity.IsHost = user.IsHost;
+            entity.Email = user.Email;
+            entity.Nickname = user.Nickname;
+
+            this.context.SaveChanges();
+
+            return true;
         }
     }
 }
