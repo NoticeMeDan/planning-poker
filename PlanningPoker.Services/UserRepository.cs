@@ -15,9 +15,19 @@ namespace PlanningPoker.Services
             this.context = planningPokerContext;
         }
 
-        public Task<UserDTO> CreateAsync(UserCreateUpdateDTO user)
+        public async Task<UserDTO> CreateAsync(UserCreateUpdateDTO user)
         {
-            throw new NotImplementedException();
+            var entity = new User
+            {
+                IsHost = user.IsHost,
+                Email = user.Email,
+                Nickname = user.Nickname
+            };
+
+            this.context.Users.Add(entity);
+            this.context.SaveChanges();
+
+            return await this.FindAsync(entity.Id);
         }
 
         public Task<bool> DeleteAsync(int userId)
