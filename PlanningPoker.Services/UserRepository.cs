@@ -62,7 +62,15 @@ namespace PlanningPoker.Services
 
         public IQueryable<UserDTO> Read()
         {
-            throw new NotImplementedException();
+            var entities = this.context.Users
+                .Select(u => new UserDTO
+                {
+                    IsHost = u.IsHost,
+                    Email = u.Email,
+                    Nickname = u.Nickname
+                });
+
+            return entities;
         }
 
         public Task<bool> UpdateAsync(UserCreateUpdateDTO user)
