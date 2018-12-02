@@ -15,9 +15,18 @@ namespace PlanningPoker.Services
             this.context = planningPokerContext;
         }
 
-        public Task<SummaryDTO> CreateAsync(SummaryCreateUpdateDTO summary)
+        public async Task<SummaryDTO> CreateAsync(SummaryCreateUpdateDTO summary)
         {
-            throw new NotImplementedException();
+            var entity = new Summary
+            {
+                ItemEstimates = summary.ItemEstimates,
+                SessionId = summary.SessionId
+            };
+
+            this.context.Summaries.Add(entity);
+            this.context.SaveChanges();
+
+            return await this.FindAsync(entity.Id);
         }
 
         public Task<bool> DeleteAsync(int summaryId)
