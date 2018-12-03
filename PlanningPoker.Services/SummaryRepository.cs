@@ -19,7 +19,7 @@ namespace PlanningPoker.Services
         {
             var entity = new Summary
             {
-                ItemEstimates = summary.ItemEstimates,
+                ItemEstimates = CollectionHandler.ToItemEstimateEntities(summary.ItemEstimates),
                 SessionId = summary.SessionId
             };
 
@@ -51,7 +51,7 @@ namespace PlanningPoker.Services
                 .Select(s => new SummaryDTO
                 {
                     Id = s.Id,
-                    ItemEstimates = s.ItemEstimates,
+                    ItemEstimates = CollectionHandler.ToItemEstimateDtos(s.ItemEstimates),
                     SessionId = s.SessionId
                 });
 
@@ -64,7 +64,7 @@ namespace PlanningPoker.Services
                 .Select(s => new SummaryDTO
                 {
                     Id = s.Id,
-                    ItemEstimates = s.ItemEstimates,
+                    ItemEstimates = CollectionHandler.ToItemEstimateDtos(s.ItemEstimates),
                     SessionId = s.SessionId
                 });
 
@@ -81,7 +81,7 @@ namespace PlanningPoker.Services
             }
 
             entity.Id = summary.Id;
-            entity.ItemEstimates = summary.ItemEstimates;
+            entity.ItemEstimates = CollectionHandler.ToItemEstimateEntities(summary.ItemEstimates);
             entity.SessionId = summary.SessionId;
 
             this.context.SaveChanges();

@@ -10,7 +10,7 @@ namespace PlanningPoker.Services
         public static ICollection<Item> ToItemEntities(ICollection<ItemDTO> dtos)
         {
             var entities = new HashSet<Item>();
-            dtos.Select(i => entities.Add(
+            dtos.ToList().ForEach(i => entities.Add(
                 new Item
                 {
                     Id = i.Id,
@@ -116,6 +116,34 @@ namespace PlanningPoker.Services
                     IsHost = u.IsHost,
                     Email = u.Email,
                     Nickname = u.Nickname
+                }));
+
+            return dtos;
+        }
+
+        public static ICollection<ItemEstimate> ToItemEstimateEntities(ICollection<ItemEstimateDTO> dtos)
+        {
+            var entities = new HashSet<ItemEstimate>();
+            dtos.Select(ie => entities.Add(
+                new ItemEstimate
+                {
+                    Id = ie.Id,
+                    ItemTitle = ie.ItemTitle,
+                    Estimate = ie.Estimate
+                }));
+
+            return entities;
+        }
+
+        public static ICollection<ItemEstimateDTO> ToItemEstimateDtos(ICollection<ItemEstimate> entities)
+        {
+            var dtos = new HashSet<ItemEstimateDTO>();
+            entities.Select(ie => dtos.Add(
+                new ItemEstimateDTO
+                {
+                    Id = ie.Id,
+                    ItemTitle = ie.ItemTitle,
+                    Estimate = ie.Estimate
                 }));
 
             return dtos;
