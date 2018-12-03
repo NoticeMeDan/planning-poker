@@ -25,7 +25,7 @@ namespace PlanningPoker.Services
         public static ICollection<ItemDTO> ToItemDtos(ICollection<Item> entities)
         {
             var dtos = new HashSet<ItemDTO>();
-            entities.Select(i => dtos.Add(
+            entities.ToList().ForEach(i => dtos.Add(
                 new ItemDTO
                 {
                     Id = i.Id,
@@ -40,7 +40,7 @@ namespace PlanningPoker.Services
         public static ICollection<Round> ToRoundEntities(ICollection<RoundDTO> dtos)
         {
             var entities = new HashSet<Round>();
-            dtos.Select(r => entities.Add(
+            dtos.ToList().ForEach(r => entities.Add(
                 new Round
                 {
                     Id = r.Id,
@@ -53,7 +53,7 @@ namespace PlanningPoker.Services
         public static ICollection<RoundDTO> ToRoundDtos(ICollection<Round> entities)
         {
             var dtos = new HashSet<RoundDTO>();
-            entities.Select(r => dtos.Add(
+            entities.ToList().ForEach(r => dtos.Add(
                 new RoundDTO
                 {
                     Id = r.Id,
@@ -66,7 +66,7 @@ namespace PlanningPoker.Services
         public static ICollection<Vote> ToVoteEntities(ICollection<VoteDTO> dtos)
         {
             var entities = new HashSet<Vote>();
-            dtos.Select(v => entities.Add(
+            dtos.ToList().ForEach(v => entities.Add(
                 new Vote
                 {
                     Id = v.Id,
@@ -80,7 +80,7 @@ namespace PlanningPoker.Services
         public static ICollection<VoteDTO> ToVoteDtos(ICollection<Vote> entities)
         {
             var dtos = new HashSet<VoteDTO>();
-            entities.Select(v => dtos.Add(
+            entities.ToList().ForEach(v => dtos.Add(
                 new VoteDTO
                 {
                     Id = v.Id,
@@ -94,7 +94,7 @@ namespace PlanningPoker.Services
         public static ICollection<User> ToUserEntities(ICollection<UserDTO> dtos)
         {
             var entities = new HashSet<User>();
-            dtos.Select(u => entities.Add(
+            dtos.ToList().ForEach(u => entities.Add(
                 new User
                 {
                     Id = u.Id,
@@ -109,7 +109,7 @@ namespace PlanningPoker.Services
         public static ICollection<UserDTO> ToUserDtos(ICollection<User> entities)
         {
             var dtos = new HashSet<UserDTO>();
-            entities.Select(u => dtos.Add(
+            entities.ToList().ForEach(u => dtos.Add(
                 new UserDTO
                 {
                     Id = u.Id,
@@ -124,7 +124,7 @@ namespace PlanningPoker.Services
         public static ICollection<ItemEstimate> ToItemEstimateEntities(ICollection<ItemEstimateDTO> dtos)
         {
             var entities = new HashSet<ItemEstimate>();
-            dtos.Select(ie => entities.Add(
+            dtos.ToList().ForEach(ie => entities.Add(
                 new ItemEstimate
                 {
                     Id = ie.Id,
@@ -138,7 +138,7 @@ namespace PlanningPoker.Services
         public static ICollection<ItemEstimateDTO> ToItemEstimateDtos(ICollection<ItemEstimate> entities)
         {
             var dtos = new HashSet<ItemEstimateDTO>();
-            entities.Select(ie => dtos.Add(
+            entities.ToList().ForEach(ie => dtos.Add(
                 new ItemEstimateDTO
                 {
                     Id = ie.Id,

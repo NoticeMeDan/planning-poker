@@ -180,8 +180,8 @@ namespace PlanningPoker.Services.Tests
             var firstItem = result.ToList().FirstOrDefault();
 
             Assert.Equal(1, firstItem.Id);
-            Assert.Equal("item 2", firstItem.Title);
-            Assert.Equal("item 2", firstItem.Description);
+            Assert.Equal("item 1", firstItem.Title);
+            Assert.Equal("item 1", firstItem.Description);
         }
 
 
