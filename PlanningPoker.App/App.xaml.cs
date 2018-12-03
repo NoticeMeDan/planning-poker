@@ -1,15 +1,12 @@
-﻿using System;
+using System;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Client;
 using PlanningPoker.App.Models;
-using PlanningPoker.App.ViewModels;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using PlanningPoker.App.Views;
 using PlanningPoker.App.Views.WelcomeScreen;
-using Xamarin.Android.Net;
+using Xamarin.Forms;
 using Xamarin.Forms.Internals;
+using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace PlanningPoker.App
@@ -17,10 +14,12 @@ namespace PlanningPoker.App
     public partial class App : Application
     {
         public static PublicClientApplication publicClientApplication = null;
+
         public static UIParent UiParent { get; set; }
+
         private readonly Lazy<IServiceProvider> _lazyProvider;
         private Settings settings = new Settings();
-        
+
         public IServiceProvider Container => _lazyProvider.Value;
 
         public App()
@@ -60,7 +59,7 @@ namespace PlanningPoker.App
 
             var settings = new Settings();
 
-            var handler = new AndroidClientHandler();
+            var handler = new HttpClientHandler();
 
             var httpClient = new HttpClient(handler) { BaseAddress = settings.BackendUrl };
 
