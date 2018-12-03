@@ -1,0 +1,124 @@
+namespace PlanningPoker.Services
+{
+    using System.Collections.Generic;
+    using System.Linq;
+    using PlanningPoker.Entities;
+    using PlanningPoker.Shared;
+
+    public class CollectionHandler
+    {
+        public static ICollection<Item> ToItemEntities(ICollection<ItemDTO> dtos)
+        {
+            var entities = new HashSet<Item>();
+            dtos.Select(i => entities.Add(
+                new Item
+                {
+                    Id = i.Id,
+                    Title = i.Title,
+                    Description = i.Description,
+                    Rounds = ToRoundEntities(i.Rounds),
+                }));
+
+            return entities;
+        }
+
+        public static ICollection<ItemDTO> ToItemDtos(ICollection<Item> entities)
+        {
+            var dtos = new HashSet<ItemDTO>();
+            entities.Select(i => dtos.Add(
+                new ItemDTO
+                {
+                    Id = i.Id,
+                    Title = i.Title,
+                    Description = i.Description,
+                    Rounds = ToRoundDtos(i.Rounds),
+                }));
+
+            return dtos;
+        }
+
+        public static ICollection<Round> ToRoundEntities(ICollection<RoundDTO> dtos)
+        {
+            var entities = new HashSet<Round>();
+            dtos.Select(r => entities.Add(
+                new Round
+                {
+                    Id = r.Id,
+                    Votes = ToVoteEntities(r.Votes)
+                }));
+
+            return entities;
+        }
+
+        public static ICollection<RoundDTO> ToRoundDtos(ICollection<Round> entities)
+        {
+            var dtos = new HashSet<RoundDTO>();
+            entities.Select(r => dtos.Add(
+                new RoundDTO
+                {
+                    Id = r.Id,
+                    Votes = ToVoteDtos(r.Votes)
+                }));
+
+            return dtos;
+        }
+
+        public static ICollection<Vote> ToVoteEntities(ICollection<VoteDTO> dtos)
+        {
+            var entities = new HashSet<Vote>();
+            dtos.Select(v => entities.Add(
+                new Vote
+                {
+                    Id = v.Id,
+                    UserId = v.UserId,
+                    Estimate = v.Estimate
+                }));
+
+            return entities;
+        }
+
+        public static ICollection<VoteDTO> ToVoteDtos(ICollection<Vote> entities)
+        {
+            var dtos = new HashSet<VoteDTO>();
+            entities.Select(v => dtos.Add(
+                new VoteDTO
+                {
+                    Id = v.Id,
+                    UserId = v.UserId,
+                    Estimate = v.Estimate
+                }));
+
+            return dtos;
+        }
+
+        public static ICollection<User> ToUserEntities(ICollection<UserDTO> dtos)
+        {
+            var entities = new HashSet<User>();
+            dtos.Select(u => entities.Add(
+                new User
+                {
+                    Id = u.Id,
+                    IsHost = u.IsHost,
+                    Email = u.Email,
+                    Nickname = u.Nickname
+                }));
+
+            return entities;
+        }
+
+        public static ICollection<UserDTO> ToUserDtos(ICollection<User> entities)
+        {
+            var dtos = new HashSet<UserDTO>();
+            entities.Select(u => dtos.Add(
+                new UserDTO
+                {
+                    Id = u.Id,
+                    IsHost = u.IsHost,
+                    Email = u.Email,
+                    Nickname = u.Nickname
+                }));
+
+            return dtos;
+        }
+    }
+}

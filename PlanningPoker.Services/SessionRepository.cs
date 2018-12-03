@@ -19,8 +19,8 @@ namespace PlanningPoker.Services
         {
             var entity = new Session
             {
-                Items = session.Items,
-                Users = session.Users,
+                Items = CollectionHandler.ToItemEntities(session.Items),
+                Users = CollectionHandler.ToUserEntities(session.Users),
                 SessionKey = session.SessionKey
             };
 
@@ -52,8 +52,8 @@ namespace PlanningPoker.Services
                 .Select(s => new SessionDTO
                 {
                     Id = s.Id,
-                    Items = s.Items,
-                    Users = s.Users,
+                    Items = CollectionHandler.ToItemDtos(s.Items),
+                    Users = CollectionHandler.ToUserDtos(s.Users),
                     SessionKey = s.SessionKey
                 });
 
@@ -66,8 +66,8 @@ namespace PlanningPoker.Services
                 .Select(s => new SessionDTO
                 {
                     Id = s.Id,
-                    Items = s.Items,
-                    Users = s.Users,
+                    Items = CollectionHandler.ToItemDtos(s.Items),
+                    Users = CollectionHandler.ToUserDtos(s.Users),
                     SessionKey = s.SessionKey
                 });
 
@@ -83,8 +83,8 @@ namespace PlanningPoker.Services
                 return false;
             }
 
-            entity.Items = session.Items;
-            entity.Users = session.Users;
+            entity.Items = CollectionHandler.ToItemEntities(session.Items);
+            entity.Users = CollectionHandler.ToUserEntities(session.Users);
             entity.SessionKey = session.SessionKey;
 
             this.context.SaveChanges();

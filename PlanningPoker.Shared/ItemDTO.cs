@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace PlanningPoker.Shared
 {
     public class ItemDTO
@@ -7,5 +9,7 @@ namespace PlanningPoker.Shared
         public string Title { get; set; }
 
         public string Description { get; set; }
+
+        public ICollection<RoundDTO> Rounds { get; set; }
     }
 }
