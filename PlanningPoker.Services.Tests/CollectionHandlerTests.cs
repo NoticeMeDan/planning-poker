@@ -92,8 +92,98 @@ namespace PlanningPoker.Services.Tests
             var firstItem = result.ToList().FirstOrDefault();
 
             Assert.Equal(1, firstItem.Id);
+            Assert.Equal("item 1", firstItem.Title);
+            Assert.Equal("item 1", firstItem.Description);
+        }
+
+        [Fact]
+        public void ToItemDtos_returns_Collection_of_equal_size()
+        {
+            var dtos = new HashSet<ItemDTO> {
+                new ItemDTO
+                {
+                    Id = 1,
+                    Title = "item 1",
+                    Description = "item 1",
+                    Rounds = new HashSet<RoundDTO>()
+                },
+                new ItemDTO
+                {
+                    Id = 2,
+                    Title = "item 2",
+                    Description = "item 2",
+                    Rounds = new HashSet<RoundDTO>()
+                }
+            };
+
+            var entities = new HashSet<Item> {
+                new Item
+                {
+                    Id = 1,
+                    Title = "item 1",
+                    Description = "item 1",
+                    Rounds = new HashSet<Round>()
+                },
+                new Item
+                {
+                    Id = 2,
+                    Title = "item 2",
+                    Description = "item 2",
+                    Rounds = new HashSet<Round>()
+                }
+            };
+
+            var result = CollectionHandler.ToItemDtos(entities);
+
+            Assert.Equal(dtos.Count, result.Count);
+        }
+
+        [Fact]
+        public void ToItemDtos_returns_Collection_of_correct_dtos()
+        {
+            var dtos = new HashSet<ItemDTO> {
+                new ItemDTO
+                {
+                    Id = 1,
+                    Title = "item 1",
+                    Description = "item 1",
+                    Rounds = new HashSet<RoundDTO>()
+                },
+                new ItemDTO
+                {
+                    Id = 2,
+                    Title = "item 2",
+                    Description = "item 2",
+                    Rounds = new HashSet<RoundDTO>()
+                }
+            };
+
+            var entities = new HashSet<Item> {
+                new Item
+                {
+                    Id = 1,
+                    Title = "item 1",
+                    Description = "item 1",
+                    Rounds = new HashSet<Round>()
+                },
+                new Item
+                {
+                    Id = 2,
+                    Title = "item 2",
+                    Description = "item 2",
+                    Rounds = new HashSet<Round>()
+                }
+            };
+
+            var result = CollectionHandler.ToItemDtos(entities);
+
+            var firstItem = result.ToList().FirstOrDefault();
+
+            Assert.Equal(1, firstItem.Id);
             Assert.Equal("item 2", firstItem.Title);
             Assert.Equal("item 2", firstItem.Description);
         }
+
+
     }
 }
