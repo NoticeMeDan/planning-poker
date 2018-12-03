@@ -10,7 +10,6 @@ namespace PlanningPoker.WebApi.Controllers
     using PlanningPoker.Services;
     using PlanningPoker.Shared;
 
-
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -59,6 +58,20 @@ namespace PlanningPoker.WebApi.Controllers
             var updated = await this.repository.UpdateAsync(user);
 
             if (updated)
+            {
+                return this.NoContent();
+            }
+
+            return this.NotFound();
+        }
+
+        // DELETE: api/users/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await this.repository.DeleteAsync(id);
+
+            if (result)
             {
                 return this.NoContent();
             }

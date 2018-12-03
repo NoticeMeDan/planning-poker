@@ -131,5 +131,41 @@ namespace PlanningPoker.WebApi.Tests.Controllers
 
             Assert.IsType<NotFoundResult>(put);
         }
+
+        [Fact]
+        public async Task Delete_given_id_deletes_user()
+        {
+            var repository = new Mock<IUserRepository>();
+
+            var controller = new UsersController(repository.Object);
+
+            await controller.Delete(42);
+
+            repository.Verify(s => s.DeleteAsync(42));
+        }
+
+        [Fact]
+        public async Task Delete_returns_NoContent()
+        {
+            var repository = new Mock<IUserRepository>();
+            repository.Setup(s => s.DeleteAsync(42)).ReturnsAsync(true);
+            var controller = new UsersController(repository.Object);
+
+            var delete = await controller.Delete(42);
+
+            Assert.IsType<NoContentResult>(delete);
+        }
+
+        [Fact]
+        public async Task Delete_given_repository_returns_false_returns_NotFound()
+        {
+            var repository = new Mock<IUserRepository>();
+
+            var controller = new UsersController(repository.Object);
+
+            var delete = await controller.Delete(42);
+
+            Assert.IsType<NotFoundResult>(delete);
+        }
     }
 }
