@@ -4,7 +4,7 @@ namespace PlanningPoker.WebApi.Security
     {
         public static bool ValidateRequest(string token, UserStateManager stateManager)
         {
-            return stateManager.GetState(token).HasValue;
+            return stateManager.GetState(token.Replace("Bearer ", "")).HasValue;
         }
     }
 }
