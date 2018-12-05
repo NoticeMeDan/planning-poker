@@ -6,7 +6,7 @@ namespace PlanningPoker.Shared
     {
         public int Id { get; set; }
 
-        public ICollection<ItemEstimateDTO> Estimates { get; set; }
+        public ICollection<ItemEstimateDTO> ItemEstimates { get; set; }
 
         public int SessionId { get; set; }
     }

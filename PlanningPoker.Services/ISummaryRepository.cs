@@ -1,9 +1,8 @@
-
-using PlanningPoker.Shared;
 namespace PlanningPoker.Services
 {
     using System.Linq;
     using System.Threading.Tasks;
+    using PlanningPoker.Shared;
 
     public interface ISummaryRepository
     {
