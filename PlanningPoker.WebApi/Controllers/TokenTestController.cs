@@ -9,23 +9,23 @@ namespace PlanningPoker.WebApi.Controllers
     [ApiController]
     public class TokenTestController : ControllerBase
     {
-        private readonly UserStateManager _userStateManager;
+        private readonly UserStateManager userStateManager;
 
         public TokenTestController(IMemoryCache cache)
         {
-            _userStateManager = new UserStateManager(cache);
+            this.userStateManager = new UserStateManager(cache);
         }
 
         [HttpPost]
         public ActionResult<UserStateResponseDTO> Register([FromBody] UserDTO user)
         {
-            return new UserStateResponseDTO { Token = _userStateManager.CreateState(user.Id) };
+            return new UserStateResponseDTO { Token = this.userStateManager.CreateState(user.Id) };
         }
 
         [HttpGet]
         public ActionResult<string> SomethingAuthenticated()
         {
-            return SecurityFilter.RequestIsValid(HttpContext.Request.Headers["Authorization"], _userStateManager)
+            return SecurityFilter.RequestIsValid(HttpContext.Request.Headers["Authorization"], this.userStateManager)
                 ? "Roger doger"
                 : "Piss off";
         }
