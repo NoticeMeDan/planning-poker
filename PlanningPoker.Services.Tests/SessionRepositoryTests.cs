@@ -1,15 +1,14 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using PlanningPoker.Entities;
+using PlanningPoker.Shared;
+using Xunit;
+
 namespace PlanningPoker.Services.Tests
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using Microsoft.Data.Sqlite;
-    using Microsoft.EntityFrameworkCore;
-    using PlanningPoker.Entities;
-    using PlanningPoker.Services;
-    using PlanningPoker.Shared;
-    using Xunit;
-
     public class SessionRepositoryTests
     {
         [Fact]
@@ -64,7 +63,7 @@ namespace PlanningPoker.Services.Tests
 
                 Assert.Equal(1, session.Id);
                 Assert.Equal("A1B2C3D", session.SessionKey);
-                Assert.Equal("item 1", session.Items.FirstOrDefault().Title);
+                Assert.Equal("item 1", session.Items.FirstOrDefault()?.Title);
             }
         }
 
