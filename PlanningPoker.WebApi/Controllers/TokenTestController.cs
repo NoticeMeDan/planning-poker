@@ -17,15 +17,15 @@ namespace PlanningPoker.WebApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<string> Register([FromBody] UserDTO user)
+        public ActionResult<UserStateResponseDTO> Register([FromBody] UserDTO user)
         {
-            return _userStateManager.CreateState(user.Id);
+            return new UserStateResponseDTO { Token = _userStateManager.CreateState(user.Id) };
         }
 
         [HttpGet]
         public ActionResult<string> SomethingAuthenticated()
         {
-            return SecurityFilter.ValidateRequest(HttpContext.Request.Headers["Authorization"], _userStateManager)
+            return SecurityFilter.RequestIsValid(HttpContext.Request.Headers["Authorization"], _userStateManager)
                 ? "Roger doger"
                 : "Piss off";
         }
