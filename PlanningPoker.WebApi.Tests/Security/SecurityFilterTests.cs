@@ -24,5 +24,14 @@ namespace PlanningPoker.WebApi.Tests.Security
 
             Assert.False(SecurityFilter.RequestIsValid("invalidtoken123123", stateManager));
         }
+
+        [Fact]
+        public void RequestIsValid_given_null_token_returns_false()
+        {
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var stateManager = new UserStateManager(cache);
+
+            Assert.False(SecurityFilter.RequestIsValid(null, stateManager));
+        }
     }
 }

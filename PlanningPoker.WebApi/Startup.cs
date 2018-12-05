@@ -31,8 +31,7 @@
             })
             .AddAzureAdBearer(options => Configuration.Bind("AzureAd", options));
 
-            services.AddMvc(options => { options.RespectBrowserAcceptHeader = true; })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddMemoryCache();
 
