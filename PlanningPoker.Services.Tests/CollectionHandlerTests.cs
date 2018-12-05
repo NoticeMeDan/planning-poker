@@ -226,6 +226,58 @@ namespace PlanningPoker.Services.Tests
             Assert.Equal("Dummy", firstUser.Nickname);
         }
 
+        [Fact]
+        public void ToItemEstimateEntities_returns_correct_size()
+        {
+            var dtos = this.CreateItemEstimateDTOHashSet();
+
+            var result = CollectionHandler.ToItemEstimateEntities(dtos);
+
+            Assert.Equal(dtos.Count, result.Count);
+        }
+
+        [Fact]
+        public void ToItemEstimateEntities_returns_correct_entities()
+        {
+            var dtos = this.CreateItemEstimateDTOHashSet();
+
+            var entities = this.CreateItemEstimateEntityHashSet();
+
+            var result = CollectionHandler.ToItemEstimateEntities(dtos);
+
+            var firstItemEstimate = result.ToList().FirstOrDefault();
+
+            Assert.Equal(1, firstItemEstimate.Id);
+            Assert.Equal("Item 1", firstItemEstimate.ItemTitle);
+            Assert.Equal(5, firstItemEstimate.Estimate);
+        }
+
+        [Fact]
+        public void ToItemEstimateDtos_returns_correct_size()
+        {
+            var entities = this.CreateItemEstimateEntityHashSet();
+
+            var result = CollectionHandler.ToItemEstimateDtos(entities);
+
+            Assert.Equal(entities.Count, result.Count);
+        }
+
+        [Fact]
+        public void ToItemEstimateDtos_returns_correct_dtos()
+        {
+            var dtos = this.CreateItemEstimateDTOHashSet();
+
+            var entities = this.CreateItemEstimateEntityHashSet();
+
+            var result = CollectionHandler.ToItemEstimateDtos(entities);
+
+            var firstItemEstimate = result.ToList().FirstOrDefault();
+
+            Assert.Equal(1, firstItemEstimate.Id);
+            Assert.Equal("Item 1", firstItemEstimate.ItemTitle);
+            Assert.Equal(5, firstItemEstimate.Estimate);
+        }
+
         private HashSet<Item> CreateItemEntityHashSet()
         {
             return new HashSet<Item> {
@@ -346,6 +398,32 @@ namespace PlanningPoker.Services.Tests
                     IsHost = true,
                     Email = "dummy@user.com",
                     Nickname = "Dummy"
+                }
+            };
+        }
+
+        private HashSet<ItemEstimateDTO> CreateItemEstimateDTOHashSet()
+        {
+            return new HashSet<ItemEstimateDTO>
+            {
+                new ItemEstimateDTO
+                {
+                    Id = 1,
+                    ItemTitle = "Item 1",
+                    Estimate = 5
+                }
+            };
+        }
+
+        private HashSet<ItemEstimate> CreateItemEstimateEntityHashSet()
+        {
+            return new HashSet<ItemEstimate>
+            {
+                new ItemEstimate
+                {
+                    Id = 1,
+                    ItemTitle = "Item 1",
+                    Estimate = 5
                 }
             };
         }
