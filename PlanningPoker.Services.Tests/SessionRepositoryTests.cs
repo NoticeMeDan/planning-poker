@@ -187,7 +187,7 @@ namespace PlanningPoker.Services.Tests
             return new Session
             {
                 SessionKey = "A1B2C3D",
-                Items = new List<Item> { new Item { Title = "item 1" }, new Item { Title = "item 2" } },
+                Items = new List<Item> { new Item { Title = "item 1", Rounds = new HashSet<Round>() }, new Item { Title = "item 2", Rounds = new HashSet<Round>() } },
                 Users = new List<User> { new User { IsHost = true, Nickname = "user 1" } }
             };
         }
@@ -197,8 +197,8 @@ namespace PlanningPoker.Services.Tests
             return new SessionCreateUpdateDTO
             {
                 SessionKey = "A1B2C3D",
-                Items = new List<Item> { new Item { Title = "item 1" }, new Item { Title = "item 2" } },
-                Users = new List<User> { new User { IsHost = true, Nickname = "user 1" } }
+                Items = new List<ItemDTO> { new ItemDTO { Title = "item 1", Rounds = new HashSet<RoundDTO>() }, new ItemDTO { Title = "item 2", Rounds = new HashSet<RoundDTO>() } },
+                Users = new List<UserDTO> { new UserDTO { IsHost = true, Nickname = "user 1" } }
             };
         }
     }
