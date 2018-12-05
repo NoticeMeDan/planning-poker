@@ -280,7 +280,8 @@ namespace PlanningPoker.Services.Tests
 
         private HashSet<Item> CreateItemEntityHashSet()
         {
-            return new HashSet<Item> {
+            return new HashSet<Item>
+            {
                 new Item
                 {
                     Id = 1,
@@ -300,7 +301,8 @@ namespace PlanningPoker.Services.Tests
 
         private HashSet<ItemDTO> CreateItemDTOHashSet()
         {
-            return new HashSet<ItemDTO> {
+            return new HashSet<ItemDTO>
+            {
                 new ItemDTO
                 {
                     Id = 1,
@@ -327,7 +329,7 @@ namespace PlanningPoker.Services.Tests
                     Id = 1,
                     Votes = new HashSet<VoteDTO>
                     {
-                        new VoteDTO { Id = 1, UserId = 1, Estimate = 5}
+                        new VoteDTO { Id = 1, UserId = 1, Estimate = 5 }
                     }
                 }
             };
@@ -342,7 +344,7 @@ namespace PlanningPoker.Services.Tests
                     Id = 1,
                     Votes = new HashSet<Vote>
                     {
-                        new Vote { Id = 1, UserId = 1, Estimate = 5}
+                        new Vote { Id = 1, UserId = 1, Estimate = 5 }
                     }
                 }
             };
