@@ -12,7 +12,7 @@ namespace PlanningPoker.Services.Tests
         public void ToItemEntities_returns_Collection_of_equal_size()
         {
             var dtos = this.CreateItemDTOHashSet();
-            
+
             var result = CollectionHandler.ToItemEntities(dtos);
 
             Assert.Equal(dtos.Count, result.Count);
@@ -100,7 +100,6 @@ namespace PlanningPoker.Services.Tests
             Assert.Equal(entities.Count, result.Count);
         }
 
-
         [Fact]
         public void ToRoundDtos_returns_correct_dtos()
         {
@@ -119,6 +118,112 @@ namespace PlanningPoker.Services.Tests
             Assert.Equal(1, firstRound.Id);
             Assert.Equal(dtoVote.Estimate, roundVote.Estimate);
             Assert.Equal(dtoVote.UserId, roundVote.UserId);
+        }
+
+        [Fact]
+        public void ToVoteEntities_returns_correct_size()
+        {
+            var dtos = this.CreateVoteDTOHashSet();
+
+            var result = CollectionHandler.ToVoteEntities(dtos);
+
+            Assert.Equal(dtos.Count, result.Count);
+        }
+
+        [Fact]
+        public void ToVoteEntities_returns_correct_entities()
+        {
+            var dtos = this.CreateVoteDTOHashSet();
+
+            var entities = this.CreateVoteEntityHashSet();
+
+            var result = CollectionHandler.ToVoteEntities(dtos);
+
+            var firstVote = result.ToList().FirstOrDefault();
+
+            Assert.Equal(1, firstVote.Id);
+            Assert.Equal(1, firstVote.UserId);
+            Assert.Equal(5, firstVote.Estimate);
+        }
+
+        [Fact]
+        public void ToVoteDtos_returns_correct_size()
+        {
+            var entities = this.CreateVoteEntityHashSet();
+
+            var result = CollectionHandler.ToVoteDtos(entities);
+
+            Assert.Equal(entities.Count, result.Count);
+        }
+
+        [Fact]
+        public void ToVoteDtos_returns_correct_dtos()
+        {
+            var dtos = this.CreateVoteDTOHashSet();
+
+            var entities = this.CreateVoteEntityHashSet();
+
+            var result = CollectionHandler.ToVoteDtos(entities);
+
+            var firstVote = result.ToList().FirstOrDefault();
+
+            Assert.Equal(1, firstVote.Id);
+            Assert.Equal(1, firstVote.UserId);
+            Assert.Equal(5, firstVote.Estimate);
+        }
+
+        [Fact]
+        public void ToUserEntities_returns_correct_size()
+        {
+            var dtos = this.CreateUserDTOHashSet();
+
+            var result = CollectionHandler.ToUserEntities(dtos);
+
+            Assert.Equal(dtos.Count, result.Count);
+        }
+
+        [Fact]
+        public void ToUserEntities_returns_correct_entities()
+        {
+            var dtos = this.CreateUserDTOHashSet();
+
+            var entities = this.CreateUserEntityHashSet();
+
+            var result = CollectionHandler.ToUserEntities(dtos);
+
+            var firstUser = result.ToList().FirstOrDefault();
+
+            Assert.Equal(1, firstUser.Id);
+            Assert.True(firstUser.IsHost);
+            Assert.Equal("dummy@user.com", firstUser.Email);
+            Assert.Equal("Dummy", firstUser.Nickname);
+        }
+
+        [Fact]
+        public void ToUserDtos_returns_correct_size()
+        {
+            var entities = this.CreateUserEntityHashSet();
+
+            var result = CollectionHandler.ToUserDtos(entities);
+
+            Assert.Equal(entities.Count, result.Count);
+        }
+
+        [Fact]
+        public void ToUserDtos_returns_correct_dtos()
+        {
+            var dtos = this.CreateUserDTOHashSet();
+
+            var entities = this.CreateUserEntityHashSet();
+
+            var result = CollectionHandler.ToUserDtos(entities);
+
+            var firstUser = result.ToList().FirstOrDefault();
+
+            Assert.Equal(1, firstUser.Id);
+            Assert.True(firstUser.IsHost);
+            Assert.Equal("dummy@user.com", firstUser.Email);
+            Assert.Equal("Dummy", firstUser.Nickname);
         }
 
         private HashSet<Item> CreateItemEntityHashSet()
@@ -187,6 +292,60 @@ namespace PlanningPoker.Services.Tests
                     {
                         new Vote { Id = 1, UserId = 1, Estimate = 5}
                     }
+                }
+            };
+        }
+
+        private HashSet<VoteDTO> CreateVoteDTOHashSet()
+        {
+            return new HashSet<VoteDTO>
+            {
+                new VoteDTO
+                {
+                    Id = 1,
+                    UserId = 1,
+                    Estimate = 5
+                }
+            };
+        }
+
+        private HashSet<Vote> CreateVoteEntityHashSet()
+        {
+            return new HashSet<Vote>
+            {
+                new Vote
+                {
+                    Id = 1,
+                    UserId = 1,
+                    Estimate = 5
+                }
+            };
+        }
+
+        private HashSet<UserDTO> CreateUserDTOHashSet()
+        {
+            return new HashSet<UserDTO>
+            {
+                new UserDTO
+                {
+                    Id = 1,
+                    IsHost = true,
+                    Email = "dummy@user.com",
+                    Nickname = "Dummy"
+                }
+            };
+        }
+
+        private HashSet<User> CreateUserEntityHashSet()
+        {
+            return new HashSet<User>
+            {
+                new User
+                {
+                    Id = 1,
+                    IsHost = true,
+                    Email = "dummy@user.com",
+                    Nickname = "Dummy"
                 }
             };
         }
