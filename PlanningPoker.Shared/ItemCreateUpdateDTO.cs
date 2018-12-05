@@ -1,5 +1,6 @@
 namespace PlanningPoker.Shared
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     public class ItemCreateUpdateDTO
@@ -10,5 +11,7 @@ namespace PlanningPoker.Shared
         public string Title { get; set; }
 
         public string Description { get; set; }
+
+        public ICollection<RoundDTO> Rounds { get; set; }
     }
 }

@@ -1,6 +1,5 @@
 namespace PlanningPoker.Shared
 {
-    using PlanningPoker.Entities;
     using System.Collections.Generic;
 
     public class SessionDTO
@@ -9,8 +8,8 @@ namespace PlanningPoker.Shared
 
         public string SessionKey { get; set; }
 
-        public ICollection<Item> Items { get; set; }
+        public ICollection<ItemDTO> Items { get; set; }
 
-        public ICollection<User> Users { get; set; }
+        public ICollection<UserDTO> Users { get; set; }
     }
 }

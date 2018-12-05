@@ -200,10 +200,10 @@ namespace PlanningPoker.Services.Tests
         {
             return new SummaryCreateUpdateDTO
             {
-                ItemEstimates = new List<ItemEstimate>
+                ItemEstimates = new List<ItemEstimateDTO>
                 {
-                    new ItemEstimate { Estimate = 5, ItemTitle = "item 1" },
-                    new ItemEstimate { Estimate = 13, ItemTitle = "item 2" }
+                    new ItemEstimateDTO { Estimate = 5, ItemTitle = "item 1" },
+                    new ItemEstimateDTO { Estimate = 13, ItemTitle = "item 2" }
                 },
 
                 SessionId = 42
