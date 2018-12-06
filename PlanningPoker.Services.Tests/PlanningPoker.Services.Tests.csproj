@@ -5,7 +5,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-
         <PackageReference Include="EntityFramework" Version="6.2.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.4" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
@@ -20,7 +19,6 @@
     <ItemGroup>
       <ProjectReference Include="..\PlanningPoker.Services\PlanningPoker.Services.csproj" />
       <ProjectReference Include="..\PlanningPoker.Shared\PlanningPoker.Shared.csproj" />
-
     </ItemGroup>
 
 </Project>
