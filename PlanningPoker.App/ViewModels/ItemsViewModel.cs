@@ -25,7 +25,9 @@ namespace PlanningPoker.App.ViewModels
             this.LoadCommand = new RelayCommand(async _ => await this.ExecuteLoadCommand());
         }
 
-        private static async Task<ObservableCollection<ItemDTO>> MockData()
+        private static ObservableCollection<ItemDTO> MockData()
+
+            // TODO: Make this method async in the future.
         {
             var data = new ObservableCollection<ItemDTO>();
 
