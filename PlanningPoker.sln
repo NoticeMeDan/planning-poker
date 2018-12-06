@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlanningPoker.Services.Test
 		{4DC61403-0211-4B93-9589-2CD7FC4BDC2B} = {4DC61403-0211-4B93-9589-2CD7FC4BDC2B}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanningPoker.App.Tests", "PlanningPoker.App.Tests\PlanningPoker.App.Tests.csproj", "{4565F104-1200-432F-BDB4-C40BE7304CB8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{DA133D3D-BEA3-4056-B9D4-68B24F05AECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA133D3D-BEA3-4056-B9D4-68B24F05AECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA133D3D-BEA3-4056-B9D4-68B24F05AECF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4565F104-1200-432F-BDB4-C40BE7304CB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4565F104-1200-432F-BDB4-C40BE7304CB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4565F104-1200-432F-BDB4-C40BE7304CB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4565F104-1200-432F-BDB4-C40BE7304CB8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,6 +103,7 @@ Global
 		{9EF49BEE-9675-4564-A04E-0541F0BBE40E} = {671BC047-91D6-412A-81DC-2B815C7D8A00}
 		{4DC61403-0211-4B93-9589-2CD7FC4BDC2B} = {671BC047-91D6-412A-81DC-2B815C7D8A00}
 		{DA133D3D-BEA3-4056-B9D4-68B24F05AECF} = {671BC047-91D6-412A-81DC-2B815C7D8A00}
+		{4565F104-1200-432F-BDB4-C40BE7304CB8} = {F34B7FAE-FF0C-4338-AA71-7F3A867227C8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C41E91F8-0BAF-4400-8C20-4089531EAB6B}
