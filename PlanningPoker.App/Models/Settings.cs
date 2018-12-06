@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
-
 namespace PlanningPoker.App.Models
 {
+    using System;
+    using System.Collections.Generic;
+
     public class Settings : ISettings
     {
         public Uri BackendUrl => new Uri("http://localhost:5001/");

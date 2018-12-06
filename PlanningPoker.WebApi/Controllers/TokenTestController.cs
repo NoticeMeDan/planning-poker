@@ -2,8 +2,8 @@ namespace PlanningPoker.WebApi.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;
-    using Shared;
     using Security;
+    using Shared;
 
     [Route("api/[controller]")]
     [ApiController]

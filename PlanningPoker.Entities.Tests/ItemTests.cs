@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using Xunit;
-
 namespace PlanningPoker.Entities.Tests
 {
+    using System.Collections.Generic;
+    using Xunit;
+
     public class ItemTests
     {
         [Fact]

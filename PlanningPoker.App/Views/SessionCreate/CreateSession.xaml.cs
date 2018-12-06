@@ -1,5 +1,3 @@
-using Xamarin.Forms.Xaml;
-
 namespace PlanningPoker.App.Views.SessionCreation
 {
     using System;
@@ -8,6 +6,7 @@ namespace PlanningPoker.App.Views.SessionCreation
     using PlanningPoker.App.Views.CreateSession;
     using PlanningPoker.App.Views.Session;
     using Xamarin.Forms;
+    using Xamarin.Forms.Xaml;
 
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CreateSession : ContentPage

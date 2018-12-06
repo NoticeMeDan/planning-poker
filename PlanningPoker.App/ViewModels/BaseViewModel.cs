@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
-using Xamarin.Forms;
-
-using PlanningPoker.App.Models;
-
 namespace PlanningPoker.App.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
+
     public class BaseViewModel : INotifyPropertyChanged
     {
 

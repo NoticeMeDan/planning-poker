@@ -1,14 +1,14 @@
-﻿namespace PlanningPoker.WebApi
+namespace PlanningPoker.WebApi
 {
+    using Entities;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Entities;
     using Swashbuckle.AspNetCore.Swagger;
 
     public class Startup

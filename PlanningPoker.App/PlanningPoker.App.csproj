@@ -70,4 +70,21 @@
   <ItemGroup>
     <ProjectReference Include="..\PlanningPoker.Shared\PlanningPoker.Shared.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Views\SessionCreate\CreateSession.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\SessionCreate\NewItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Session\ItemEstimation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Session\Lobby.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Session\Session.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

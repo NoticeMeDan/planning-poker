@@ -1,11 +1,11 @@
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using PlanningPoker.Shared;
-
 namespace PlanningPoker.App.ViewModels
 {
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Threading.Tasks;
+    using System.Windows.Input;
+    using PlanningPoker.Shared;
+
     public class ItemsViewModel : BaseViewModel
     {
         //TODO: Use API to get and set items.

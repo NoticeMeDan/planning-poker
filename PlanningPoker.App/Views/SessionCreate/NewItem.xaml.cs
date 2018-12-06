@@ -1,7 +1,6 @@
-using System;
-
 namespace PlanningPoker.App.Views.CreateSession
 {
+    using System;
     using Xamarin.Forms;
 
     public partial class NewItem : ContentPage

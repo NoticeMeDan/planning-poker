@@ -1,19 +1,15 @@
-using Microsoft.Identity.Client;
-using Newtonsoft.Json.Linq;
-using PlanningPoker.App.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using PlanningPoker.App.Views.CreateSession;
-using PlanningPoker.App.Views.WelcomeScreen;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
 namespace PlanningPoker.App.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using System.Windows.Input;
+    using Microsoft.Identity.Client;
+    using Newtonsoft.Json.Linq;
+    using PlanningPoker.App.Models;
+
     public class LoginViewModel : BaseViewModel
     {
         public ICommand LoginCommand { get; set; }

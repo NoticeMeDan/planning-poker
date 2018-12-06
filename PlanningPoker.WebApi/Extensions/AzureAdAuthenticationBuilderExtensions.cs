@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-
 namespace Microsoft.AspNetCore.Authentication
 {
+    using System;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Options;
+
     public static class AzureAdServiceCollectionExtensions
     {
         public static AuthenticationBuilder AddAzureAdBearer(this AuthenticationBuilder builder)

@@ -1,14 +1,14 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using PlanningPoker.Entities;
-using PlanningPoker.Shared;
-using Xunit;
-
 namespace PlanningPoker.Services.Tests
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Microsoft.Data.Sqlite;
+    using Microsoft.EntityFrameworkCore;
+    using PlanningPoker.Entities;
+    using PlanningPoker.Shared;
+    using Xunit;
+
     public class SessionRepositoryTests
     {
         [Fact]

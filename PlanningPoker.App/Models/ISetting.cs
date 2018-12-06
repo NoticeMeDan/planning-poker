@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
-
 namespace PlanningPoker.App.Models
 {
+    using System;
+    using System.Collections.Generic;
+
     public interface ISettings
     {
         Uri BackendUrl { get; }

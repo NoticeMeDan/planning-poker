@@ -1,9 +1,10 @@
-using System;
-using PlanningPoker.App.ViewModels;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+namespace PlanningPoker.App.Views.WelcomeScreen
+{
+    using System;
+    using PlanningPoker.App.ViewModels;
+    using Xamarin.Forms;
+    using Xamarin.Forms.Xaml;
 
-namespace PlanningPoker.App.Views.WelcomeScreen {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Login : ContentPage
     {
