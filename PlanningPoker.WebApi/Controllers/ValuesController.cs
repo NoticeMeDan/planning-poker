@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-
 namespace PlanningPoker.WebApi.Controllers
 {
     using System.Collections.Generic;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/[controller]")]
@@ -12,7 +11,8 @@ namespace PlanningPoker.WebApi.Controllers
     {
         // GET api/values
         [HttpGet]
-        //[AllowAnonymous]
+
+        // [AllowAnonymous]
         public ActionResult<IEnumerable<string>> Get()
         {
             return new string[] { "value1", "value2" };
