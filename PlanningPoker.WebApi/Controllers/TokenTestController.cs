@@ -25,7 +25,7 @@ namespace PlanningPoker.WebApi.Controllers
         [HttpGet]
         public ActionResult<string> SomethingAuthenticated()
         {
-            return SecurityFilter.RequestIsValid(HttpContext.Request.Headers["Authorization"], this.userStateManager)
+            return SecurityFilter.RequestIsValid(this.HttpContext.Request.Headers["Authorization"], this.userStateManager)
                 ? "Roger doger"
                 : "Piss off";
         }

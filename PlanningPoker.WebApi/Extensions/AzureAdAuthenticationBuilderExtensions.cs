@@ -18,24 +18,24 @@ namespace Microsoft.AspNetCore.Authentication
             return builder;
         }
 
-        private class ConfigureAzureOptions: IConfigureNamedOptions<JwtBearerOptions>
+        private class ConfigureAzureOptions : IConfigureNamedOptions<JwtBearerOptions>
         {
             private readonly AzureAdOptions _azureOptions;
 
             public ConfigureAzureOptions(IOptions<AzureAdOptions> azureOptions)
             {
-                _azureOptions = azureOptions.Value;
+                this._azureOptions = azureOptions.Value;
             }
 
             public void Configure(string name, JwtBearerOptions options)
             {
-                options.Audience = _azureOptions.ClientId;
-                options.Authority = $"{_azureOptions.Instance}{_azureOptions.TenantId}";
+                options.Audience = this._azureOptions.ClientId;
+                options.Authority = $"{this._azureOptions.Instance}{this._azureOptions.TenantId}";
             }
 
             public void Configure(JwtBearerOptions options)
             {
-                Configure(Options.DefaultName, options);
+                this.Configure(Options.DefaultName, options);
             }
         }
     }

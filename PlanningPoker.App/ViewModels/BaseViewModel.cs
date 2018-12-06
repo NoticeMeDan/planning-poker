@@ -9,19 +9,20 @@ namespace PlanningPoker.App.ViewModels
 
     public class BaseViewModel : INotifyPropertyChanged
     {
-        bool isBusy = false;
+        public bool isBusy = false;
 
         public bool IsBusy
         {
-            get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
+            get { return this.isBusy; }
+            set { this.SetProperty(ref this.isBusy, value); }
         }
 
-        string title = string.Empty;
+        public string title = string.Empty;
+
         public string Title
         {
-            get { return title; }
-            set { SetProperty(ref title, value); }
+            get { return this.title; }
+            set { this.SetProperty(ref this.title, value); }
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
@@ -44,7 +45,7 @@ namespace PlanningPoker.App.ViewModels
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            var changed = PropertyChanged;
+            var changed = this.PropertyChanged;
             if (changed == null)
             {
                 return;

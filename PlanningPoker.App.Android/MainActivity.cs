@@ -16,7 +16,7 @@ namespace PlanningPoker.App.Droid
 
             base.OnCreate(savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            LoadApplication(new App());
+            this.LoadApplication(new App());
             App.UiParent = new UIParent(this);
         }
 

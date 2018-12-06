@@ -7,7 +7,7 @@ namespace PlanningPoker.App.Views.Session
     {
         public Lobby()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void BeginSessionClicked(object sender, EventArgs e)

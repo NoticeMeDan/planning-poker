@@ -12,8 +12,8 @@ namespace PlanningPoker.App.Views.WelcomeScreen
 
         public Login()
         {
-            _loginViewModel = new LoginViewModel();
-            InitializeComponent();
+            this._loginViewModel = new LoginViewModel();
+            this.InitializeComponent();
         }
 
         private void HandleLoginClicked(object sender, EventArgs e)

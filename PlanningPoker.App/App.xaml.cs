@@ -22,22 +22,22 @@ namespace PlanningPoker.App
         private readonly Lazy<IServiceProvider> _lazyProvider;
         private Settings settings = new Settings();
 
-        public IServiceProvider Container => _lazyProvider.Value;
+        public IServiceProvider Container => this._lazyProvider.Value;
 
         public App()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
-            _lazyProvider = new Lazy<IServiceProvider>(() => ConfigureServices());
-            publicClientApplication = new PublicClientApplication(settings.ClientId)
+            this._lazyProvider = new Lazy<IServiceProvider>(() => this.ConfigureServices());
+            publicClientApplication = new PublicClientApplication(this.settings.ClientId)
             {
-                RedirectUri = $"msal{settings.ClientId}://auth",
+                RedirectUri = $"msal{this.settings.ClientId}://auth",
             };
 
-            DependencyResolver.ResolveUsing(Container.GetService);
+            DependencyResolver.ResolveUsing(this.Container.GetService);
 
             // Change Screen for faster development. Standard page is WelcomeScreen()
-            MainPage = new NavigationPage(new WelcomeScreen());
+            this.MainPage = new NavigationPage(new WelcomeScreen());
         }
 
         protected override void OnStart()

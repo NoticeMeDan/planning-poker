@@ -7,7 +7,7 @@ namespace PlanningPoker.App.Views.Session
     {
         public ItemEstimation()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void Vote_Clicked(object sender, EventArgs e)

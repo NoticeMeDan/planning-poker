@@ -15,7 +15,7 @@ namespace PlanningPoker.WebApi
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -29,14 +29,14 @@ namespace PlanningPoker.WebApi
                 sharedOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 sharedOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddAzureAdBearer(options => Configuration.Bind("AzureAd", options));
+            .AddAzureAdBearer(options => this.Configuration.Bind("AzureAd", options));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddMemoryCache();
 
             services.AddDbContext<PlanningPokerContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("PlanningPokerDatabase")));
+                options.UseSqlServer(this.Configuration.GetConnectionString("PlanningPokerDatabase")));
 
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info {Title = "PlanningPoker API", Version = "v1" }));
         }

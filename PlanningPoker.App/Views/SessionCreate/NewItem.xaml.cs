@@ -12,7 +12,7 @@ namespace PlanningPoker.App.Views.CreateSession
 
         private void SaveItemClicked(object sender, EventArgs e)
         {
-            this.DisplayAlert("Save?", "Do you want to save the item?", "Accept","Cancel");
+            this.DisplayAlert("Save?", "Do you want to save the item?", "Accept", "Cancel");
         }
     }
 }

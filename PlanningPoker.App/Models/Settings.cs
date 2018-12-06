@@ -16,6 +16,6 @@ namespace PlanningPoker.App.Models
             "User.Read",
         };
 
-        public string Authority => $"https://login.microsoftonline.com/{TenantId}/v2.0/";
+        public string Authority => $"https://login.microsoftonline.com/{this.TenantId}/v2.0/";
     }
 }
