@@ -24,12 +24,14 @@ namespace PlanningPoker.App.ViewModels
                 IAccount firstAccount = accounts.FirstOrDefault();
                 authResult = await App.publicClientApplication.AcquireTokenSilentAsync(settings.Scopes, firstAccount);
                 await this.RefreshUserDataAsync(authResult.AccessToken).ConfigureAwait(false);
+
                 // Device.BeginInvokeOnMainThread(() => { });
             }
             catch (MsalUiRequiredException ex)
             {
                 // authResult = await App.publicClientApplication.AcquireTokenWithDeviceCodeAsync(settings.Scopes, App.UiParent);
                 await this.RefreshUserDataAsync(authResult.AccessToken);
+
                 // TODO: Redirect to new page
                 // Device.BeginInvokeOnMainThread(() => { });
             }

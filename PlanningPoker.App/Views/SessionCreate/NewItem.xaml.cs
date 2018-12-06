@@ -7,10 +7,11 @@ namespace PlanningPoker.App.Views.CreateSession
     {
         public NewItem()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
-        private void SaveItemClicked(object sender, EventArgs e) {
+        private void SaveItemClicked(object sender, EventArgs e)
+        {
             this.DisplayAlert("Save?", "Do you want to save the item?", "Accept","Cancel");
         }
     }

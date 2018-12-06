@@ -55,7 +55,6 @@ namespace PlanningPoker.App
             // Handle when your app resumes
         }
 
-
         private IServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
@@ -66,7 +65,7 @@ namespace PlanningPoker.App
 
             var httpClient = new HttpClient(handler) { BaseAddress = settings.BackendUrl };
 
-            services.AddSingleton(_ => new HttpClient(handler) { BaseAddress = settings.BackendUrl});
+            services.AddSingleton(_ => new HttpClient(handler) { BaseAddress = settings.BackendUrl });
 
             // Adding the ViewModels
             services.AddScoped<LoginViewModel>();
