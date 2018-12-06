@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
 namespace PlanningPoker.Entities
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     public class Round : BaseEntity
     {
         [Required]
@@ -10,7 +10,7 @@ namespace PlanningPoker.Entities
 
         public Round()
         {
-            Votes = new HashSet<Vote>();
+            this.Votes = new HashSet<Vote>();
         }
     }
 }

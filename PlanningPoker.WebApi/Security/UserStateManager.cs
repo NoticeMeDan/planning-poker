@@ -1,17 +1,16 @@
-using System;
-
 namespace PlanningPoker.WebApi.Security
 {
+    using System;
     using Microsoft.Extensions.Caching.Memory;
     using Optional;
 
     public class UserStateManager
     {
-        private readonly IMemoryCache _cache;
+        private readonly IMemoryCache cache;
 
         public UserStateManager(IMemoryCache cache)
         {
-            _cache = cache;
+            this.cache = cache;
         }
 
         public string CreateState(int userId)
@@ -22,14 +21,14 @@ namespace PlanningPoker.WebApi.Security
             var cacheOptions = new MemoryCacheEntryOptions()
                 .SetSlidingExpiration(TimeSpan.FromHours(1));
 
-            _cache.Set(token, userState, cacheOptions);
+            this.cache.Set(token, userState, cacheOptions);
 
             return token;
         }
 
         public Option<UserState> GetState(string token)
         {
-            return _cache.Get(token)
+            return this.cache.Get(token)
                 .SomeNotNull()
                 .Map(obj => obj as UserState);
         }

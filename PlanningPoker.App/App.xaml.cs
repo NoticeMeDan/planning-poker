@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Client;
 using PlanningPoker.App.Models;
 using PlanningPoker.App.ViewModels;
-using PlanningPoker.App.Views.SessionCreation;
 using PlanningPoker.App.Views.WelcomeScreen;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -15,29 +14,39 @@ namespace PlanningPoker.App
 {
     public partial class App : Application
     {
-        public static PublicClientApplication publicClientApplication = null;
+        private static PublicClientApplication publicClientApplication = null;
 
         public static UIParent UiParent { get; set; }
 
-        private readonly Lazy<IServiceProvider> _lazyProvider;
+        private readonly Lazy<IServiceProvider> lazyProvider;
         private Settings settings = new Settings();
 
-        public IServiceProvider Container => _lazyProvider.Value;
+        public IServiceProvider Container => this.lazyProvider.Value;
+
+        public static PublicClientApplication GetPublicClientApplication()
+        {
+            return publicClientApplication;
+        }
+
+        public static void SetPublicClientApplication(PublicClientApplication value)
+        {
+            publicClientApplication = value;
+        }
 
         public App()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
-            _lazyProvider = new Lazy<IServiceProvider>(() => ConfigureServices());
-            publicClientApplication = new PublicClientApplication(settings.ClientId)
+            this.lazyProvider = new Lazy<IServiceProvider>(() => this.ConfigureServices());
+            SetPublicClientApplication(new PublicClientApplication(this.settings.ClientId)
             {
-                RedirectUri = $"msal{settings.ClientId}://auth",
-            };
+                RedirectUri = $"msal{this.settings.ClientId}://auth",
+            });
 
-            DependencyResolver.ResolveUsing(Container.GetService);
+            DependencyResolver.ResolveUsing(this.Container.GetService);
 
             // Change Screen for faster development. Standard page is WelcomeScreen()
-            MainPage = new NavigationPage(new WelcomeScreen());
+            this.MainPage = new NavigationPage(new WelcomeScreen());
         }
 
         protected override void OnStart()
@@ -55,7 +64,6 @@ namespace PlanningPoker.App
             // Handle when your app resumes
         }
 
-
         private IServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
@@ -66,7 +74,7 @@ namespace PlanningPoker.App
 
             var httpClient = new HttpClient(handler) { BaseAddress = settings.BackendUrl };
 
-            services.AddSingleton(_ => new HttpClient(handler) { BaseAddress = settings.BackendUrl});
+            services.AddSingleton(_ => new HttpClient(handler) { BaseAddress = settings.BackendUrl });
 
             // Adding the ViewModels
             services.AddScoped<LoginViewModel>();

@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-
-namespace Microsoft.AspNetCore.Authentication
+﻿namespace Microsoft.AspNetCore.Authentication
 {
+    using System;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Options;
+
     public static class AzureAdServiceCollectionExtensions
     {
         public static AuthenticationBuilder AddAzureAdBearer(this AuthenticationBuilder builder)
@@ -19,24 +18,24 @@ namespace Microsoft.AspNetCore.Authentication
             return builder;
         }
 
-        private class ConfigureAzureOptions: IConfigureNamedOptions<JwtBearerOptions>
+        private class ConfigureAzureOptions : IConfigureNamedOptions<JwtBearerOptions>
         {
-            private readonly AzureAdOptions _azureOptions;
+            private readonly AzureAdOptions azureOptions;
 
             public ConfigureAzureOptions(IOptions<AzureAdOptions> azureOptions)
             {
-                _azureOptions = azureOptions.Value;
+                this.azureOptions = azureOptions.Value;
             }
 
             public void Configure(string name, JwtBearerOptions options)
             {
-                options.Audience = _azureOptions.ClientId;
-                options.Authority = $"{_azureOptions.Instance}{_azureOptions.TenantId}";
+                options.Audience = this.azureOptions.ClientId;
+                options.Authority = $"{this.azureOptions.Instance}{this.azureOptions.TenantId}";
             }
 
             public void Configure(JwtBearerOptions options)
             {
-                Configure(Options.DefaultName, options);
+                this.Configure(Options.DefaultName, options);
             }
         }
     }

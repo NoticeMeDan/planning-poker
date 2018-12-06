@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
-
 namespace PlanningPoker.App.Models
 {
+    using System;
+    using System.Collections.Generic;
+
     public class Settings : ISettings
     {
         public Uri BackendUrl => new Uri("http://localhost:5001/");
@@ -16,6 +16,6 @@ namespace PlanningPoker.App.Models
             "User.Read",
         };
 
-        public string Authority => $"https://login.microsoftonline.com/{TenantId}/v2.0/";
+        public string Authority => $"https://login.microsoftonline.com/{this.TenantId}/v2.0/";
     }
 }

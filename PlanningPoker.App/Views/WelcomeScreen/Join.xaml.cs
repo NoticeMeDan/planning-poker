@@ -9,7 +9,7 @@ namespace PlanningPoker.App.Views.WelcomeScreen
     {
         public Join()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void HandleClicked(object sender, EventArgs e)

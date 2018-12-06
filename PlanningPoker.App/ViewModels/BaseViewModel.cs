@@ -1,29 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
-using Xamarin.Forms;
-
-using PlanningPoker.App.Models;
-
 namespace PlanningPoker.App.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
+    using PlanningPoker.App.Models;
+    using Xamarin.Forms;
+
     public class BaseViewModel : INotifyPropertyChanged
     {
+        private bool isBusyValue = false;
 
-        bool isBusy = false;
         public bool IsBusy
         {
-            get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
+            get { return this.isBusyValue; }
+            set { this.SetProperty(ref this.isBusyValue, value); }
         }
 
-        string title = string.Empty;
+        private string title = string.Empty;
+
         public string Title
         {
-            get { return title; }
-            set { SetProperty(ref title, value); }
+            get { return this.title; }
+            set { this.SetProperty(ref this.title, value); }
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
@@ -31,21 +30,26 @@ namespace PlanningPoker.App.ViewModels
             Action onChanged = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
+            {
                 return false;
+            }
 
             backingStore = value;
             onChanged?.Invoke();
-            OnPropertyChanged(propertyName);
+            this.OnPropertyChanged(propertyName);
             return true;
         }
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
+
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            var changed = PropertyChanged;
+            var changed = this.PropertyChanged;
             if (changed == null)
+            {
                 return;
+            }
 
             changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

@@ -1,15 +1,11 @@
-﻿using System;
-using Android.App;
-using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.OS;
-using Microsoft.Identity.Client;
-using Android.Content;
-
 namespace PlanningPoker.App.Droid
 {
+    using Android.App;
+    using Android.Content;
+    using Android.Content.PM;
+    using Android.OS;
+    using Microsoft.Identity.Client;
+
     [Activity(Label = "PlanningPoker.App", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
@@ -20,7 +16,7 @@ namespace PlanningPoker.App.Droid
 
             base.OnCreate(savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            LoadApplication(new App());
+            this.LoadApplication(new App());
             App.UiParent = new UIParent(this);
         }
 

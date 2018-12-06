@@ -7,7 +7,7 @@ namespace PlanningPoker.App.Views.Session
     {
         public Session()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void EstimateItem_Clicked(object sender, EventArgs e)
