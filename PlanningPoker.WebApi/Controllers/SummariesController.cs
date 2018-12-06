@@ -14,7 +14,7 @@ namespace PlanningPoker.WebApi.Controllers
     [ApiController]
     public class SummariesController : ControllerBase
     {
-        private ISummaryRepository repository;
+        private readonly ISummaryRepository repository;
 
         public SummariesController(ISummaryRepository repo)
         {

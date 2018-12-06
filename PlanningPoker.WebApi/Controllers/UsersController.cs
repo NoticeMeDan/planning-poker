@@ -14,7 +14,7 @@ namespace PlanningPoker.WebApi.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private IUserRepository repository;
+        private readonly IUserRepository repository;
 
         public UsersController(IUserRepository repo)
         {

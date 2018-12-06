@@ -14,7 +14,7 @@ namespace PlanningPoker.WebApi.Controllers
     [ApiController]
     public class SessionsController : ControllerBase
     {
-        private ISessionRepository repository;
+        private readonly ISessionRepository repository;
 
         public SessionsController(ISessionRepository repo)
         {
