@@ -22,12 +22,10 @@ namespace PlanningPoker.App.ViewModels
 
             this.Items = new ObservableCollection<ItemDTO>();
 
-            this.LoadCommand = new RelayCommand(async _ => await this.ExecuteLoadCommand());
+            this.LoadCommand = new RelayCommand(async _ => this.ExecuteLoadCommand());
         }
 
         private static ObservableCollection<ItemDTO> MockData()
-
-            // TODO: Make this method async in the future.
         {
             var data = new ObservableCollection<ItemDTO>();
 
@@ -42,7 +40,7 @@ namespace PlanningPoker.App.ViewModels
             return data;
         }
 
-        private async Task ExecuteLoadCommand()
+        private void ExecuteLoadCommand()
         {
             if (this.IsBusy)
             {
@@ -52,7 +50,7 @@ namespace PlanningPoker.App.ViewModels
 
             this.Items.Clear();
 
-            var items = await MockData();
+            var items = MockData();
 
             foreach (var item in items)
             {
