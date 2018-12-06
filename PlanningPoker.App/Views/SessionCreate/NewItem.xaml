@@ -2,17 +2,16 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:views="clr-namespace:PlanningPoker.App.Views"
-    x:Class="PlanningPoker.App.Views.WelcomeScreen.Login"
-    Title="Create"
-    Padding="10,0,10,0"
+    x:Class="PlanningPoker.App.Views.CreateSession.NewItem"
 >
 
-    <StackLayout>
-        <Button Text="Login"
+    <StackLayout Margin="10, 0 ">
+        <Entry Placeholder="Title"/>
+        <Entry Placeholder="Description"/>
+        <Button Text="SAVE ITEM"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="EndAndExpand"
-                Clicked="HandleLoginClicked"></Button>
+                Clicked="SaveItemClicked"/>
     </StackLayout>
 
 </ContentPage>

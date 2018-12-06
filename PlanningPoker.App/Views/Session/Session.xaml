@@ -2,17 +2,16 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="PlanningPoker.App.Views.WelcomeScreen.Join"
-    Title="Join"
-    Padding="10,0,10,0"
+    x:Class="PlanningPoker.App.Views.Session.Session"
 >
 
     <StackLayout>
-        <Entry Text="Type Session Key"  HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" Margin="5" />
-        <Button Text="Join"
+        <Label Text="Welcome to the Session"/>
+
+        <Button Text="Estimate Item"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="EndAndExpand"
-                Clicked="HandleClicked"></Button>
+                Clicked="EstimateItem_Clicked"/>
     </StackLayout>
 
 </ContentPage>

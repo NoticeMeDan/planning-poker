@@ -11,13 +11,14 @@ namespace PlanningPoker.App.Views.WelcomeScreen {
 
         public Login()
         {
+            _loginViewModel = new LoginViewModel();
             InitializeComponent();
-            this.BindingContext = this._loginViewModel = new LoginViewModel();
         }
 
         private void HandleLoginClicked(object sender, EventArgs e)
         {
             this._loginViewModel.ExecuteLoginCommand();
+            this.Navigation.PushAsync(new SessionCreation.CreateSession());
         }
     }
 }

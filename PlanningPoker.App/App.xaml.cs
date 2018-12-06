@@ -3,6 +3,8 @@ using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Client;
 using PlanningPoker.App.Models;
+using PlanningPoker.App.ViewModels;
+using PlanningPoker.App.Views.SessionCreation;
 using PlanningPoker.App.Views.WelcomeScreen;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -34,7 +36,8 @@ namespace PlanningPoker.App
 
             DependencyResolver.ResolveUsing(Container.GetService);
 
-            MainPage = new WelcomeScreen();
+            // Change Screen for faster development. Standard page is WelcomeScreen()
+            MainPage = new NavigationPage(new WelcomeScreen());
         }
 
         protected override void OnStart()
@@ -64,6 +67,10 @@ namespace PlanningPoker.App
             var httpClient = new HttpClient(handler) { BaseAddress = settings.BackendUrl };
 
             services.AddSingleton(_ => new HttpClient(handler) { BaseAddress = settings.BackendUrl});
+
+            // Adding the ViewModels
+            services.AddScoped<LoginViewModel>();
+            services.AddScoped<ItemsViewModel>();
 
             return services.BuildServiceProvider();
         }

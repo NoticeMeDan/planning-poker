@@ -5,7 +5,7 @@
     xmlns:welcomeScreen="clr-namespace:PlanningPoker.App.Views.WelcomeScreen;assembly=PlanningPoker.App"
     x:Class="PlanningPoker.App.Views.WelcomeScreen.WelcomeScreen"
 
-    >
+>
     <welcomeScreen:Join />
     <welcomeScreen:Login />
 

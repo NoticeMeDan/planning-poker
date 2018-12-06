@@ -7,6 +7,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using PlanningPoker.App.Views.CreateSession;
+using PlanningPoker.App.Views.WelcomeScreen;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,7 +17,6 @@ namespace PlanningPoker.App.ViewModels
     public class LoginViewModel : BaseViewModel
     {
         public ICommand LoginCommand { get; set; }
-
 
         public async void ExecuteLoginCommand()
         {
@@ -27,12 +28,11 @@ namespace PlanningPoker.App.ViewModels
                 IAccount firstAccount = accounts.FirstOrDefault();
                 authResult = await App.publicClientApplication.AcquireTokenSilentAsync(settings.Scopes, firstAccount);
                 await RefreshUserDataAsync(authResult.AccessToken).ConfigureAwait(false);
-                // TODO: Redirect to new page
                 //Device.BeginInvokeOnMainThread(() => { });
             }
             catch (MsalUiRequiredException ex)
             {
-                authResult = await App.publicClientApplication.AcquireTokenAsync(settings.Scopes, App.UiParent);
+                //authResult = await App.publicClientApplication.AcquireTokenWithDeviceCodeAsync(settings.Scopes, App.UiParent);
                 await RefreshUserDataAsync(authResult.AccessToken);
                 // TODO: Redirect to new page
                 //Device.BeginInvokeOnMainThread(() => { });
