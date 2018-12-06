@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Client;
 using PlanningPoker.App.Models;
 using PlanningPoker.App.ViewModels;
-using PlanningPoker.App.Views.SessionCreation;
 using PlanningPoker.App.Views.WelcomeScreen;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -24,17 +23,25 @@ namespace PlanningPoker.App
 
         public IServiceProvider Container => this.lazyProvider.Value;
 
-        public static PublicClientApplication PublicClientApplication { get => publicClientApplication; set => publicClientApplication = value; }
+        public static PublicClientApplication GetPublicClientApplication()
+        {
+            return publicClientApplication;
+        }
+
+        public static void SetPublicClientApplication(PublicClientApplication value)
+        {
+            publicClientApplication = value;
+        }
 
         public App()
         {
             this.InitializeComponent();
 
             this.lazyProvider = new Lazy<IServiceProvider>(() => this.ConfigureServices());
-            PublicClientApplication = new PublicClientApplication(this.settings.ClientId)
+            SetPublicClientApplication(new PublicClientApplication(this.settings.ClientId)
             {
                 RedirectUri = $"msal{this.settings.ClientId}://auth",
-            };
+            });
 
             DependencyResolver.ResolveUsing(this.Container.GetService);
 

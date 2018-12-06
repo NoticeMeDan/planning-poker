@@ -1,4 +1,4 @@
-namespace Microsoft.AspNetCore.Authentication
+﻿namespace Microsoft.AspNetCore.Authentication
 {
     using System;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
