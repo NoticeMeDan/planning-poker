@@ -12,7 +12,7 @@ namespace PlanningPoker.App.Views.Session
 
         private void Vote_Clicked(object sender, EventArgs e)
         {
-            this.DisplayAlert("Send Vote?", "", "Yes", "No");
+            this.DisplayAlert("Send Vote?", string.Empty, "Yes", "No");
         }
     }
 }
