@@ -2,8 +2,8 @@ namespace PlanningPoker.WebApi.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;
-    using Shared;
     using Security;
+    using Shared;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -25,7 +25,7 @@ namespace PlanningPoker.WebApi.Controllers
         [HttpGet]
         public ActionResult<string> SomethingAuthenticated()
         {
-            return SecurityFilter.RequestIsValid(HttpContext.Request.Headers["Authorization"], this.userStateManager)
+            return SecurityFilter.RequestIsValid(this.HttpContext.Request.Headers["Authorization"], this.userStateManager)
                 ? "Roger doger"
                 : "Piss off";
         }

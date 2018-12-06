@@ -8,7 +8,7 @@
 >
 
     <StackLayout>
-        <Entry Text="Type Session Key"  HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" Margin="5" />
+        <Entry Text="Type Session Key" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" Margin="5" />
         <Button Text="Join"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="EndAndExpand"

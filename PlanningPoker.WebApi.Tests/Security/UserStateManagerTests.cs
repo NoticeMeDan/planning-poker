@@ -1,11 +1,11 @@
 namespace PlanningPoker.WebApi.Tests.Security
 {
-    using Microsoft.Extensions.Caching.Memory;
-    using PlanningPoker.WebApi.Security;
-    using Xunit;
     using System;
+    using Microsoft.Extensions.Caching.Memory;
     using Optional;
     using Optional.Unsafe;
+    using PlanningPoker.WebApi.Security;
+    using Xunit;
 
     public class UserStateManagerTests
     {

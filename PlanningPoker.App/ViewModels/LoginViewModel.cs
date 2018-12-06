@@ -1,19 +1,15 @@
-using Microsoft.Identity.Client;
-using Newtonsoft.Json.Linq;
-using PlanningPoker.App.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using PlanningPoker.App.Views.CreateSession;
-using PlanningPoker.App.Views.WelcomeScreen;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
 namespace PlanningPoker.App.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using System.Windows.Input;
+    using Microsoft.Identity.Client;
+    using Newtonsoft.Json.Linq;
+    using PlanningPoker.App.Models;
+
     public class LoginViewModel : BaseViewModel
     {
         public ICommand LoginCommand { get; set; }
@@ -22,20 +18,23 @@ namespace PlanningPoker.App.ViewModels
         {
             var settings = new Settings();
             AuthenticationResult authResult = null;
-            IEnumerable<IAccount> accounts = await App.publicClientApplication.GetAccountsAsync();
+            IEnumerable<IAccount> accounts = await App.GetPublicClientApplication().GetAccountsAsync();
             try
             {
                 IAccount firstAccount = accounts.FirstOrDefault();
-                authResult = await App.publicClientApplication.AcquireTokenSilentAsync(settings.Scopes, firstAccount);
-                await RefreshUserDataAsync(authResult.AccessToken).ConfigureAwait(false);
-                //Device.BeginInvokeOnMainThread(() => { });
+                authResult = await App.GetPublicClientApplication().AcquireTokenSilentAsync(settings.Scopes, firstAccount);
+                await this.RefreshUserDataAsync(authResult.AccessToken).ConfigureAwait(false);
+
+                // Device.BeginInvokeOnMainThread(() => { });
             }
             catch (MsalUiRequiredException ex)
             {
-                //authResult = await App.publicClientApplication.AcquireTokenWithDeviceCodeAsync(settings.Scopes, App.UiParent);
-                await RefreshUserDataAsync(authResult.AccessToken);
+                // authResult = await App.publicClientApplication.AcquireTokenWithDeviceCodeAsync(settings.Scopes, App.UiParent);
+                ex.StackTrace.ToString();
+                await this.RefreshUserDataAsync(authResult.AccessToken);
+
                 // TODO: Redirect to new page
-                //Device.BeginInvokeOnMainThread(() => { });
+                // Device.BeginInvokeOnMainThread(() => { });
             }
             catch (Exception ex)
             {
