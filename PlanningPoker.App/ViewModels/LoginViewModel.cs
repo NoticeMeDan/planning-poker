@@ -30,6 +30,7 @@ namespace PlanningPoker.App.ViewModels
             catch (MsalUiRequiredException ex)
             {
                 // authResult = await App.publicClientApplication.AcquireTokenWithDeviceCodeAsync(settings.Scopes, App.UiParent);
+                ex.StackTrace.ToString();
                 await this.RefreshUserDataAsync(authResult.AccessToken);
 
                 // TODO: Redirect to new page
