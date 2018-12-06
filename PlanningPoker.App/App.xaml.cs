@@ -15,21 +15,23 @@ namespace PlanningPoker.App
 {
     public partial class App : Application
     {
-        public static PublicClientApplication publicClientApplication = null;
+        private static PublicClientApplication publicClientApplication = null;
 
         public static UIParent UiParent { get; set; }
 
-        private readonly Lazy<IServiceProvider> _lazyProvider;
+        private readonly Lazy<IServiceProvider> lazyProvider;
         private Settings settings = new Settings();
 
-        public IServiceProvider Container => this._lazyProvider.Value;
+        public IServiceProvider Container => this.lazyProvider.Value;
+
+        public static PublicClientApplication PublicClientApplication { get => publicClientApplication; set => publicClientApplication = value; }
 
         public App()
         {
             this.InitializeComponent();
 
-            this._lazyProvider = new Lazy<IServiceProvider>(() => this.ConfigureServices());
-            publicClientApplication = new PublicClientApplication(this.settings.ClientId)
+            this.lazyProvider = new Lazy<IServiceProvider>(() => this.ConfigureServices());
+            PublicClientApplication = new PublicClientApplication(this.settings.ClientId)
             {
                 RedirectUri = $"msal{this.settings.ClientId}://auth",
             };

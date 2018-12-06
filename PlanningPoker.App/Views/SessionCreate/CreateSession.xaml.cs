@@ -11,19 +11,19 @@ namespace PlanningPoker.App.Views.SessionCreation
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CreateSession : ContentPage
     {
-        private readonly ItemsViewModel ViewModel;
+        private readonly ItemsViewModel viewModel;
 
         public CreateSession()
         {
             this.InitializeComponent();
 
-            this.BindingContext = this.ViewModel =
+            this.BindingContext = this.viewModel =
                 (Application.Current as App)?.Container.GetRequiredService<ItemsViewModel>();
         }
 
         protected override void OnAppearing()
         {
-            this.ViewModel.LoadCommand.Execute(null);
+            this.viewModel.LoadCommand.Execute(null);
         }
 
         private void ToolbarItem_OnActivated(object sender, EventArgs e)

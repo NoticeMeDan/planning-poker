@@ -20,17 +20,17 @@ namespace Microsoft.AspNetCore.Authentication
 
         private class ConfigureAzureOptions : IConfigureNamedOptions<JwtBearerOptions>
         {
-            private readonly AzureAdOptions _azureOptions;
+            private readonly AzureAdOptions azureOptions;
 
             public ConfigureAzureOptions(IOptions<AzureAdOptions> azureOptions)
             {
-                this._azureOptions = azureOptions.Value;
+                this.azureOptions = azureOptions.Value;
             }
 
             public void Configure(string name, JwtBearerOptions options)
             {
-                options.Audience = this._azureOptions.ClientId;
-                options.Authority = $"{this._azureOptions.Instance}{this._azureOptions.TenantId}";
+                options.Audience = this.azureOptions.ClientId;
+                options.Authority = $"{this.azureOptions.Instance}{this.azureOptions.TenantId}";
             }
 
             public void Configure(JwtBearerOptions options)

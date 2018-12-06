@@ -18,11 +18,11 @@ namespace PlanningPoker.App.ViewModels
         {
             var settings = new Settings();
             AuthenticationResult authResult = null;
-            IEnumerable<IAccount> accounts = await App.publicClientApplication.GetAccountsAsync();
+            IEnumerable<IAccount> accounts = await App.PublicClientApplication.GetAccountsAsync();
             try
             {
                 IAccount firstAccount = accounts.FirstOrDefault();
-                authResult = await App.publicClientApplication.AcquireTokenSilentAsync(settings.Scopes, firstAccount);
+                authResult = await App.PublicClientApplication.AcquireTokenSilentAsync(settings.Scopes, firstAccount);
                 await this.RefreshUserDataAsync(authResult.AccessToken).ConfigureAwait(false);
 
                 // Device.BeginInvokeOnMainThread(() => { });

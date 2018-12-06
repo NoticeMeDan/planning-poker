@@ -17,8 +17,8 @@ namespace PlanningPoker.Entities
 
         public Session()
         {
-            Items = new HashSet<Item>();
-            Users = new HashSet<User>();
+            this.Items = new HashSet<Item>();
+            this.Users = new HashSet<User>();
         }
     }
 }

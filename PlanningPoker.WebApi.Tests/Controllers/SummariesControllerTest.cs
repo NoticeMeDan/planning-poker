@@ -90,7 +90,6 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             Assert.Equal(output, result.Value);
         }
 
-
         [Fact]
         public async Task Put_given_dto_updates_summary()
         {

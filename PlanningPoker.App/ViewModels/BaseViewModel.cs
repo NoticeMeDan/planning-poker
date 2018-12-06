@@ -9,15 +9,15 @@ namespace PlanningPoker.App.ViewModels
 
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public bool isBusy = false;
+        private bool IsBusyValue = false;
 
         public bool IsBusy
         {
-            get { return this.isBusy; }
-            set { this.SetProperty(ref this.isBusy, value); }
+            get { return this.IsBusyValue; }
+            set { this.SetProperty(ref this.IsBusyValue, value); }
         }
 
-        public string title = string.Empty;
+        private string title = string.Empty;
 
         public string Title
         {
