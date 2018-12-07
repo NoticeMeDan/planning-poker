@@ -1,3 +1,5 @@
+using PlanningPoker.WebApi.Hubs;
+
 namespace PlanningPoker.WebApi
 {
     using Entities;
@@ -39,6 +41,7 @@ namespace PlanningPoker.WebApi
                 options.UseSqlServer(this.Configuration.GetConnectionString("PlanningPokerDatabase")));
 
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "PlanningPoker API", Version = "v1" }));
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +55,10 @@ namespace PlanningPoker.WebApi
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<VotesHub>("/chatHub");
+            });
         }
     }
 }
