@@ -79,6 +79,8 @@ namespace PlanningPoker.App
             // Adding the ViewModels
             services.AddScoped<LoginViewModel>();
             services.AddScoped<ItemsViewModel>();
+            services.AddScoped<UsersViewModel>();
+            services.AddScoped<JoinViewModel>();
 
             return services.BuildServiceProvider();
         }
