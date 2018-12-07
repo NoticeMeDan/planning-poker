@@ -11,8 +11,6 @@ namespace PlanningPoker.WebApi.Controllers
     [Authorize]
     public class RoundController : ControllerBase
     {
-        private VotesHub hub = new VotesHub();
-
         // GET api/rounds
         [HttpGet]
 
@@ -42,7 +40,6 @@ namespace PlanningPoker.WebApi.Controllers
             //Put a Vote into a Round.
 
             //If succesful, send a message to all clients that a vote was added.
-            hub.SendVote(id, value);
         }
 
         // DELETE api/rounds/5

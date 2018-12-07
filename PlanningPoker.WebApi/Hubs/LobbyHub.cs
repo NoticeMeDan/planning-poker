@@ -7,7 +7,7 @@ namespace PlanningPoker.WebApi.Hubs
     {
         public async Task SendJoined(int id, string name)
         {
-            await Clients.All.SendAsync("UserJoined", id, name);
+            await Clients.All.SendAsync("UserJoined", id);
         }
     }
 }

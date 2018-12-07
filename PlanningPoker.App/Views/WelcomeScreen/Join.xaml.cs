@@ -1,3 +1,8 @@
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
+using PlanningPoker.App.Models;
+
 namespace PlanningPoker.App.Views.WelcomeScreen
 {
     using System;
@@ -10,6 +15,8 @@ namespace PlanningPoker.App.Views.WelcomeScreen
     public partial class Join : ContentPage
     {
         private JoinViewModel joinViewModel;
+        private HubConnection hubConnection;
+        private Settings settings;
 
         public Join()
         {

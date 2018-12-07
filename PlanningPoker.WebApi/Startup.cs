@@ -57,7 +57,7 @@ namespace PlanningPoker.WebApi
             app.UseMvc();
             app.UseSignalR(routes =>
             {
-                routes.MapHub<VotesHub>("/chatHub");
+                routes.MapHub<LobbyHub>("/lobbyHub");
             });
         }
     }
