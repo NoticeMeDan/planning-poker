@@ -1,36 +1,35 @@
-using PlanningPoker.App.Views.Session;
-
-namespace PlanningPoker.App.Views.SessionCreate
+namespace PlanningPoker.App.Views.SessionCreation
 {
     using System;
-    using PlanningPoker.App.ViewModels;
-    using PlanningPoker.App.Views.CreateSession;
+    using Components;
+    using Microsoft.Extensions.DependencyInjection;
+    using Session;
+    using ViewModels;
     using Xamarin.Forms;
     using Xamarin.Forms.Xaml;
 
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CreateSession : ContentPage
     {
+        private readonly ItemsViewModel ViewModel;
 
-        public CreateSession() {
-            this.Title = "Session Creation";
+        public CreateSession()
+        {
+            this.ViewModel = new ItemsViewModel();
+
+            this.BindingContext = this.ViewModel =
+                (Application.Current as App)?.Container.GetRequiredService<ItemsViewModel>();
+
             this.InitializeComponent();
         }
 
         private static int GenerateKey(int min, int max)
         {
-            Random random = new Random();
-            var result = 0;
+            var random = new Random();
 
-
-            result = random.Next(min, max);
+            var result = random.Next(min, max);
 
             return result;
-        }
-
-        private void ToolbarItem_OnActivated(object sender, EventArgs e)
-        {
-            this.Navigation.PushAsync(new NewItem());
         }
 
         private void CreateSessionClicked(object sender, EventArgs e)
@@ -39,7 +38,9 @@ namespace PlanningPoker.App.Views.SessionCreate
                 new Lobby());
         }
 
-
+        private void OnAddItem_Clicked(object sender, EventArgs e)
+        {
+            this.Navigation.PushAsync(new Items());
+        }
     }
 }
-
