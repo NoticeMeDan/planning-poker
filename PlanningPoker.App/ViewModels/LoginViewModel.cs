@@ -25,29 +25,29 @@ namespace PlanningPoker.App.ViewModels
             var settings = new Settings();
             AuthenticationResult authResult = null;
             IEnumerable<IAccount> accounts = await App.GetPublicClientApplication().GetAccountsAsync();
-                    try
-                    {
-                        IAccount firstAccount = accounts.FirstOrDefault();
-                        authResult = await App.GetPublicClientApplication().AcquireTokenSilentAsync(settings.Scopes, firstAccount);
-                        await this.RefreshUserDataAsync(authResult.AccessToken).ConfigureAwait(false);
-                        return true;
-                    }
-                    catch (MsalUiRequiredException ex)
-                    {
-                        authResult = await App.GetPublicClientApplication().AcquireTokenAsync(settings.Scopes, App.UiParent);
-                        await this.RefreshUserDataAsync(authResult.AccessToken);
-
-                    }
-                    catch (Exception ex)
-                    {
-                        return false;
-                    }
-            return false;
+            try
+            {
+                IAccount firstAccount = accounts.FirstOrDefault();
+                authResult = await App.GetPublicClientApplication().AcquireTokenSilentAsync(settings.Scopes, firstAccount);
+                await this.RefreshUserDataAsync(authResult.AccessToken).ConfigureAwait(false);
+                return true;
+            }
+            catch (MsalUiRequiredException ex)
+            {
+                authResult = await App.GetPublicClientApplication().AcquireTokenAsync(settings.Scopes, App.UiParent);
+                await this.RefreshUserDataAsync(authResult.AccessToken);
+                Console.WriteLine(ex.StackTrace);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+                return false;
+            }
         }
 
         public async Task RefreshUserDataAsync(string token)
         {
-            //get data from API
             HttpClient client = new HttpClient();
             HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, "https://graph.microsoft.com/v1.0/me");
             message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", token);

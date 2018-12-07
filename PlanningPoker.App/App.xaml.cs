@@ -39,6 +39,16 @@ namespace PlanningPoker.App
             this.MainPage = new NavigationPage(new WelcomeScreen());
         }
 
+        public static IPublicClientApplication GetPublicClientApplication()
+        {
+            return publicClientApplication;
+        }
+
+        public static void SetPublicClientApplication(PublicClientApplication pca)
+        {
+            publicClientApplication = pca;
+        }
+
         protected override void OnStart()
         {
             // Handle when your app starts
@@ -52,16 +62,6 @@ namespace PlanningPoker.App
         protected override void OnResume()
         {
             // Handle when your app resumes
-        }
-
-        public static IPublicClientApplication GetPublicClientApplication()
-        {
-            return publicClientApplication;
-        }
-
-        public static void SetPublicClientApplication(PublicClientApplication pca)
-        {
-            publicClientApplication = pca;
         }
 
         private IServiceProvider ConfigureServices()
