@@ -1,7 +1,6 @@
 namespace PlanningPoker.App.ViewModels.Interfaces
 {
-    public interface LobbyViewModel
+    public interface ILobbyViewModel
     {
-
     }
 }

@@ -2,21 +2,22 @@ namespace PlanningPoker.App.ViewModels
 {
     using System.Collections.ObjectModel;
     using System.Windows.Input;
+    using PlanningPoker.App.ViewModels.Interfaces;
     using PlanningPoker.Shared;
 
+    // This class contains data until repositories is setup
     public class ItemsViewModel : BaseViewModel
     {
         // TODO: Use API to get and set items.
-
         // private readonly
-        public ObservableCollection<ItemDTO> Items { get; set; }
+        public ObservableCollection<ItemDTO> Items { get; }
 
         // public ICommand AddCommand { get; set; }
-        public ICommand LoadCommand { get; set; }
+        public ICommand LoadCommand { get; }
 
         public ItemsViewModel()
         {
-            this.Title = "Items";
+            this.Title = "ItemsYo";
 
             this.Items = new ObservableCollection<ItemDTO>();
 
