@@ -24,17 +24,31 @@
     <Compile Update="Views\WelcomeScreen\Login.xaml.cs">
       <DependentUpon>JoinSession.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\SessionCreation\CreateSession.xaml.cs">
+      <DependentUpon>Items.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Components\NewItem.xaml.cs">
+      <DependentUpon>NewItem.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Page Include="Views\SessionCreate\CreateSession.xaml">
+    <Page Include="Views\Components\NewItem.xaml">
       <SubType>Designer</SubType>
       <Generator></Generator>
     </Page>
-    <Page Include="Views\SessionCreate\NewItem.xaml">
+    <Page Include="Views\Components\Items.xaml">
+      <SubType>Designer</SubType>
+      <Generator></Generator>
+    </Page>
+    <Page Include="Views\Components\Users.xaml">
+      <SubType>Designer</SubType>
+      <Generator></Generator>
+    </Page>
+    <Page Include="Views\SessionCreation\CreateSession.xaml">
       <SubType>Designer</SubType>
       <Generator></Generator>
     </Page>
@@ -70,10 +84,10 @@
     <ProjectReference Include="..\PlanningPoker.Shared\PlanningPoker.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="Views\SessionCreate\CreateSession.xaml">
+    <EmbeddedResource Update="Views\SessionCreation\CreateSession.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\SessionCreate\NewItem.xaml">
+    <EmbeddedResource Update="Views\SessionCreation\NewItem.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Session\ItemEstimation.xaml">
