@@ -5,7 +5,7 @@ namespace PlanningPoker.WebApi.Hubs
 
     public class VotesHub : Hub
     {
-        public async Task SendVote(string user, int voteValue)
+        public async Task SendVote(int user, string voteValue)
         {
             await Clients.All.SendAsync("UserVote", user, voteValue);
         }

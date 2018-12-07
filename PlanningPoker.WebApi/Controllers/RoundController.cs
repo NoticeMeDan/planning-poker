@@ -1,18 +1,19 @@
-using System;
+using PlanningPoker.WebApi.Hubs;
 
 namespace PlanningPoker.WebApi.Controllers
 {
     using System.Collections.Generic;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.SignalR;
 
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class VotesController : ControllerBase
+    public class RoundController : ControllerBase
     {
-        // GET api/values
+        private VotesHub hub = new VotesHub();
+
+        // GET api/rounds
         [HttpGet]
 
         // [AllowAnonymous]
@@ -21,26 +22,30 @@ namespace PlanningPoker.WebApi.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/values/5
+        // GET api/rounds/5
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
-            return "value";
+            return "round";
         }
 
-        // POST api/values
+        // POST api/rounds
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT api/values/5
+        // PUT api/rounds/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async void PutAsync(int id, [FromBody] string value)
         {
+            //Put a Vote into a Round.
+
+            //If succesful, send a message to all clients that a vote was added.
+            hub.SendVote(id, value);
         }
 
-        // DELETE api/values/5
+        // DELETE api/rounds/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
