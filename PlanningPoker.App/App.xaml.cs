@@ -19,34 +19,34 @@ namespace PlanningPoker.App
         public static UIParent UiParent { get; set; }
 
         private readonly Lazy<IServiceProvider> lazyProvider;
-        private Settings settings = new Settings();
 
         public IServiceProvider Container => this.lazyProvider.Value;
-
-        public static PublicClientApplication GetPublicClientApplication()
-        {
-            return publicClientApplication;
-        }
-
-        public static void SetPublicClientApplication(PublicClientApplication value)
-        {
-            publicClientApplication = value;
-        }
 
         public App()
         {
             this.InitializeComponent();
+            var settings = new Settings();
 
             this.lazyProvider = new Lazy<IServiceProvider>(() => this.ConfigureServices());
-            SetPublicClientApplication(new PublicClientApplication(this.settings.ClientId)
+            publicClientApplication = new PublicClientApplication(settings.ClientId)
             {
-                RedirectUri = $"msal{this.settings.ClientId}://auth",
-            });
+                RedirectUri = $"msal{settings.ClientId}://auth",
+            };
 
             DependencyResolver.ResolveUsing(this.Container.GetService);
 
             // Change Screen for faster development. Standard page is WelcomeScreen()
             this.MainPage = new NavigationPage(new WelcomeScreen());
+        }
+
+        public static IPublicClientApplication GetPublicClientApplication()
+        {
+            return publicClientApplication;
+        }
+
+        public static void SetPublicClientApplication(PublicClientApplication pca)
+        {
+            publicClientApplication = pca;
         }
 
         protected override void OnStart()
@@ -74,7 +74,7 @@ namespace PlanningPoker.App
 
             var httpClient = new HttpClient(handler) { BaseAddress = settings.BackendUrl };
 
-            services.AddSingleton(_ => new HttpClient(handler) { BaseAddress = settings.BackendUrl });
+            services.AddSingleton(_ => httpClient);
 
             // Adding the ViewModels
             services.AddScoped<LoginViewModel>();
