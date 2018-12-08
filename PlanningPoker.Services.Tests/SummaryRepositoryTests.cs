@@ -193,7 +193,9 @@ namespace PlanningPoker.Services.Tests
                 var repository = new SummaryRepository(context);
                 var session = this.CreateDummySessionDTO();
 
-                var summary = repository.BuildSummary(session);
+                await repository.BuildSummary(session);
+
+                var summary = await repository.FindBySessionIdAsync(session.Id);
 
                 Assert.Equal(2, summary.ItemEstimates.Count);
             }
@@ -208,7 +210,9 @@ namespace PlanningPoker.Services.Tests
                 var repository = new SummaryRepository(context);
                 var session = this.CreateDummySessionDTO();
 
-                var summary = repository.BuildSummary(session);
+                await repository.BuildSummary(session);
+
+                var summary = await repository.FindBySessionIdAsync(session.Id);
 
                 Assert.Equal("item1", summary.ItemEstimates.FirstOrDefault().ItemTitle);
                 Assert.Equal("item2", summary.ItemEstimates.LastOrDefault().ItemTitle);
@@ -268,6 +272,7 @@ namespace PlanningPoker.Services.Tests
         {
             return new SessionDTO
             {
+                Id = 42,
                 SessionKey = "A1B2C3D",
                 Items = this.CreateDummyItemHashSet(),
                 Users = new HashSet<UserDTO>

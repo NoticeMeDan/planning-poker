@@ -104,13 +104,15 @@ namespace PlanningPoker.Services
             return true;
         }
 
-        public SummaryCreateUpdateDTO BuildSummary(SessionDTO session)
+        public async Task<SummaryDTO> BuildSummary(SessionDTO session)
         {
-            return new SummaryCreateUpdateDTO
+            var summary = new SummaryCreateUpdateDTO
             {
                 SessionId = session.Id,
                 ItemEstimates = this.BuildItemEstimates(session)
             };
+
+            return await this.CreateAsync(summary);
         }
 
         private ICollection<ItemEstimateDTO> BuildItemEstimates(SessionDTO session)
