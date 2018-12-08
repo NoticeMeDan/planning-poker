@@ -184,6 +184,39 @@ namespace PlanningPoker.Services.Tests
             }
         }
 
+        [Fact]
+        public async Task BuildSummary_returns_correct_number_of_itemEstimates()
+        {
+            using (var connection = await this.CreateConnectionAsync())
+            using (var context = await this.CreateContextAsync(connection))
+            {
+                var repository = new SummaryRepository(context);
+                var session = this.CreateDummySessionDTO();
+
+                var summary = repository.BuildSummary(session);
+
+                Assert.Equal(2, summary.ItemEstimates.Count);
+            }
+        }
+
+        [Fact]
+        public async Task BuildSummary_returns_correct_itemEstimates()
+        {
+            using (var connection = await this.CreateConnectionAsync())
+            using (var context = await this.CreateContextAsync(connection))
+            {
+                var repository = new SummaryRepository(context);
+                var session = this.CreateDummySessionDTO();
+
+                var summary = repository.BuildSummary(session);
+
+                Assert.Equal("item1", summary.ItemEstimates.FirstOrDefault().ItemTitle);
+                Assert.Equal("item2", summary.ItemEstimates.LastOrDefault().ItemTitle);
+                Assert.Equal(13, summary.ItemEstimates.FirstOrDefault().Estimate);
+                Assert.Equal(37, summary.ItemEstimates.LastOrDefault().Estimate);
+            }
+        }
+
         private async Task<SqliteConnection> CreateConnectionAsync()
         {
             var connection = new SqliteConnection("DataSource=:memory:");
