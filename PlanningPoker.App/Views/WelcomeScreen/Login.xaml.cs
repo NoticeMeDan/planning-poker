@@ -1,7 +1,9 @@
 namespace PlanningPoker.App.Views.WelcomeScreen
 {
     using System;
-    using PlanningPoker.App.ViewModels;
+    using System.Diagnostics;
+    using Microsoft.Extensions.DependencyInjection;
+    using ViewModels;
     using Xamarin.Forms;
     using Xamarin.Forms.Xaml;
 
@@ -12,14 +14,21 @@ namespace PlanningPoker.App.Views.WelcomeScreen
 
         public Login()
         {
-            this.loginViewModel = new LoginViewModel();
             this.InitializeComponent();
+            this.BindingContext = this.loginViewModel = ((App)Application.Current).Container.GetRequiredService<LoginViewModel>();
         }
 
-        private void HandleLoginClicked(object sender, EventArgs e)
+        public async void LoginCommand(object sender, EventArgs e)
         {
-            this.loginViewModel.ExecuteLoginCommand();
-            this.Navigation.PushAsync(new SessionCreation.CreateSession());
+            var result = await this.loginViewModel.ExecuteLoginCommand();
+            if (result)
+            {
+                await this.Navigation.PushModalAsync(new SessionCreation.CreateSession());
+            }
+            else
+            {
+                await this.Navigation.PushModalAsync(new WelcomeScreen());
+            }
         }
     }
 }

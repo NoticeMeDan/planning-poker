@@ -7,14 +7,20 @@ namespace PlanningPoker.App.ViewModels
     using System.Threading.Tasks;
     using System.Windows.Input;
     using Microsoft.Identity.Client;
+    using Models;
     using Newtonsoft.Json.Linq;
-    using PlanningPoker.App.Models;
+    using Xamarin.Forms;
 
     public class LoginViewModel : BaseViewModel
     {
-        public ICommand LoginCommand { get; set; }
+        public LoginViewModel()
+        {
+            this.LoginCommand = new Command(async () => await this.ExecuteLoginCommand());
+        }
 
-        public async void ExecuteLoginCommand()
+        public ICommand LoginCommand { get; }
+
+         public async Task<bool> ExecuteLoginCommand()
         {
             var settings = new Settings();
             AuthenticationResult authResult = null;
@@ -24,21 +30,19 @@ namespace PlanningPoker.App.ViewModels
                 IAccount firstAccount = accounts.FirstOrDefault();
                 authResult = await App.GetPublicClientApplication().AcquireTokenSilentAsync(settings.Scopes, firstAccount);
                 await this.RefreshUserDataAsync(authResult.AccessToken).ConfigureAwait(false);
-
-                // Device.BeginInvokeOnMainThread(() => { });
+                return true;
             }
             catch (MsalUiRequiredException ex)
             {
-                // authResult = await App.publicClientApplication.AcquireTokenWithDeviceCodeAsync(settings.Scopes, App.UiParent);
-                ex.StackTrace.ToString();
+                authResult = await App.GetPublicClientApplication().AcquireTokenAsync(settings.Scopes, App.UiParent);
                 await this.RefreshUserDataAsync(authResult.AccessToken);
-
-                // TODO: Redirect to new page
-                // Device.BeginInvokeOnMainThread(() => { });
+                Console.WriteLine(ex.StackTrace);
+                return true;
             }
             catch (Exception ex)
             {
-                ex.StackTrace.ToString();
+                Console.WriteLine(ex.StackTrace);
+                return false;
             }
         }
 

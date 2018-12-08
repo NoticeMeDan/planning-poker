@@ -4,12 +4,13 @@ namespace PlanningPoker.App.ViewModels
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
-    using PlanningPoker.App.Models;
     using Xamarin.Forms;
 
     public class BaseViewModel : INotifyPropertyChanged
     {
         private bool isBusyValue = false;
+
+        public INavigation Navigation { get; }
 
         public bool IsBusy
         {
