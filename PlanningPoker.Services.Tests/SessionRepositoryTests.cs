@@ -68,6 +68,27 @@ namespace PlanningPoker.Services.Tests
         }
 
         [Fact]
+        public async Task FindAsyncByKey_given_key_exists_return_dto()
+        {
+            using (var connection = await this.CreateConnectionAsync())
+            using (var context = await this.CreateContextAsync(connection))
+            {
+                var entity = this.CreateDummySessionEntity();
+
+                context.Sessions.Add(entity);
+                context.SaveChanges();
+
+                var repository = new SessionRepository(context);
+
+                var session = await repository.FindAsyncByKey(entity.SessionKey);
+
+                Assert.Equal(1, session.Id);
+                Assert.Equal(entity.SessionKey, session.SessionKey);
+                Assert.Equal("item 1", session.Items.FirstOrDefault()?.Title);
+            }
+        }
+
+        [Fact]
         public async Task Read_returns_projection_of_all_sessions()
         {
             using (var connection = await this.CreateConnectionAsync())

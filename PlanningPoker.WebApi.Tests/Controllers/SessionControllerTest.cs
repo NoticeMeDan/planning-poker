@@ -29,9 +29,9 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         {
             var dto = new SessionDTO();
             var repository = new Mock<ISessionRepository>();
-            repository.Setup(s => s.FindAsync(42)).ReturnsAsync(dto);
+            repository.Setup(s => s.FindAsyncByKey("ABC123")).ReturnsAsync(dto);
              var controller = new SessionController(repository.Object);
-             var get = await controller.Get(42);
+             var get = await controller.Get("ABC123");
              Assert.Equal(dto, get.Value);
         }
 
@@ -40,7 +40,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         {
             var repository = new Mock<ISessionRepository>();
              var controller = new SessionController(repository.Object);
-             var get = await controller.Get(42);
+             var get = await controller.Get("ABC123");
              Assert.IsType<NotFoundResult>(get.Result);
         }
 

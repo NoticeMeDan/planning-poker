@@ -25,11 +25,11 @@ namespace PlanningPoker.WebApi.Controllers
             return await this.repository.Read().ToListAsync();
         }
 
-        // GET api/session/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<SessionDTO>> Get(int id)
+        // GET api/session/52A24B
+        [HttpGet("{key}")]
+        public async Task<ActionResult<SessionDTO>> Get(string key)
         {
-            var session = await this.repository.FindAsync(id);
+            var session = await this.repository.FindAsyncByKey(key);
              if (session == null)
             {
                 return this.NotFound();

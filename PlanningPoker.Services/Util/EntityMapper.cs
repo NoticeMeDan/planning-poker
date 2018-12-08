@@ -2,10 +2,10 @@ namespace PlanningPoker.Services
 {
     using System.Collections.Generic;
     using System.Linq;
-    using PlanningPoker.Entities;
-    using PlanningPoker.Shared;
+    using Entities;
+    using Shared;
 
-    public class CollectionHandler
+    public class EntityMapper
     {
         public static ICollection<Item> ToItemEntities(ICollection<ItemDTO> dtos)
         {
@@ -147,6 +147,17 @@ namespace PlanningPoker.Services
                 }));
 
             return dtos;
+        }
+
+        public static SessionDTO ToSessionDTO(Session session)
+        {
+            return new SessionDTO
+            {
+                Id = session.Id,
+                Items = ToItemDtos(session.Items),
+                Users = ToUserDtos(session.Users),
+                SessionKey = session.SessionKey
+            };
         }
     }
 }
