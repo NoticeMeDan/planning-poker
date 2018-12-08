@@ -60,6 +60,27 @@ namespace PlanningPoker.Services.Tests
 
                 var repository = new SummaryRepository(context);
 
+                var summary = await repository.FindBySessionIdAsync(42);
+
+                Assert.Equal(1, summary.Id);
+                Assert.Equal(42, summary.SessionId);
+                Assert.Equal("item 1", summary.ItemEstimates.FirstOrDefault().ItemTitle);
+            }
+        }
+
+        [Fact]
+        public async Task FindBySessionIdAsync_given_id_exists_returns_dto()
+        {
+            using (var connection = await this.CreateConnectionAsync())
+            using (var context = await this.CreateContextAsync(connection))
+            {
+                var entity = this.CreateDummySummaryEntity();
+
+                context.Summaries.Add(entity);
+                context.SaveChanges();
+
+                var repository = new SummaryRepository(context);
+
                 var summary = await repository.FindAsync(1);
 
                 Assert.Equal(1, summary.Id);
@@ -207,6 +228,59 @@ namespace PlanningPoker.Services.Tests
                 },
 
                 SessionId = 42
+            };
+        }
+
+        private SessionDTO CreateDummySessionDTO()
+        {
+            return new SessionDTO
+            {
+                SessionKey = "A1B2C3D",
+                Items = this.CreateDummyItemHashSet(),
+                Users = new HashSet<UserDTO>
+                {
+                    new UserDTO { Id = 1, IsHost = true, Email = string.Empty, Nickname = "user1" },
+                    new UserDTO { Id = 2, IsHost = false, Email = string.Empty, Nickname = "user2" }
+                }
+            };
+        }
+
+        private ICollection<ItemDTO> CreateDummyItemHashSet()
+        {
+            return new HashSet<ItemDTO>
+            {
+                new ItemDTO
+                {
+                    Title = "item1",
+                    Description = "description1",
+                    Rounds = new HashSet<RoundDTO>
+                    {
+                        new RoundDTO
+                        {
+                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 5}, new VoteDTO { UserId = 2, Estimate = 8 } }
+                        },
+                        new RoundDTO
+                        {
+                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 13}, new VoteDTO { UserId = 2, Estimate = 13 } }
+                        }
+                    }
+                },
+                new ItemDTO
+                {
+                    Title = "item2",
+                    Description = "description2",
+                    Rounds = new HashSet<RoundDTO>
+                    {
+                        new RoundDTO
+                        {
+                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 15}, new VoteDTO { UserId = 2, Estimate = 21 } }
+                        },
+                        new RoundDTO
+                        {
+                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 37}, new VoteDTO { UserId = 2, Estimate = 37 } }
+                        }
+                    }
+                }
             };
         }
     }
