@@ -6,13 +6,13 @@ namespace PlanningPoker.Services
 
     public interface IUserRepository
     {
-        Task<UserDTO> CreateAsync(UserCreateUpdateDTO user);
+        Task<UserDTO> CreateAsync(UserCreateDTO user);
 
         Task<UserDTO> FindAsync(int userId);
 
         IQueryable<UserDTO> Read();
 
-        Task<bool> UpdateAsync(UserCreateUpdateDTO user);
+        Task<bool> UpdateAsync(UserCreateDTO user);
 
         Task<bool> DeleteAsync(int userId);
     }

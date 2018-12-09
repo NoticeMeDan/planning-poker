@@ -2,11 +2,10 @@ namespace PlanningPoker.Shared
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class UserCreateUpdateDTO
+    public class UserCreateDTO
     {
         public int Id { get; set; }
 
-        [Required]
         public bool IsHost { get; set; }
 
         [EmailAddress]

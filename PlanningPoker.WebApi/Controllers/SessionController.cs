@@ -1,3 +1,7 @@
+using System.Linq;
+using Microsoft.Extensions.Caching.Memory;
+using PlanningPoker.WebApi.Security;
+
 namespace PlanningPoker.WebApi.Controllers
 {
     using System.Threading.Tasks;
@@ -11,18 +15,22 @@ namespace PlanningPoker.WebApi.Controllers
     [ApiController]
     public class SessionController : ControllerBase
     {
-        private readonly ISessionRepository repository;
+        private readonly ISessionRepository sessionRepository;
+        private readonly IUserRepository userRepository;
+        private readonly UserStateManager userStateManager;
 
-        public SessionController(ISessionRepository repo)
+        public SessionController(ISessionRepository sessionRepo, IUserRepository userRepo, IMemoryCache cache)
         {
-            this.repository = repo;
+            this.sessionRepository = sessionRepo;
+            this.userRepository = userRepo;
+            this.userStateManager = new UserStateManager(cache);
         }
 
         // GET api/session/52A24B
         [HttpGet("{key}")]
         public async Task<ActionResult<SessionDTO>> GetByKey(string key)
         {
-            var session = await this.repository.FindAsyncByKey(key);
+            var session = await this.sessionRepository.FindAsyncByKey(key);
              if (session == null)
             {
                 return this.NotFound();
@@ -40,15 +48,40 @@ namespace PlanningPoker.WebApi.Controllers
             while (key == string.Empty)
             {
                 var randomKey = StringUtils.RandomSessionKey();
-                if (await this.repository.FindAsyncByKey(randomKey) == null)
+                if (await this.sessionRepository.FindAsyncByKey(randomKey) == null)
                 {
                     key = randomKey;
                 }
             }
 
             session.SessionKey = key;
-            var created = await this.repository.CreateAsync(session);
+            var created = await this.sessionRepository.CreateAsync(session);
             return this.CreatedAtAction(nameof(this.GetByKey), new { created.Id }, created);
+        }
+
+        // POST api/session/{key}/join
+        [HttpPost("{key}/join")]
+        public async Task<ActionResult<UserStateResponseDTO>> Join(string key, [FromBody] UserCreateDTO user)
+        {
+            var session = await this.sessionRepository.FindAsyncByKey(key);
+
+            if (session == null)
+            {
+                return this.NotFound();
+            }
+
+            if (session.Users.ToList().Find(u => u.IsHost) != default(UserDTO) && user.IsHost)
+            {
+                // If joining user IsHost, but session already has a host
+                return this.BadRequest();
+            }
+
+            var createdUser = await this.userRepository.CreateAsync(user);
+
+            session.Users.Add(createdUser);
+            await this.sessionRepository.UpdateAsync(EntityMapper.toSessionCreateUpdateDTO(session));
+
+            return new UserStateResponseDTO { Token = this.userStateManager.CreateState(createdUser.Id) };
         }
     }
 }

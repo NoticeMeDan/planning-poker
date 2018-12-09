@@ -37,6 +37,21 @@ namespace PlanningPoker.Services
             return entities;
         }
 
+        public static ICollection<ItemCreateUpdateDTO> ToItemCreateUpdateDtos(ICollection<ItemDTO> dtos)
+        {
+            var entities = new HashSet<ItemCreateUpdateDTO>();
+            dtos.ToList().ForEach(i => entities.Add(
+                new ItemCreateUpdateDTO
+                {
+                    Id = i.Id,
+                    Title = i.Title,
+                    Description = i.Description,
+                    Rounds = i.Rounds
+                }));
+
+            return entities;
+        }
+
         public static ICollection<ItemDTO> ToItemDtos(ICollection<Item> entities)
         {
             var dtos = new HashSet<ItemDTO>();
@@ -121,7 +136,7 @@ namespace PlanningPoker.Services
             return entities;
         }
 
-        public static ICollection<User> ToUserEntities(ICollection<UserCreateUpdateDTO> dtos)
+        public static ICollection<User> ToUserEntities(ICollection<UserCreateDTO> dtos)
         {
             var entities = new HashSet<User>();
             dtos.ToList().ForEach(u => entities.Add(
@@ -141,6 +156,21 @@ namespace PlanningPoker.Services
             var dtos = new HashSet<UserDTO>();
             entities.ToList().ForEach(u => dtos.Add(
                 new UserDTO
+                {
+                    Id = u.Id,
+                    IsHost = u.IsHost,
+                    Email = u.Email,
+                    Nickname = u.Nickname
+                }));
+
+            return dtos;
+        }
+
+        public static ICollection<UserCreateDTO> ToUserCreateDtos(ICollection<UserDTO> users)
+        {
+            var dtos = new HashSet<UserCreateDTO>();
+            users.ToList().ForEach(u => dtos.Add(
+                new UserCreateDTO
                 {
                     Id = u.Id,
                     IsHost = u.IsHost,
@@ -187,6 +217,17 @@ namespace PlanningPoker.Services
                 Items = ToItemDtos(session.Items),
                 Users = ToUserDtos(session.Users),
                 SessionKey = session.SessionKey
+            };
+        }
+
+        public static SessionCreateUpdateDTO toSessionCreateUpdateDTO(SessionDTO session)
+        {
+            return new SessionCreateUpdateDTO
+            {
+                Id = session.Id,
+                SessionKey = session.SessionKey,
+                Items = ToItemCreateUpdateDtos(session.Items),
+                Users = ToUserCreateDtos(session.Users)
             };
         }
     }

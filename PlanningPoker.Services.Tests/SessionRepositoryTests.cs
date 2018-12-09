@@ -222,9 +222,9 @@ namespace PlanningPoker.Services.Tests
                     new ItemCreateUpdateDTO { Title = "item 1", Rounds = new HashSet<RoundDTO>() },
                     new ItemCreateUpdateDTO { Title = "item 2", Rounds = new HashSet<RoundDTO>() }
                 },
-                Users = new List<UserCreateUpdateDTO>
+                Users = new List<UserCreateDTO>
                 {
-                    new UserCreateUpdateDTO { IsHost = true, Nickname = "user 1" }
+                    new UserCreateDTO { IsHost = true, Nickname = "user 1" }
                 }
             };
         }

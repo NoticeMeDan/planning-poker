@@ -13,6 +13,6 @@ namespace PlanningPoker.Shared
         [Required]
         public ICollection<ItemCreateUpdateDTO> Items { get; set; }
 
-        public ICollection<UserCreateUpdateDTO> Users { get; set; }
+        public ICollection<UserCreateDTO> Users { get; set; }
     }
 }

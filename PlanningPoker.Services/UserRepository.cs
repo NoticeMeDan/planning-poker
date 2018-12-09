@@ -15,7 +15,7 @@ namespace PlanningPoker.Services
             this.context = planningPokerContext;
         }
 
-        public async Task<UserDTO> CreateAsync(UserCreateUpdateDTO user)
+        public async Task<UserDTO> CreateAsync(UserCreateDTO user)
         {
             var entity = new User
             {
@@ -74,7 +74,7 @@ namespace PlanningPoker.Services
             return entities;
         }
 
-        public async Task<bool> UpdateAsync(UserCreateUpdateDTO user)
+        public async Task<bool> UpdateAsync(UserCreateDTO user)
         {
             var entity = await this.context.Users.FindAsync(user.Id);
 

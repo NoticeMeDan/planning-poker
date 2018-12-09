@@ -41,7 +41,7 @@ namespace PlanningPoker.WebApi.Controllers
 
         // POST api/users
         [HttpPost]
-        public async Task<ActionResult<UserDTO>> Post([FromBody] UserCreateUpdateDTO user)
+        public async Task<ActionResult<UserDTO>> Post([FromBody] UserCreateDTO user)
         {
             var created = await this.repository.CreateAsync(user);
              return this.CreatedAtAction(nameof(this.Get), new { created.Id }, created);
@@ -49,7 +49,7 @@ namespace PlanningPoker.WebApi.Controllers
 
         // PUT api/users/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] UserCreateUpdateDTO user)
+        public async Task<IActionResult> Put(int id, [FromBody] UserCreateDTO user)
         {
             var updated = await this.repository.UpdateAsync(user);
 
