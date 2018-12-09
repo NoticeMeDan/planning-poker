@@ -46,13 +46,13 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         public async Task Post_given_dto_returns_CreatedAtActionResult()
         {
             var input = new SessionCreateUpdateDTO();
-            var output = new SessionDTO {Id = 42};
+            var output = new SessionDTO { Id = 42 };
             var repository = new Mock<ISessionRepository>();
             repository.Setup(s => s.CreateAsync(input)).ReturnsAsync(output);
             var controller = new SessionController(repository.Object);
             var post = await controller.Create(input);
             var result = post.Result as CreatedAtActionResult;
-            Assert.Equal("Get", result.ActionName);
+            Assert.Equal("GetByKey", result.ActionName);
             Assert.Equal(42, result.RouteValues["id"]);
             Assert.Equal(output, result.Value);
         }

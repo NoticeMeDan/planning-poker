@@ -12,6 +12,5 @@ namespace PlanningPoker.WebApi.Utils
             return new string(Enumerable.Repeat(chars, 7)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-
     }
 }
