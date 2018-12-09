@@ -7,14 +7,12 @@ namespace PlanningPoker.Shared
     {
         public int Id { get; set; }
 
-        [Required]
         [StringLength(7)]
         public string SessionKey { get; set; }
 
         [Required]
-        public ICollection<ItemDTO> Items { get; set; }
+        public ICollection<ItemCreateUpdateDTO> Items { get; set; }
 
-        [Required]
-        public ICollection<UserDTO> Users { get; set; }
+        public ICollection<UserCreateUpdateDTO> Users { get; set; }
     }
 }

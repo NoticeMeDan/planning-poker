@@ -217,8 +217,15 @@ namespace PlanningPoker.Services.Tests
             return new SessionCreateUpdateDTO
             {
                 SessionKey = "A1B2C3D",
-                Items = new List<ItemDTO> { new ItemDTO { Title = "item 1", Rounds = new HashSet<RoundDTO>() }, new ItemDTO { Title = "item 2", Rounds = new HashSet<RoundDTO>() } },
-                Users = new List<UserDTO> { new UserDTO { IsHost = true, Nickname = "user 1" } }
+                Items = new List<ItemCreateUpdateDTO>
+                {
+                    new ItemCreateUpdateDTO { Title = "item 1", Rounds = new HashSet<RoundDTO>() },
+                    new ItemCreateUpdateDTO { Title = "item 2", Rounds = new HashSet<RoundDTO>() }
+                },
+                Users = new List<UserCreateUpdateDTO>
+                {
+                    new UserCreateUpdateDTO { IsHost = true, Nickname = "user 1" }
+                }
             };
         }
     }

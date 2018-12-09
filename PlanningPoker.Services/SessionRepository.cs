@@ -50,7 +50,7 @@ namespace PlanningPoker.Services
             return await this.context.Sessions
                 .Where(s => s.Id == sessionId)
                 .Select(s => EntityMapper.ToSessionDTO(s))
-                .FirstOrDefaultAsync();
+                .FirstAsync();
         }
 
         public async Task<SessionDTO> FindAsyncByKey(string sessionKey)

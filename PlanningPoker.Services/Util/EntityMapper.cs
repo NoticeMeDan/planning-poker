@@ -22,6 +22,21 @@ namespace PlanningPoker.Services
             return entities;
         }
 
+        public static ICollection<Item> ToItemEntities(ICollection<ItemCreateUpdateDTO> dtos)
+        {
+            var entities = new HashSet<Item>();
+            dtos.ToList().ForEach(i => entities.Add(
+                new Item
+                {
+                    Id = i.Id,
+                    Title = i.Title,
+                    Description = i.Description,
+                    Rounds = ToRoundEntities(i.Rounds)
+                }));
+
+            return entities;
+        }
+
         public static ICollection<ItemDTO> ToItemDtos(ICollection<Item> entities)
         {
             var dtos = new HashSet<ItemDTO>();
@@ -92,6 +107,21 @@ namespace PlanningPoker.Services
         }
 
         public static ICollection<User> ToUserEntities(ICollection<UserDTO> dtos)
+        {
+            var entities = new HashSet<User>();
+            dtos.ToList().ForEach(u => entities.Add(
+                new User
+                {
+                    Id = u.Id,
+                    IsHost = u.IsHost,
+                    Email = u.Email,
+                    Nickname = u.Nickname
+                }));
+
+            return entities;
+        }
+
+        public static ICollection<User> ToUserEntities(ICollection<UserCreateUpdateDTO> dtos)
         {
             var entities = new HashSet<User>();
             dtos.ToList().ForEach(u => entities.Add(

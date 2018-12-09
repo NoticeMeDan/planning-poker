@@ -1,11 +1,11 @@
 namespace PlanningPoker.WebApi.Controllers
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
-    using PlanningPoker.Services;
-    using PlanningPoker.Shared;
+    using Services;
+    using Shared;
+    using Utils;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -18,16 +18,9 @@ namespace PlanningPoker.WebApi.Controllers
             this.repository = repo;
         }
 
-        // GET api/session
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<SessionDTO>>> Get()
-        {
-            return await this.repository.Read().ToListAsync();
-        }
-
         // GET api/session/52A24B
         [HttpGet("{key}")]
-        public async Task<ActionResult<SessionDTO>> Get(string key)
+        public async Task<ActionResult<SessionDTO>> GetByKey(string key)
         {
             var session = await this.repository.FindAsyncByKey(key);
              if (session == null)
@@ -40,37 +33,22 @@ namespace PlanningPoker.WebApi.Controllers
 
         // POST api/session
         [HttpPost]
-        public async Task<ActionResult<SessionDTO>> Post([FromBody] SessionCreateUpdateDTO session)
+        [Authorize]
+        public async Task<ActionResult<SessionDTO>> Create([FromBody] SessionCreateUpdateDTO session)
         {
+            var key = string.Empty;
+            while (key == string.Empty)
+            {
+                var randomKey = StringUtils.RandomSessionKey();
+                if (await this.repository.FindAsyncByKey(randomKey) == null)
+                {
+                    key = randomKey;
+                }
+            }
+
+            session.SessionKey = key;
             var created = await this.repository.CreateAsync(session);
-             return this.CreatedAtAction(nameof(this.Get), new { created.Id }, created);
-        }
-
-        // PUT api/session/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] SessionCreateUpdateDTO session)
-        {
-            var updated = await this.repository.UpdateAsync(session);
-             if (updated)
-            {
-                return this.NoContent();
-            }
-
-            return this.NotFound();
-        }
-
-        // DELETE: api/session/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var result = await this.repository.DeleteAsync(id);
-
-            if (result)
-            {
-                return this.NoContent();
-            }
-
-            return this.NotFound();
+            return this.CreatedAtAction(nameof(this.GetByKey), new { created.Id }, created);
         }
     }
 }
