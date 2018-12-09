@@ -11,12 +11,17 @@ namespace PlanningPoker.App.Views.Components
 
         public Items()
         {
-            InitializeComponent();
-
             this.ViewModel = new ItemsViewModel();
 
             this.BindingContext = this.ViewModel =
                 (Application.Current as App)?.Container.GetRequiredService<ItemsViewModel>();
+
+            InitializeComponent();
+        }
+
+        protected override void OnAppearing()
+        {
+            this.ViewModel.LoadCommand.Execute(null);
         }
 
         private void OnAddItem_Clicked(object sender, EventArgs e)
@@ -24,9 +29,6 @@ namespace PlanningPoker.App.Views.Components
             this.Navigation.PushAsync(new NewItem());
         }
 
-        protected override void OnAppearing()
-        {
-            this.ViewModel.LoadCommand.Execute(null);
-        }
+
     }
 }

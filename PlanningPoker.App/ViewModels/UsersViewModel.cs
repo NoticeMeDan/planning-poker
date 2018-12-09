@@ -14,7 +14,7 @@ namespace PlanningPoker.App.ViewModels
         public ICommand LoadCommand { get; }
 
         // Only for testing until repositories are ready
-        private ObservableCollection<UserDTO> Users { get; }
+        public ObservableCollection<UserDTO> Users { get; }
 
         public UsersViewModel()
         {

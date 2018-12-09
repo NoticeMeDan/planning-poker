@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace PlanningPoker.App.Views.Components
 {
     using System;
@@ -11,12 +13,12 @@ namespace PlanningPoker.App.Views.Components
 
         public Users()
         {
-            InitializeComponent();
-
             this.ViewModel = new UsersViewModel();
 
             this.BindingContext = this.ViewModel =
                 (Application.Current as App)?.Container.GetRequiredService<UsersViewModel>();
+
+            InitializeComponent();
         }
 
         protected override void OnAppearing()
@@ -26,7 +28,8 @@ namespace PlanningPoker.App.Views.Components
 
         private void OnStartSession_Clicked(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine(this.ViewModel.LoadCommand);
+            Debug.WriteLine(this.ViewModel.Users);
         }
     }
 }
