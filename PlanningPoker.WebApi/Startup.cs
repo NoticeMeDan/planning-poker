@@ -1,3 +1,5 @@
+using PlanningPoker.Services;
+
 namespace PlanningPoker.WebApi
 {
     using Entities;
@@ -37,6 +39,9 @@ namespace PlanningPoker.WebApi
 
             services.AddDbContext<PlanningPokerContext>(options =>
                 options.UseSqlServer(this.Configuration.GetConnectionString("PlanningPokerDatabase")));
+            services.AddScoped<ISessionRepository, SessionRepository>();
+            services.AddScoped<ISummaryRepository, SummaryRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "PlanningPoker API", Version = "v1" }));
         }

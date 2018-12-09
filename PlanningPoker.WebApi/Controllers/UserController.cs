@@ -4,8 +4,8 @@ namespace PlanningPoker.WebApi.Controllers
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
-    using PlanningPoker.Services;
-    using PlanningPoker.Shared;
+    using Services;
+    using Shared;
 
     [Route("api/[controller]")]
     [ApiController]
