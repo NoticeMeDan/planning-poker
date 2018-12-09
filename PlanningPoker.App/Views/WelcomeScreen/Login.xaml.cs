@@ -17,13 +17,19 @@ namespace PlanningPoker.App.Views.WelcomeScreen
             this.BindingContext = this.viewModel =
                 (Application.Current as App)?.Container.GetRequiredService<LoginViewModel>();
 
-            this.InitializeComponent();
         }
 
-        private void HandleLoginClicked(object sender, EventArgs e)
+        public async void LoginCommand(object sender, EventArgs e)
         {
-            this.viewModel.ExecuteLoginCommand();
-            this.Navigation.PushAsync(new SessionCreation.CreateSession());
+            var result = await this.viewModel.ExecuteLoginCommand();
+            if (result)
+            {
+                await this.Navigation.PushModalAsync(new SessionCreation.CreateSession());
+            }
+            else
+            {
+                await this.Navigation.PushModalAsync(new WelcomeScreen());
+            }
         }
     }
 }

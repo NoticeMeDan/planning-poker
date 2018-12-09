@@ -11,7 +11,8 @@
         <Button Text="Login"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="EndAndExpand"
-                Clicked="HandleLoginClicked"></Button>
+                Clicked="LoginCommand">
+        </Button>
     </StackLayout>
 
 </ContentPage>
