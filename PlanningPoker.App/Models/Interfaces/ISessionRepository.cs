@@ -1,8 +1,8 @@
-namespace PlanningPoker.App.Models
+namespace PlanningPoker.App.Models.Interfaces
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Shared;
+    using PlanningPoker.Shared;
 
     public interface ISessionRepository
     {

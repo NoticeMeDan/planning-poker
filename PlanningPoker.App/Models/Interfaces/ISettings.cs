@@ -1,4 +1,4 @@
-namespace PlanningPoker.App.Models
+namespace PlanningPoker.App.Models.Interfaces
 {
     using System;
     using System.Collections.Generic;

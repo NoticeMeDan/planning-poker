@@ -17,7 +17,7 @@ namespace PlanningPoker.App.ViewModels
 
         public ItemsViewModel()
         {
-            this.Title = "ItemsYo";
+            this.Title = "Items";
 
             this.Items = new ObservableCollection<ItemDTO>();
 

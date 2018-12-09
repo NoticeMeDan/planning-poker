@@ -2,6 +2,7 @@ namespace PlanningPoker.App.Models
 {
     using System;
     using System.Collections.Generic;
+    using Interfaces;
 
     public class Settings : ISettings
     {

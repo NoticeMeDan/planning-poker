@@ -3,6 +3,7 @@ namespace PlanningPoker.App.Models
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using PlanningPoker.App.Models.Interfaces;
     using Shared;
 
     public class SessionRepository : ISessionRepository
