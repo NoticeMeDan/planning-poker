@@ -70,11 +70,17 @@ namespace PlanningPoker.App
 
             var settings = new Settings();
 
-            var handler = new HttpClientHandler();
+            var publicClientApplication = new PublicClientApplication(settings.ClientId, $"https://login.microsoftonline.com/{settings.TenantId}");
 
-            var httpClient = new HttpClient(handler) { BaseAddress = settings.BackendUrl };
+            var handler = new BearerTokenHttpClientHandler(publicClientApplication, settings);
 
-            services.AddSingleton(_ => httpClient);
+            var client = new HttpClient(handler);
+
+            client.BaseAddress = settings.BackendUrl;
+
+            services.AddSingleton<ISettings>(settings);
+            services.AddSingleton(_ => client);
+            services.AddSingleton<IPublicClientApplication>(publicClientApplication);
 
             // Adding the ViewModels
             services.AddScoped<LoginViewModel>();
