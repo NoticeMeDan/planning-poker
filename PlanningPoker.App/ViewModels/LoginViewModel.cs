@@ -14,11 +14,9 @@ namespace PlanningPoker.App.ViewModels
     public class LoginViewModel : BaseViewModel
     {
 
-        private readonly IItemRepository repo;
-        public LoginViewModel(IItemRepository repo)
+        public LoginViewModel()
         {
             this.LoginCommand = new Command(async () => await this.ExecuteLoginCommand());
-            this.repo = repo;
         }
 
         public ICommand LoginCommand { get; }
@@ -32,7 +30,6 @@ namespace PlanningPoker.App.ViewModels
             {
                 IAccount firstAccount = accounts.FirstOrDefault();
                 authResult = await App.GetPublicClientApplication().AcquireTokenSilentAsync(settings.Scopes, firstAccount);
-                var result = await repo.ReadAsync();
                 await this.RefreshUserDataAsync(authResult.AccessToken).ConfigureAwait(false);
                 return true;
             }
@@ -40,7 +37,6 @@ namespace PlanningPoker.App.ViewModels
             {
                 authResult = await App.GetPublicClientApplication().AcquireTokenAsync(settings.Scopes, App.UiParent);
                 await this.RefreshUserDataAsync(authResult.AccessToken);
-                var result = await repo.ReadAsync();
                 Console.WriteLine(ex.StackTrace);
                 return true;
             }
