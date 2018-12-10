@@ -80,7 +80,7 @@ namespace PlanningPoker.Services.Tests
 
                 var repository = new SessionRepository(context);
 
-                var session = await repository.FindAsyncByKey(entity.SessionKey);
+                var session = await repository.FindByKeyAsync(entity.SessionKey);
 
                 Assert.Equal(1, session.Id);
                 Assert.Equal(entity.SessionKey, session.SessionKey);

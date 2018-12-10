@@ -53,7 +53,7 @@ namespace PlanningPoker.Services
                 .FirstAsync();
         }
 
-        public async Task<SessionDTO> FindAsyncByKey(string sessionKey)
+        public async Task<SessionDTO> FindByKeyAsync(string sessionKey)
         {
             return await this.context.Sessions
                 .Where(s => s.SessionKey == sessionKey)

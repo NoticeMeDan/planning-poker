@@ -30,7 +30,7 @@ namespace PlanningPoker.WebApi.Controllers
         [HttpGet("{key}")]
         public async Task<ActionResult<SessionDTO>> GetByKey(string key)
         {
-            var session = await this.sessionRepository.FindAsyncByKey(key);
+            var session = await this.sessionRepository.FindByKeyAsync(key);
              if (session == null)
             {
                 return this.NotFound();
@@ -48,7 +48,7 @@ namespace PlanningPoker.WebApi.Controllers
             while (key == string.Empty)
             {
                 var randomKey = StringUtils.RandomSessionKey();
-                if (await this.sessionRepository.FindAsyncByKey(randomKey) == null)
+                if (await this.sessionRepository.FindByKeyAsync(randomKey) == null)
                 {
                     key = randomKey;
                 }
@@ -64,7 +64,7 @@ namespace PlanningPoker.WebApi.Controllers
         [HttpPost("{key}/join")]
         public async Task<ActionResult<UserStateResponseDTO>> Join(string key, [FromBody] UserCreateDTO user)
         {
-            var session = await this.sessionRepository.FindAsyncByKey(key);
+            var session = await this.sessionRepository.FindByKeyAsync(key);
 
             if (session == null)
             {

@@ -17,7 +17,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         {
             var dto = new SessionDTO();
             var sessionRepo = new Mock<ISessionRepository>();
-            sessionRepo.Setup(s => s.FindAsyncByKey("ABC123")).ReturnsAsync(dto);
+            sessionRepo.Setup(s => s.FindByKeyAsync("ABC123")).ReturnsAsync(dto);
             var controller = new SessionController(sessionRepo.Object, null, null);
             var get = await controller.GetByKey("ABC123");
             Assert.Equal(dto, get.Value);
@@ -76,7 +76,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             var sessionRepo = new Mock<ISessionRepository>();
             var cache = new Mock<IMemoryCache>();
 
-            sessionRepo.Setup(s => s.FindAsyncByKey(It.IsAny<string>()))
+            sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(new SessionDTO
                     { SessionKey = "ABC1234", Users = new HashSet<UserDTO> { new UserDTO { IsHost = true } } });
 
@@ -93,7 +93,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             var userRepo = new Mock<IUserRepository>();
             var cache = new MemoryCache(new MemoryCacheOptions());
 
-            sessionRepo.Setup(s => s.FindAsyncByKey(It.IsAny<string>()))
+            sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(new SessionDTO
                     { SessionKey = "ABC1234", Users = new HashSet<UserDTO> { new UserDTO { IsHost = true } } });
 
@@ -115,7 +115,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             var userRepo = new Mock<IUserRepository>();
             var cache = new MemoryCache(new MemoryCacheOptions());
 
-            sessionRepo.Setup(s => s.FindAsyncByKey(It.IsAny<string>()))
+            sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(new SessionDTO
                     { SessionKey = "ABC1234", Users = new HashSet<UserDTO> { new UserDTO { IsHost = false } } });
 
