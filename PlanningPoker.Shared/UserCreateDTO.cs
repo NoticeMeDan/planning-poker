@@ -6,6 +6,7 @@ namespace PlanningPoker.Shared
     {
         public int Id { get; set; }
 
+        [Required]
         public bool IsHost { get; set; }
 
         [EmailAddress]
