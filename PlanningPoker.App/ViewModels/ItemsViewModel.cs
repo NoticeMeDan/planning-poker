@@ -1,48 +1,23 @@
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-using PlanningPoker.App.Models;
-using Xamarin.Forms;
-
 namespace PlanningPoker.App.ViewModels
 {
-    using System.Collections.ObjectModel;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
     using System.Windows.Input;
-    using PlanningPoker.App.ViewModels.Interfaces;
-    using PlanningPoker.Shared;
+    using Models;
+    using Shared;
 
     // This class contains data until repositories is setup
     public class ItemsViewModel : BaseViewModel
     {
         // TODO: Use API to get and set items.
         private readonly ISessionRepository sessionRepo;
-        public List<ItemCreateUpdateDTO> Items { get; set; }
-        public string Session { get; }
-
-        // public ICommand AddCommand { get; set; }
-        public ICommand LoadCommand { get; }
-        public ICommand SaveCommand { get; }
-        public ICommand CreateSessionCommand { get; }
-
+        private string SessionTitle;
         private string title;
-        public string Title
-        {
-            get => title;
-            set => SetProperty(ref title, value);
-        }
-
         private string description;
-        public string Description
-        {
-            get => description;
-            set => SetProperty(ref description, value);
-        }
 
         public ItemsViewModel(ISessionRepository sessionRepo)
         {
-            this.Session = "New session";
+            this.SessionTitle = "New session";
 
             this.sessionRepo = sessionRepo;
 
@@ -50,30 +25,51 @@ namespace PlanningPoker.App.ViewModels
 
             this.LoadCommand = new RelayCommand(_ => this.ExecuteLoadCommand());
             this.SaveCommand = new RelayCommand(_ => this.ExecuteSaveCommand());
-            this.CreateSessionCommand = new RelayCommand(_ => this.ExecuteCreateSessionCommand());
+            this.CreateSessionCommand = new RelayCommand(async _ => await this.ExecuteCreateSessionCommand());
+        }
+
+        public List<ItemCreateUpdateDTO> Items { get; set; }
+
+
+        public ICommand LoadCommand { get; }
+
+        public ICommand SaveCommand { get; }
+
+        private ICommand CreateSessionCommand { get; }
+
+        private string Title
+        {
+            get => this.title;
+            set => this.SetProperty(ref this.title, value);
+        }
+
+        private string Description
+        {
+            get => this.description;
+            set => this.SetProperty(ref this.description, value);
         }
 
         private void ExecuteSaveCommand()
         {
-            if (IsBusy)
+            if (this.IsBusy)
             {
                 return;
             }
-            IsBusy = true;
+            this.IsBusy = true;
 
             var toCreate = new ItemCreateUpdateDTO
             {
-                Title = Title,
-                Description = Description
+                Title = this.Title,
+                Description = this.Description
             };
 
-            Items.Add(toCreate);
+            this.Items.Add(toCreate);
 
-            Title = string.Empty;
-            Description = string.Empty;
+            this.Title = string.Empty;
+            this.Description = string.Empty;
             this.LoadCommand.Execute(null);
 
-            IsBusy = false;
+            this.IsBusy = false;
         }
 
         private void ExecuteLoadCommand()
@@ -111,7 +107,7 @@ namespace PlanningPoker.App.ViewModels
                 Items = this.Items
             };
 
-            await sessionRepo.CreateAsync(toCreate);
+            await this.sessionRepo.CreateAsync(toCreate);
 
             this.IsBusy = false;
         }
