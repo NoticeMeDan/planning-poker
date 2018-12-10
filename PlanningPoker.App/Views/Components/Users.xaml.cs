@@ -1,8 +1,7 @@
-using System.Diagnostics;
-
 namespace PlanningPoker.App.Views.Components
 {
     using System;
+    using System.Diagnostics;
     using Microsoft.Extensions.DependencyInjection;
     using ViewModels;
     using Xamarin.Forms;
@@ -30,6 +29,7 @@ namespace PlanningPoker.App.Views.Components
         {
             Debug.WriteLine(this.ViewModel.LoadCommand);
             Debug.WriteLine(this.ViewModel.Users);
+            this.Navigation.PushAsync(new Session.Session());
         }
     }
 }

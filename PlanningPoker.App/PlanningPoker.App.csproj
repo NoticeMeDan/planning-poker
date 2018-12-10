@@ -31,6 +31,9 @@
     <Compile Update="Views\Components\NewItem.xaml.cs">
       <DependentUpon>NewItem.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Components\VotingNumbers.cs">
+      <DependentUpon>VotingNumbers.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
@@ -46,6 +49,10 @@
       <Generator></Generator>
     </Page>
     <Page Include="Views\Components\Users.xaml">
+      <SubType>Designer</SubType>
+      <Generator></Generator>
+    </Page>
+    <Page Include="Views\Components\VotingNumbers.xaml">
       <SubType>Designer</SubType>
       <Generator></Generator>
     </Page>
