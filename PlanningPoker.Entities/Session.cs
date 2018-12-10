@@ -12,7 +12,6 @@ namespace PlanningPoker.Entities
         [Required]
         public ICollection<Item> Items { get; set; }
 
-        [Required]
         public ICollection<User> Users { get; set; }
 
         public Session()

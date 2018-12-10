@@ -39,6 +39,11 @@ namespace PlanningPoker.Services
 
         public static ICollection<ItemCreateUpdateDTO> ToItemCreateUpdateDtos(ICollection<ItemDTO> dtos)
         {
+            if (dtos == null)
+            {
+                return new HashSet<ItemCreateUpdateDTO>();
+            }
+
             var entities = new HashSet<ItemCreateUpdateDTO>();
             dtos.ToList().ForEach(i => entities.Add(
                 new ItemCreateUpdateDTO
