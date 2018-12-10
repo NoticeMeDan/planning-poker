@@ -12,17 +12,17 @@ namespace PlanningPoker.WebApi.Tests.Controllers
 
     public class SessionControllerTest
     {
-//        [Fact]
-//        public async Task Get_returns_dtos()
-//        {
-//            var dto = new SessionDTO();
-//            var all = new[] { dto }.AsQueryable().BuildMock();
-//            var repository = new Mock<ISessionRepository>();
-//            repository.Setup(s => s.Read()).Returns(all.Object);
-//             var controller = new SessionController(repository.Object);
-//             var result = await controller.Get();
-//             Assert.Equal(dto, result.Value.Single());
-//        }
+        [Fact]
+        public async Task Get_returns_dtos()
+        {
+            var dto = new SessionDTO();
+            var all = new[] { dto }.AsQueryable().BuildMock();
+            var repository = new Mock<ISessionRepository>();
+            repository.Setup(s => s.Read()).Returns(all.Object);
+            var controller = new SessionController(repository.Object);
+            var result = await controller.Get();
+            Assert.Equal(dto, result.Value.Single());
+        }
 
         [Fact]
         public async Task Get_given_existing_id_returns_dto()

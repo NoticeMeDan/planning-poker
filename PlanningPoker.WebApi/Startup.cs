@@ -1,5 +1,3 @@
-using PlanningPoker.Services;
-
 namespace PlanningPoker.WebApi
 {
     using Entities;
@@ -11,6 +9,7 @@ namespace PlanningPoker.WebApi
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Services;
     using Swashbuckle.AspNetCore.Swagger;
 
     public class Startup

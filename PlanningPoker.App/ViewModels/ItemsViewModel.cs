@@ -47,6 +47,13 @@ namespace PlanningPoker.App.ViewModels
 
             this.IsBusy = true;
 
+            this.Items.Clear();
+            var items = MockData();
+            foreach (var item in items)
+            {
+                this.Items.Add(item);
+            }
+
             this.IsBusy = false;
         }
     }
