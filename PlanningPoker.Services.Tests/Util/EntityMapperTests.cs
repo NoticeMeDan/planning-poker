@@ -1,12 +1,13 @@
-namespace PlanningPoker.Services.Tests
+namespace PlanningPoker.Services.Tests.Util
 {
     using System.Collections.Generic;
     using System.Linq;
-    using PlanningPoker.Entities;
-    using PlanningPoker.Shared;
+    using DeepEqual.Syntax;
+    using Entities;
+    using Shared;
     using Xunit;
 
-    public class CollectionHandlerTests
+    public class EntityMapperTests
     {
         [Fact]
         public void ToItemEntities_returns_Collection_of_equal_size()
@@ -22,8 +23,6 @@ namespace PlanningPoker.Services.Tests
         public void ToItemEntities_returns_Collection_of_correct_entities()
         {
             var dtos = this.CreateItemDTOList();
-
-            var entities = this.CreateItemEntityList();
 
             var result = EntityMapper.ToItemEntities(dtos);
 
@@ -47,8 +46,6 @@ namespace PlanningPoker.Services.Tests
         [Fact]
         public void ToItemDtos_returns_Collection_of_correct_dtos()
         {
-            var dtos = this.CreateItemDTOList();
-
             var entities = this.CreateItemEntityList();
 
             var result = EntityMapper.ToItemDtos(entities);
@@ -77,7 +74,7 @@ namespace PlanningPoker.Services.Tests
 
             var entities = this.CreateRoundEntityHashSet();
 
-            var entityVote = entities.ToList().FirstOrDefault().Votes.ToList().FirstOrDefault();
+            var entityVote = entities.ToList().FirstOrDefault()?.Votes.ToList().FirstOrDefault();
 
             var result = EntityMapper.ToRoundEntities(dtos);
 
@@ -135,8 +132,6 @@ namespace PlanningPoker.Services.Tests
         {
             var dtos = this.CreateVoteDTOHashSet();
 
-            var entities = this.CreateVoteEntityHashSet();
-
             var result = EntityMapper.ToVoteEntities(dtos);
 
             var firstVote = result.ToList().FirstOrDefault();
@@ -159,8 +154,6 @@ namespace PlanningPoker.Services.Tests
         [Fact]
         public void ToVoteDtos_returns_correct_dtos()
         {
-            var dtos = this.CreateVoteDTOHashSet();
-
             var entities = this.CreateVoteEntityHashSet();
 
             var result = EntityMapper.ToVoteDtos(entities);
@@ -187,8 +180,6 @@ namespace PlanningPoker.Services.Tests
         {
             var dtos = this.CreateUserDTOHashSet();
 
-            var entities = this.CreateUserEntityHashSet();
-
             var result = EntityMapper.ToUserEntities(dtos);
 
             var firstUser = result.ToList().FirstOrDefault();
@@ -212,8 +203,6 @@ namespace PlanningPoker.Services.Tests
         [Fact]
         public void ToUserDtos_returns_correct_dtos()
         {
-            var dtos = this.CreateUserDTOHashSet();
-
             var entities = this.CreateUserEntityHashSet();
 
             var result = EntityMapper.ToUserDtos(entities);
@@ -241,8 +230,6 @@ namespace PlanningPoker.Services.Tests
         {
             var dtos = this.CreateItemEstimateDTOList();
 
-            var entities = this.CreateItemEstimateEntityList();
-
             var result = EntityMapper.ToItemEstimateEntities(dtos);
 
             var firstItemEstimate = result.ToList().FirstOrDefault();
@@ -265,8 +252,6 @@ namespace PlanningPoker.Services.Tests
         [Fact]
         public void ToItemEstimateDtos_returns_correct_dtos()
         {
-            var dtos = this.CreateItemEstimateDTOList();
-
             var entities = this.CreateItemEstimateEntityList();
 
             var result = EntityMapper.ToItemEstimateDtos(entities);
@@ -285,20 +270,10 @@ namespace PlanningPoker.Services.Tests
 
             var result = EntityMapper.ToSessionDTO(session);
 
-            var firstResultItem = result.Items.FirstOrDefault();
-            var firstExpectedItem = this.CreateItemDTOList().FirstOrDefault();
-            var firstResultUser = result.Users.FirstOrDefault();
-            var firstExpectedUser = this.CreateUserDTOHashSet().FirstOrDefault();
-
-            Assert.Equal(42, result.Id);
-            Assert.Equal("ABC123", result.SessionKey);
-            Assert.Equal(firstExpectedItem.Id, firstResultItem.Id);
-            Assert.Equal(firstExpectedItem.Description, firstResultItem.Description);
-            Assert.Equal(firstExpectedItem.Rounds.Count, firstResultItem.Rounds.Count);
-            Assert.Equal(firstExpectedUser.Id, firstResultUser.Id);
-            Assert.Equal(firstExpectedUser.Nickname, firstResultUser.Nickname);
-            Assert.Equal(firstExpectedUser.Email, firstResultUser.Email);
-            Assert.Equal(firstExpectedUser.IsHost, firstResultUser.IsHost);
+            Assert.Equal(this.CreateSession().Id, result.Id);
+            Assert.Equal(this.CreateSession().SessionKey, result.SessionKey);
+            Assert.True(this.CreateItemDTOList().IsDeepEqual(result.Items));
+            Assert.True(this.CreateUserDTOHashSet().IsDeepEqual(result.Users));
         }
 
         private List<Item> CreateItemEntityList()

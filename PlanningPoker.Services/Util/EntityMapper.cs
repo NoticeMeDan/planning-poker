@@ -2,14 +2,14 @@ namespace PlanningPoker.Services
 {
     using System.Collections.Generic;
     using System.Linq;
-    using PlanningPoker.Entities;
-    using PlanningPoker.Shared;
+    using Entities;
+    using Shared;
 
-    public class CollectionHandler
+    public class EntityMapper
     {
-        public static ICollection<Item> ToItemEntities(ICollection<ItemDTO> dtos)
+        public static List<Item> ToItemEntities(List<ItemDTO> dtos)
         {
-            var entities = new HashSet<Item>();
+            var entities = new List<Item>();
             dtos.ToList().ForEach(i => entities.Add(
                 new Item
                 {
@@ -22,9 +22,44 @@ namespace PlanningPoker.Services
             return entities;
         }
 
-        public static ICollection<ItemDTO> ToItemDtos(ICollection<Item> entities)
+        public static List<Item> ToItemEntities(List<ItemCreateUpdateDTO> dtos)
         {
-            var dtos = new HashSet<ItemDTO>();
+            var entities = new List<Item>();
+            dtos.ToList().ForEach(i => entities.Add(
+                new Item
+                {
+                    Id = i.Id,
+                    Title = i.Title,
+                    Description = i.Description,
+                    Rounds = ToRoundEntities(i.Rounds)
+                }));
+
+            return entities;
+        }
+
+        public static List<ItemCreateUpdateDTO> ToItemCreateUpdateDtos(List<ItemDTO> dtos)
+        {
+            if (dtos == null)
+            {
+                return new List<ItemCreateUpdateDTO>();
+            }
+
+            var entities = new List<ItemCreateUpdateDTO>();
+            dtos.ToList().ForEach(i => entities.Add(
+                new ItemCreateUpdateDTO
+                {
+                    Id = i.Id,
+                    Title = i.Title,
+                    Description = i.Description,
+                    Rounds = i.Rounds
+                }));
+
+            return entities;
+        }
+
+        public static List<ItemDTO> ToItemDtos(List<Item> entities)
+        {
+            var dtos = new List<ItemDTO>();
             entities.ToList().ForEach(i => dtos.Add(
                 new ItemDTO
                 {
@@ -106,6 +141,21 @@ namespace PlanningPoker.Services
             return entities;
         }
 
+        public static ICollection<User> ToUserEntities(ICollection<UserCreateDTO> dtos)
+        {
+            var entities = new HashSet<User>();
+            dtos.ToList().ForEach(u => entities.Add(
+                new User
+                {
+                    Id = u.Id,
+                    IsHost = u.IsHost,
+                    Email = u.Email,
+                    Nickname = u.Nickname
+                }));
+
+            return entities;
+        }
+
         public static ICollection<UserDTO> ToUserDtos(ICollection<User> entities)
         {
             var dtos = new HashSet<UserDTO>();
@@ -121,9 +171,24 @@ namespace PlanningPoker.Services
             return dtos;
         }
 
-        public static ICollection<ItemEstimate> ToItemEstimateEntities(ICollection<ItemEstimateDTO> dtos)
+        public static ICollection<UserCreateDTO> ToUserCreateDtos(ICollection<UserDTO> users)
         {
-            var entities = new HashSet<ItemEstimate>();
+            var dtos = new HashSet<UserCreateDTO>();
+            users.ToList().ForEach(u => dtos.Add(
+                new UserCreateDTO
+                {
+                    Id = u.Id,
+                    IsHost = u.IsHost,
+                    Email = u.Email,
+                    Nickname = u.Nickname
+                }));
+
+            return dtos;
+        }
+
+        public static List<ItemEstimate> ToItemEstimateEntities(List<ItemEstimateDTO> dtos)
+        {
+            var entities = new List<ItemEstimate>();
             dtos.ToList().ForEach(ie => entities.Add(
                 new ItemEstimate
                 {
@@ -135,9 +200,9 @@ namespace PlanningPoker.Services
             return entities;
         }
 
-        public static ICollection<ItemEstimateDTO> ToItemEstimateDtos(ICollection<ItemEstimate> entities)
+        public static List<ItemEstimateDTO> ToItemEstimateDtos(List<ItemEstimate> entities)
         {
-            var dtos = new HashSet<ItemEstimateDTO>();
+            var dtos = new List<ItemEstimateDTO>();
             entities.ToList().ForEach(ie => dtos.Add(
                 new ItemEstimateDTO
                 {
@@ -147,6 +212,28 @@ namespace PlanningPoker.Services
                 }));
 
             return dtos;
+        }
+
+        public static SessionDTO ToSessionDTO(Session session)
+        {
+            return new SessionDTO
+            {
+                Id = session.Id,
+                Items = ToItemDtos(session.Items),
+                Users = ToUserDtos(session.Users),
+                SessionKey = session.SessionKey
+            };
+        }
+
+        public static SessionCreateUpdateDTO ToSessionCreateUpdateDTO(SessionDTO session)
+        {
+            return new SessionCreateUpdateDTO
+            {
+                Id = session.Id,
+                SessionKey = session.SessionKey,
+                Items = ToItemCreateUpdateDtos(session.Items),
+                Users = ToUserCreateDtos(session.Users)
+            };
         }
     }
 }

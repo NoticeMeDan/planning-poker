@@ -10,7 +10,7 @@ namespace PlanningPoker.Entities.Tests
         {
             var session = new Session();
 
-            var items = session.Items as HashSet<Item>;
+            var items = session.Items;
 
             Assert.NotNull(items);
         }

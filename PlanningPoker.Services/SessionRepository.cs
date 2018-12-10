@@ -19,8 +19,8 @@ namespace PlanningPoker.Services
         {
             var entity = new Session
             {
-                Items = CollectionHandler.ToItemEntities(session.Items),
-                Users = CollectionHandler.ToUserEntities(session.Users),
+                Items = EntityMapper.ToItemEntities(session.Items),
+                Users = EntityMapper.ToUserEntities(session.Users),
                 SessionKey = session.SessionKey
             };
 
@@ -47,17 +47,18 @@ namespace PlanningPoker.Services
 
         public async Task<SessionDTO> FindAsync(int sessionId)
         {
-            var entities = this.context.Sessions
+            return await this.context.Sessions
                 .Where(s => s.Id == sessionId)
-                .Select(s => new SessionDTO
-                {
-                    Id = s.Id,
-                    Items = CollectionHandler.ToItemDtos(s.Items),
-                    Users = CollectionHandler.ToUserDtos(s.Users),
-                    SessionKey = s.SessionKey
-                });
+                .Select(s => EntityMapper.ToSessionDTO(s))
+                .FirstAsync();
+        }
 
-            return await entities.FirstOrDefaultAsync();
+        public async Task<SessionDTO> FindByKeyAsync(string sessionKey)
+        {
+            return await this.context.Sessions
+                .Where(s => s.SessionKey == sessionKey)
+                .Select(s => EntityMapper.ToSessionDTO(s))
+                .FirstOrDefaultAsync();
         }
 
         public IQueryable<SessionDTO> Read()
@@ -66,8 +67,8 @@ namespace PlanningPoker.Services
                 .Select(s => new SessionDTO
                 {
                     Id = s.Id,
-                    Items = CollectionHandler.ToItemDtos(s.Items),
-                    Users = CollectionHandler.ToUserDtos(s.Users),
+                    Items = EntityMapper.ToItemDtos(s.Items),
+                    Users = EntityMapper.ToUserDtos(s.Users),
                     SessionKey = s.SessionKey
                 });
 
@@ -83,8 +84,8 @@ namespace PlanningPoker.Services
                 return false;
             }
 
-            entity.Items = CollectionHandler.ToItemEntities(session.Items);
-            entity.Users = CollectionHandler.ToUserEntities(session.Users);
+            entity.Items = EntityMapper.ToItemEntities(session.Items);
+            entity.Users = EntityMapper.ToUserEntities(session.Users);
             entity.SessionKey = session.SessionKey;
 
             this.context.SaveChanges();

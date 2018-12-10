@@ -1,133 +1,133 @@
 namespace PlanningPoker.WebApi.Tests.Controllers
 {
-    using System.Linq;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
-    using MockQueryable.Moq;
+    using Microsoft.Extensions.Caching.Memory;
     using Moq;
-    using PlanningPoker.Services;
-    using PlanningPoker.Shared;
     using PlanningPoker.WebApi.Controllers;
+    using Services;
+    using Shared;
     using Xunit;
 
     public class SessionControllerTest
     {
         [Fact]
-        public async Task Get_returns_dtos()
+        public async Task GetByKey_given_existing_key_returns_dto()
         {
             var dto = new SessionDTO();
-            var all = new[] { dto }.AsQueryable().BuildMock();
-            var repository = new Mock<ISessionRepository>();
-            repository.Setup(s => s.Read()).Returns(all.Object);
-             var controller = new SessionController(repository.Object);
-             var result = await controller.Get();
-             Assert.Equal(dto, result.Value.Single());
+            var sessionRepo = new Mock<ISessionRepository>();
+            sessionRepo.Setup(s => s.FindByKeyAsync("ABC123")).ReturnsAsync(dto);
+            var controller = new SessionController(sessionRepo.Object, null, null);
+            var get = await controller.GetByKey("ABC123");
+            Assert.Equal(dto, get.Value);
         }
 
         [Fact]
-        public async Task Get_given_existing_id_returns_dto()
+        public async Task GetByKey_given_non_existing_key_returns_NotFound()
         {
-            var dto = new SessionDTO();
-            var repository = new Mock<ISessionRepository>();
-            repository.Setup(s => s.FindAsync(42)).ReturnsAsync(dto);
-             var controller = new SessionController(repository.Object);
-             var get = await controller.Get(42);
-             Assert.Equal(dto, get.Value);
+            var sessionRepo = new Mock<ISessionRepository>();
+            var controller = new SessionController(sessionRepo.Object, null, null);
+            var get = await controller.GetByKey("ABC123");
+            Assert.IsType<NotFoundResult>(get.Result);
         }
 
         [Fact]
-        public async Task Get_given_non_existing_id_returns_NotFound()
-        {
-            var repository = new Mock<ISessionRepository>();
-             var controller = new SessionController(repository.Object);
-             var get = await controller.Get(42);
-             Assert.IsType<NotFoundResult>(get.Result);
-        }
-
-        [Fact]
-        public async Task Post_given_dto_creates_session()
+        public async Task Create_given_dto_creates_session()
         {
             var output = new SessionDTO();
-            var repository = new Mock<ISessionRepository>();
-            repository.Setup(s => s.CreateAsync(It.IsAny<SessionCreateUpdateDTO>())).ReturnsAsync(output);
-             var controller = new SessionController(repository.Object);
-             var input = new SessionCreateUpdateDTO();
-             await controller.Post(input);
-             repository.Verify(s => s.CreateAsync(input));
+            var sessionRepo = new Mock<ISessionRepository>();
+            sessionRepo.Setup(s => s.CreateAsync(It.IsAny<SessionCreateUpdateDTO>())).ReturnsAsync(output);
+            var controller = new SessionController(sessionRepo.Object, null, null);
+            var input = new SessionCreateUpdateDTO();
+            await controller.Create(input);
+            sessionRepo.Verify(s => s.CreateAsync(input));
         }
 
         [Fact]
-        public async Task Post_given_dto_returns_CreatedAtActionResult()
+        public async Task Create_given_dto_returns_CreatedAtActionResult()
         {
             var input = new SessionCreateUpdateDTO();
-            var output = new SessionDTO { Id = 42 };
-            var repository = new Mock<ISessionRepository>();
-            repository.Setup(s => s.CreateAsync(input)).ReturnsAsync(output);
-             var controller = new SessionController(repository.Object);
-             var post = await controller.Post(input);
+            var output = new SessionDTO { Id = 42, SessionKey = "ABC1234" };
+            var sessionRepo = new Mock<ISessionRepository>();
+            sessionRepo.Setup(s => s.CreateAsync(input)).ReturnsAsync(output);
+            var controller = new SessionController(sessionRepo.Object, null, null);
+            var post = await controller.Create(input);
             var result = post.Result as CreatedAtActionResult;
-             Assert.Equal("Get", result.ActionName);
-            Assert.Equal(42, result.RouteValues["id"]);
+            Assert.Equal("GetByKey", result.ActionName);
+            Assert.Equal("ABC1234", result.RouteValues["SessionKey"]);
             Assert.Equal(output, result.Value);
         }
 
         [Fact]
-        public async Task Put_given_dto_updates_session()
+        public async Task Join_given_nonexistant_sessionkey_returns_notfound()
         {
-            var repository = new Mock<ISessionRepository>();
-             var controller = new SessionController(repository.Object);
-             var dto = new SessionCreateUpdateDTO();
-             await controller.Put(42, dto);
-             repository.Verify(s => s.UpdateAsync(dto));
+            var input = new UserCreateDTO { Nickname = "Marty McTestface" };
+            var sessionRepo = new Mock<ISessionRepository>();
+            var cache = new Mock<IMemoryCache>();
+            var controller = new SessionController(sessionRepo.Object, null, cache.Object);
+            var post = await controller.Join("ABC123", input);
+            Assert.IsType<NotFoundResult>(post.Result);
         }
 
         [Fact]
-        public async Task Put_returns_NoContent()
+        public async Task Join_given_host_where_session_already_has_hosts_returns_badrequest()
         {
-            var dto = new SessionCreateUpdateDTO();
-            var repository = new Mock<ISessionRepository>();
-            repository.Setup(s => s.UpdateAsync(dto)).ReturnsAsync(true);
-            var controller = new SessionController(repository.Object);
-             var put = await controller.Put(42, dto);
-             Assert.IsType<NoContentResult>(put);
+            var sessionRepo = new Mock<ISessionRepository>();
+            var cache = new Mock<IMemoryCache>();
+
+            sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
+                .ReturnsAsync(new SessionDTO
+                    { SessionKey = "ABC1234", Users = new HashSet<UserDTO> { new UserDTO { IsHost = true } } });
+
+            var controller = new SessionController(sessionRepo.Object, null, cache.Object);
+            var input = new UserCreateDTO { Nickname = "Marty McTestface", IsHost = true };
+            var post = await controller.Join("ABC123", input);
+            Assert.IsType<BadRequestResult>(post.Result);
         }
 
         [Fact]
-        public async Task Put_given_repository_returns_false_returns_NotFound()
+        public async Task Join_given_existant_sessionkey_and_user_joins_guest()
         {
-            var repository = new Mock<ISessionRepository>();
-             var controller = new SessionController(repository.Object);
-             var dto = new SessionCreateUpdateDTO();
-             var put = await controller.Put(42, dto);
-             Assert.IsType<NotFoundResult>(put);
+            var sessionRepo = new Mock<ISessionRepository>();
+            var userRepo = new Mock<IUserRepository>();
+            var cache = new MemoryCache(new MemoryCacheOptions());
+
+            sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
+                .ReturnsAsync(new SessionDTO
+                    { SessionKey = "ABC1234", Users = new HashSet<UserDTO> { new UserDTO { IsHost = true } } });
+
+            userRepo.Setup(s => s.CreateAsync(It.IsAny<UserCreateDTO>()))
+                .ReturnsAsync(new UserDTO { Id = 42, Nickname = "Marty McTestface" });
+
+            var controller = new SessionController(sessionRepo.Object, userRepo.Object, cache);
+            var input = new UserCreateDTO { Nickname = "Marty McTestface" };
+            var post = await controller.Join("ABC1234", input);
+            Assert.IsType<UserStateResponseDTO>(post.Value);
+            Assert.IsType<string>(post.Value.Token);
+            Assert.True(post.Value.Token != string.Empty);
         }
 
         [Fact]
-        public async Task Delete_given_id_deletes_session()
+        public async Task Join_given_existant_sessionkey_and_user_joins_scrummaster()
         {
-            var repository = new Mock<ISessionRepository>();
-             var controller = new SessionController(repository.Object);
-             await controller.Delete(42);
-             repository.Verify(s => s.DeleteAsync(42));
-        }
+            var sessionRepo = new Mock<ISessionRepository>();
+            var userRepo = new Mock<IUserRepository>();
+            var cache = new MemoryCache(new MemoryCacheOptions());
 
-        [Fact]
-        public async Task Delete_returns_NoContent()
-        {
-            var repository = new Mock<ISessionRepository>();
-            repository.Setup(s => s.DeleteAsync(42)).ReturnsAsync(true);
-            var controller = new SessionController(repository.Object);
-             var delete = await controller.Delete(42);
-             Assert.IsType<NoContentResult>(delete);
-        }
+            sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
+                .ReturnsAsync(new SessionDTO
+                    { SessionKey = "ABC1234", Users = new HashSet<UserDTO> { new UserDTO { IsHost = false } } });
 
-        [Fact]
-        public async Task Delete_given_repository_returns_false_returns_NotFound()
-        {
-            var repository = new Mock<ISessionRepository>();
-             var controller = new SessionController(repository.Object);
-             var delete = await controller.Delete(42);
-             Assert.IsType<NotFoundResult>(delete);
+            userRepo.Setup(s => s.CreateAsync(It.IsAny<UserCreateDTO>()))
+                .ReturnsAsync(new UserDTO { Id = 42, Nickname = "Marty McTestface", IsHost = true });
+
+            var controller = new SessionController(sessionRepo.Object, userRepo.Object, cache);
+            var input = new UserCreateDTO { Nickname = "Marty McTestface", IsHost = true };
+            var post = await controller.Join("ABC1234", input);
+            Assert.IsType<UserStateResponseDTO>(post.Value);
+            Assert.IsType<string>(post.Value.Token);
+            Assert.True(post.Value.Token != string.Empty);
         }
     }
 }

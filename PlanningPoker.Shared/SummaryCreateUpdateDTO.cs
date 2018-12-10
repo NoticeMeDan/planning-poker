@@ -8,7 +8,7 @@ namespace PlanningPoker.Shared
         public int Id { get; set; }
 
         [Required]
-        public ICollection<ItemEstimateDTO> ItemEstimates { get; set; }
+        public List<ItemEstimateDTO> ItemEstimates { get; set; }
 
         [Required]
         public int SessionId { get; set; }

@@ -10,6 +10,8 @@ namespace PlanningPoker.Services
 
         Task<SessionDTO> FindAsync(int sessionId);
 
+        Task<SessionDTO> FindByKeyAsync(string sessionKey);
+
         IQueryable<SessionDTO> Read();
 
         Task<bool> UpdateAsync(SessionCreateUpdateDTO session);

@@ -49,9 +49,9 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         {
             var output = new UserDTO();
             var repository = new Mock<IUserRepository>();
-            repository.Setup(s => s.CreateAsync(It.IsAny<UserCreateUpdateDTO>())).ReturnsAsync(output);
+            repository.Setup(s => s.CreateAsync(It.IsAny<UserCreateDTO>())).ReturnsAsync(output);
              var controller = new UserController(repository.Object);
-             var input = new UserCreateUpdateDTO();
+             var input = new UserCreateDTO();
              await controller.Post(input);
              repository.Verify(s => s.CreateAsync(input));
         }
@@ -59,7 +59,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         [Fact]
         public async Task Post_given_dto_returns_CreatedAtActionResult()
         {
-            var input = new UserCreateUpdateDTO();
+            var input = new UserCreateDTO();
             var output = new UserDTO { Id = 42 };
             var repository = new Mock<IUserRepository>();
             repository.Setup(s => s.CreateAsync(input)).ReturnsAsync(output);
@@ -76,7 +76,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         {
             var repository = new Mock<IUserRepository>();
              var controller = new UserController(repository.Object);
-             var dto = new UserCreateUpdateDTO();
+             var dto = new UserCreateDTO();
              await controller.Put(42, dto);
              repository.Verify(s => s.UpdateAsync(dto));
         }
@@ -84,7 +84,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         [Fact]
         public async Task Put_returns_NoContent()
         {
-            var dto = new UserCreateUpdateDTO();
+            var dto = new UserCreateDTO();
             var repository = new Mock<IUserRepository>();
             repository.Setup(s => s.UpdateAsync(dto)).ReturnsAsync(true);
             var controller = new UserController(repository.Object);
@@ -97,7 +97,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         {
             var repository = new Mock<IUserRepository>();
              var controller = new UserController(repository.Object);
-             var dto = new UserCreateUpdateDTO();
+             var dto = new UserCreateDTO();
              var put = await controller.Put(42, dto);
              Assert.IsType<NotFoundResult>(put);
         }

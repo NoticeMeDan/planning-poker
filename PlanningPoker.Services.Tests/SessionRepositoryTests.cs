@@ -68,6 +68,27 @@ namespace PlanningPoker.Services.Tests
         }
 
         [Fact]
+        public async Task FindAsyncByKey_given_key_exists_return_dto()
+        {
+            using (var connection = await this.CreateConnectionAsync())
+            using (var context = await this.CreateContextAsync(connection))
+            {
+                var entity = this.CreateDummySessionEntity();
+
+                context.Sessions.Add(entity);
+                context.SaveChanges();
+
+                var repository = new SessionRepository(context);
+
+                var session = await repository.FindByKeyAsync(entity.SessionKey);
+
+                Assert.Equal(1, session.Id);
+                Assert.Equal(entity.SessionKey, session.SessionKey);
+                Assert.Equal("item 1", session.Items.FirstOrDefault()?.Title);
+            }
+        }
+
+        [Fact]
         public async Task Read_returns_projection_of_all_sessions()
         {
             using (var connection = await this.CreateConnectionAsync())
@@ -196,8 +217,15 @@ namespace PlanningPoker.Services.Tests
             return new SessionCreateUpdateDTO
             {
                 SessionKey = "A1B2C3D",
-                Items = new List<ItemDTO> { new ItemDTO { Title = "item 1", Rounds = new HashSet<RoundDTO>() }, new ItemDTO { Title = "item 2", Rounds = new HashSet<RoundDTO>() } },
-                Users = new List<UserDTO> { new UserDTO { IsHost = true, Nickname = "user 1" } }
+                Items = new List<ItemCreateUpdateDTO>
+                {
+                    new ItemCreateUpdateDTO { Title = "item 1", Rounds = new HashSet<RoundDTO>() },
+                    new ItemCreateUpdateDTO { Title = "item 2", Rounds = new HashSet<RoundDTO>() }
+                },
+                Users = new List<UserCreateDTO>
+                {
+                    new UserCreateDTO { IsHost = true, Nickname = "user 1" }
+                }
             };
         }
     }
