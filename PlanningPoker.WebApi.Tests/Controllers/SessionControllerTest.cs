@@ -71,7 +71,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         }
 
         [Fact]
-        public async Task Join_given_host_where_session_already_has_hosts_returns_badrequest()
+        public async Task Join_given_host_where_session_already_has_hosts_returns_forbidden()
         {
             var sessionRepo = new Mock<ISessionRepository>();
             var cache = new Mock<IMemoryCache>();
@@ -83,7 +83,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             var controller = new SessionController(sessionRepo.Object, null, cache.Object);
             var input = new UserCreateDTO { Nickname = "Marty McTestface", IsHost = true };
             var post = await controller.Join("ABC123", input);
-            Assert.IsType<BadRequestResult>(post.Result);
+            Assert.IsType<ForbidResult>(post.Result);
         }
 
         [Fact]
