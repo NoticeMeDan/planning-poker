@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using PlanningPoker.App.Models;
 using Xamarin.Forms;
 
@@ -15,13 +17,14 @@ namespace PlanningPoker.App.ViewModels
     public class ItemsViewModel : BaseViewModel
     {
         // TODO: Use API to get and set items.
-        private readonly IItemRepository itemRepo;
-        public ObservableCollection<ItemDTO> Items { get; set; }
+        private readonly ISessionRepository sessionRepo;
+        public List<ItemCreateUpdateDTO> Items { get; set; }
         public string Session { get; }
 
         // public ICommand AddCommand { get; set; }
         public ICommand LoadCommand { get; }
         public ICommand SaveCommand { get; }
+        public ICommand CreateSessionCommand { get; }
 
         private string title;
         public string Title
@@ -37,14 +40,17 @@ namespace PlanningPoker.App.ViewModels
             set => SetProperty(ref description, value);
         }
 
-        public ItemsViewModel()
+        public ItemsViewModel(ISessionRepository sessionRepo)
         {
             this.Session = "New session";
 
-            this.Items = new ObservableCollection<ItemDTO>();
+            this.sessionRepo = sessionRepo;
+
+            this.Items = new List<ItemCreateUpdateDTO>();
 
             this.LoadCommand = new RelayCommand(_ => this.ExecuteLoadCommand());
             this.SaveCommand = new RelayCommand(_ => this.ExecuteSaveCommand());
+            this.CreateSessionCommand = new RelayCommand(_ => this.ExecuteCreateSessionCommand());
         }
 
         private void ExecuteSaveCommand()
@@ -55,7 +61,7 @@ namespace PlanningPoker.App.ViewModels
             }
             IsBusy = true;
 
-            var toCreate = new ItemDTO()
+            var toCreate = new ItemCreateUpdateDTO
             {
                 Title = Title,
                 Description = Description
@@ -87,6 +93,25 @@ namespace PlanningPoker.App.ViewModels
             {
                 this.Items.Add(item);
             }
+
+            this.IsBusy = false;
+        }
+
+        private async Task ExecuteCreateSessionCommand()
+        {
+            if (this.IsBusy)
+            {
+                return;
+            }
+
+            this.IsBusy = true;
+
+            var toCreate = new SessionCreateUpdateDTO
+            {
+                Items = this.Items
+            };
+
+            await sessionRepo.CreateAsync(toCreate);
 
             this.IsBusy = false;
         }

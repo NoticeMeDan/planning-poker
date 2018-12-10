@@ -31,14 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Include="Views\SessionCreate\CreateSession.xaml">
-      <SubType>Designer</SubType>
-      <Generator></Generator>
-    </Page>
-    <Page Include="Views\SessionCreate\NewItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator></Generator>
-    </Page>
     <Page Include="Views\Session\ItemEstimation.xaml">
       <SubType>Designer</SubType>
       <Generator></Generator>
