@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using PlanningPoker.App.Models;
+
 namespace PlanningPoker.App.ViewModels
 {
     using System.Collections.ObjectModel;
@@ -7,8 +11,6 @@ namespace PlanningPoker.App.ViewModels
     public class ItemsViewModel : BaseViewModel
     {
         // TODO: Use API to get and set items.
-
-        // private readonly
         public ObservableCollection<ItemDTO> Items { get; set; }
 
         // public ICommand AddCommand { get; set; }
@@ -20,7 +22,7 @@ namespace PlanningPoker.App.ViewModels
 
             this.Items = new ObservableCollection<ItemDTO>();
 
-            this.LoadCommand = new RelayCommand(_ => this.ExecuteLoadCommand());
+            this.LoadCommand = new RelayCommand(async _=> await this.ExecuteLoadCommand());
         }
 
         private static ObservableCollection<ItemDTO> MockData()
@@ -38,7 +40,7 @@ namespace PlanningPoker.App.ViewModels
             return data;
         }
 
-        private void ExecuteLoadCommand()
+        private async Task ExecuteLoadCommand()
         {
             if (this.IsBusy)
             {
