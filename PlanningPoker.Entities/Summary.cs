@@ -6,7 +6,7 @@ namespace PlanningPoker.Entities
     public class Summary : BaseEntity
     {
         [Required]
-        public ICollection<ItemEstimate> ItemEstimates { get; set; }
+        public List<ItemEstimate> ItemEstimates { get; set; }
 
         [Required]
         public int SessionId { get; set; }

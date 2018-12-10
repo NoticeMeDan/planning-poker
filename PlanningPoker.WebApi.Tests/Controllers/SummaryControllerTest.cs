@@ -16,7 +16,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         public async Task Get_returns_dtos()
         {
             var dto = new SummaryDTO();
-            var all = new[] {dto}.AsQueryable().BuildMock();
+            var all = new[] { dto }.AsQueryable().BuildMock();
             var repository = new Mock<ISummaryRepository>();
             repository.Setup(s => s.Read()).Returns(all.Object);
             var controller = new SummaryController(repository.Object);
@@ -60,7 +60,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         public async Task Post_given_dto_returns_CreatedAtActionResult()
         {
             var input = new SummaryCreateUpdateDTO();
-            var output = new SummaryDTO {Id = 42};
+            var output = new SummaryDTO { Id = 42 };
             var repository = new Mock<ISummaryRepository>();
             repository.Setup(s => s.CreateAsync(input)).ReturnsAsync(output);
             var controller = new SummaryController(repository.Object);

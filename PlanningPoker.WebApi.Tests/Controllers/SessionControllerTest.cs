@@ -1,10 +1,9 @@
-using System.Collections.Generic;
-using Microsoft.Extensions.Caching.Memory;
-
 namespace PlanningPoker.WebApi.Tests.Controllers
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Memory;
     using Moq;
     using PlanningPoker.WebApi.Controllers;
     using Services;
@@ -49,7 +48,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         public async Task Create_given_dto_returns_CreatedAtActionResult()
         {
             var input = new SessionCreateUpdateDTO();
-            var output = new SessionDTO { Id = 42, SessionKey = "ABC1234"};
+            var output = new SessionDTO { Id = 42, SessionKey = "ABC1234" };
             var sessionRepo = new Mock<ISessionRepository>();
             sessionRepo.Setup(s => s.CreateAsync(input)).ReturnsAsync(output);
             var controller = new SessionController(sessionRepo.Object, null, null);
@@ -63,7 +62,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         [Fact]
         public async Task Join_given_nonexistant_sessionkey_returns_notfound()
         {
-            var input = new UserCreateDTO { Nickname = "Marty McTestface"};
+            var input = new UserCreateDTO { Nickname = "Marty McTestface" };
             var sessionRepo = new Mock<ISessionRepository>();
             var cache = new Mock<IMemoryCache>();
             var controller = new SessionController(sessionRepo.Object, null, cache.Object);
@@ -79,7 +78,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
 
             sessionRepo.Setup(s => s.FindAsyncByKey(It.IsAny<string>()))
                 .ReturnsAsync(new SessionDTO
-                    {SessionKey = "ABC1234", Users = new HashSet<UserDTO> {new UserDTO {IsHost = true}}});
+                    { SessionKey = "ABC1234", Users = new HashSet<UserDTO> { new UserDTO { IsHost = true } } });
 
             var controller = new SessionController(sessionRepo.Object, null, cache.Object);
             var input = new UserCreateDTO { Nickname = "Marty McTestface", IsHost = true };
@@ -96,10 +95,10 @@ namespace PlanningPoker.WebApi.Tests.Controllers
 
             sessionRepo.Setup(s => s.FindAsyncByKey(It.IsAny<string>()))
                 .ReturnsAsync(new SessionDTO
-                    {SessionKey = "ABC1234", Users = new HashSet<UserDTO> {new UserDTO {IsHost = true}}});
+                    { SessionKey = "ABC1234", Users = new HashSet<UserDTO> { new UserDTO { IsHost = true } } });
 
             userRepo.Setup(s => s.CreateAsync(It.IsAny<UserCreateDTO>()))
-                .ReturnsAsync(new UserDTO {Id = 42, Nickname = "Marty McTestface"});
+                .ReturnsAsync(new UserDTO { Id = 42, Nickname = "Marty McTestface" });
 
             var controller = new SessionController(sessionRepo.Object, userRepo.Object, cache);
             var input = new UserCreateDTO { Nickname = "Marty McTestface" };
@@ -118,10 +117,10 @@ namespace PlanningPoker.WebApi.Tests.Controllers
 
             sessionRepo.Setup(s => s.FindAsyncByKey(It.IsAny<string>()))
                 .ReturnsAsync(new SessionDTO
-                    {SessionKey = "ABC1234", Users = new HashSet<UserDTO> {new UserDTO {IsHost = false}}});
+                    { SessionKey = "ABC1234", Users = new HashSet<UserDTO> { new UserDTO { IsHost = false } } });
 
             userRepo.Setup(s => s.CreateAsync(It.IsAny<UserCreateDTO>()))
-                .ReturnsAsync(new UserDTO {Id = 42, Nickname = "Marty McTestface", IsHost = true });
+                .ReturnsAsync(new UserDTO { Id = 42, Nickname = "Marty McTestface", IsHost = true });
 
             var controller = new SessionController(sessionRepo.Object, userRepo.Object, cache);
             var input = new UserCreateDTO { Nickname = "Marty McTestface", IsHost = true };

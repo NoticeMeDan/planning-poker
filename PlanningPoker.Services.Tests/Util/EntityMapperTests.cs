@@ -12,7 +12,7 @@ namespace PlanningPoker.Services.Tests.Util
         [Fact]
         public void ToItemEntities_returns_Collection_of_equal_size()
         {
-            var dtos = this.CreateItemDTOHashSet();
+            var dtos = this.CreateItemDTOList();
 
             var result = EntityMapper.ToItemEntities(dtos);
 
@@ -22,7 +22,7 @@ namespace PlanningPoker.Services.Tests.Util
         [Fact]
         public void ToItemEntities_returns_Collection_of_correct_entities()
         {
-            var dtos = this.CreateItemDTOHashSet();
+            var dtos = this.CreateItemDTOList();
 
             var result = EntityMapper.ToItemEntities(dtos);
 
@@ -36,7 +36,7 @@ namespace PlanningPoker.Services.Tests.Util
         [Fact]
         public void ToItemDtos_returns_Collection_of_equal_size()
         {
-           var entities = this.CreateItemEntityHashSet();
+           var entities = this.CreateItemEntityList();
 
             var result = EntityMapper.ToItemDtos(entities);
 
@@ -46,7 +46,7 @@ namespace PlanningPoker.Services.Tests.Util
         [Fact]
         public void ToItemDtos_returns_Collection_of_correct_dtos()
         {
-            var entities = this.CreateItemEntityHashSet();
+            var entities = this.CreateItemEntityList();
 
             var result = EntityMapper.ToItemDtos(entities);
 
@@ -218,7 +218,7 @@ namespace PlanningPoker.Services.Tests.Util
         [Fact]
         public void ToItemEstimateEntities_returns_correct_size()
         {
-            var dtos = this.CreateItemEstimateDTOHashSet();
+            var dtos = this.CreateItemEstimateDTOList();
 
             var result = EntityMapper.ToItemEstimateEntities(dtos);
 
@@ -228,7 +228,7 @@ namespace PlanningPoker.Services.Tests.Util
         [Fact]
         public void ToItemEstimateEntities_returns_correct_entities()
         {
-            var dtos = this.CreateItemEstimateDTOHashSet();
+            var dtos = this.CreateItemEstimateDTOList();
 
             var result = EntityMapper.ToItemEstimateEntities(dtos);
 
@@ -242,7 +242,7 @@ namespace PlanningPoker.Services.Tests.Util
         [Fact]
         public void ToItemEstimateDtos_returns_correct_size()
         {
-            var entities = this.CreateItemEstimateEntityHashSet();
+            var entities = this.CreateItemEstimateEntityList();
 
             var result = EntityMapper.ToItemEstimateDtos(entities);
 
@@ -252,7 +252,7 @@ namespace PlanningPoker.Services.Tests.Util
         [Fact]
         public void ToItemEstimateDtos_returns_correct_dtos()
         {
-            var entities = this.CreateItemEstimateEntityHashSet();
+            var entities = this.CreateItemEstimateEntityList();
 
             var result = EntityMapper.ToItemEstimateDtos(entities);
 
@@ -272,13 +272,13 @@ namespace PlanningPoker.Services.Tests.Util
 
             Assert.Equal(this.CreateSession().Id, result.Id);
             Assert.Equal(this.CreateSession().SessionKey, result.SessionKey);
-            Assert.True(this.CreateItemDTOHashSet().IsDeepEqual(result.Items));
+            Assert.True(this.CreateItemDTOList().IsDeepEqual(result.Items));
             Assert.True(this.CreateUserDTOHashSet().IsDeepEqual(result.Users));
         }
 
-        private HashSet<Item> CreateItemEntityHashSet()
+        private List<Item> CreateItemEntityList()
         {
-            return new HashSet<Item>
+            return new List<Item>
             {
                 new Item
                 {
@@ -297,9 +297,9 @@ namespace PlanningPoker.Services.Tests.Util
             };
         }
 
-        private HashSet<ItemDTO> CreateItemDTOHashSet()
+        private List<ItemDTO> CreateItemDTOList()
         {
-            return new HashSet<ItemDTO>
+            return new List<ItemDTO>
             {
                 new ItemDTO
                 {
@@ -402,9 +402,9 @@ namespace PlanningPoker.Services.Tests.Util
             };
         }
 
-        private HashSet<ItemEstimateDTO> CreateItemEstimateDTOHashSet()
+        private List<ItemEstimateDTO> CreateItemEstimateDTOList()
         {
-            return new HashSet<ItemEstimateDTO>
+            return new List<ItemEstimateDTO>
             {
                 new ItemEstimateDTO
                 {
@@ -415,9 +415,9 @@ namespace PlanningPoker.Services.Tests.Util
             };
         }
 
-        private HashSet<ItemEstimate> CreateItemEstimateEntityHashSet()
+        private List<ItemEstimate> CreateItemEstimateEntityList()
         {
-            return new HashSet<ItemEstimate>
+            return new List<ItemEstimate>
             {
                 new ItemEstimate
                 {
@@ -433,7 +433,7 @@ namespace PlanningPoker.Services.Tests.Util
             return new Session
             {
                 Id = 42,
-                Items = this.CreateItemEntityHashSet(),
+                Items = this.CreateItemEntityList(),
                 SessionKey = "ABC123",
                 Users = this.CreateUserEntityHashSet()
             };

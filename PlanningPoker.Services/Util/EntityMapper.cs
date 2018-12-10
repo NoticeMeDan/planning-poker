@@ -7,9 +7,9 @@ namespace PlanningPoker.Services
 
     public class EntityMapper
     {
-        public static ICollection<Item> ToItemEntities(ICollection<ItemDTO> dtos)
+        public static List<Item> ToItemEntities(List<ItemDTO> dtos)
         {
-            var entities = new HashSet<Item>();
+            var entities = new List<Item>();
             dtos.ToList().ForEach(i => entities.Add(
                 new Item
                 {
@@ -22,9 +22,9 @@ namespace PlanningPoker.Services
             return entities;
         }
 
-        public static ICollection<Item> ToItemEntities(ICollection<ItemCreateUpdateDTO> dtos)
+        public static List<Item> ToItemEntities(List<ItemCreateUpdateDTO> dtos)
         {
-            var entities = new HashSet<Item>();
+            var entities = new List<Item>();
             dtos.ToList().ForEach(i => entities.Add(
                 new Item
                 {
@@ -37,14 +37,14 @@ namespace PlanningPoker.Services
             return entities;
         }
 
-        public static ICollection<ItemCreateUpdateDTO> ToItemCreateUpdateDtos(ICollection<ItemDTO> dtos)
+        public static List<ItemCreateUpdateDTO> ToItemCreateUpdateDtos(List<ItemDTO> dtos)
         {
             if (dtos == null)
             {
-                return new HashSet<ItemCreateUpdateDTO>();
+                return new List<ItemCreateUpdateDTO>();
             }
 
-            var entities = new HashSet<ItemCreateUpdateDTO>();
+            var entities = new List<ItemCreateUpdateDTO>();
             dtos.ToList().ForEach(i => entities.Add(
                 new ItemCreateUpdateDTO
                 {
@@ -57,9 +57,9 @@ namespace PlanningPoker.Services
             return entities;
         }
 
-        public static ICollection<ItemDTO> ToItemDtos(ICollection<Item> entities)
+        public static List<ItemDTO> ToItemDtos(List<Item> entities)
         {
-            var dtos = new HashSet<ItemDTO>();
+            var dtos = new List<ItemDTO>();
             entities.ToList().ForEach(i => dtos.Add(
                 new ItemDTO
                 {
@@ -186,9 +186,9 @@ namespace PlanningPoker.Services
             return dtos;
         }
 
-        public static ICollection<ItemEstimate> ToItemEstimateEntities(ICollection<ItemEstimateDTO> dtos)
+        public static List<ItemEstimate> ToItemEstimateEntities(List<ItemEstimateDTO> dtos)
         {
-            var entities = new HashSet<ItemEstimate>();
+            var entities = new List<ItemEstimate>();
             dtos.ToList().ForEach(ie => entities.Add(
                 new ItemEstimate
                 {
@@ -200,9 +200,9 @@ namespace PlanningPoker.Services
             return entities;
         }
 
-        public static ICollection<ItemEstimateDTO> ToItemEstimateDtos(ICollection<ItemEstimate> entities)
+        public static List<ItemEstimateDTO> ToItemEstimateDtos(List<ItemEstimate> entities)
         {
-            var dtos = new HashSet<ItemEstimateDTO>();
+            var dtos = new List<ItemEstimateDTO>();
             entities.ToList().ForEach(ie => dtos.Add(
                 new ItemEstimateDTO
                 {
@@ -225,7 +225,7 @@ namespace PlanningPoker.Services
             };
         }
 
-        public static SessionCreateUpdateDTO toSessionCreateUpdateDTO(SessionDTO session)
+        public static SessionCreateUpdateDTO ToSessionCreateUpdateDTO(SessionDTO session)
         {
             return new SessionCreateUpdateDTO
             {

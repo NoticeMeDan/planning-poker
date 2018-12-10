@@ -1,12 +1,12 @@
-using System.Linq;
-using Microsoft.Extensions.Caching.Memory;
-using PlanningPoker.WebApi.Security;
-
 namespace PlanningPoker.WebApi.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Memory;
+    using Security;
     using Services;
     using Shared;
     using Utils;
@@ -55,6 +55,7 @@ namespace PlanningPoker.WebApi.Controllers
             }
 
             session.SessionKey = key;
+            session.Users = new List<UserCreateDTO>();
             var created = await this.sessionRepository.CreateAsync(session);
             return this.CreatedAtAction(nameof(this.GetByKey), new { created.SessionKey }, created);
         }
@@ -79,7 +80,7 @@ namespace PlanningPoker.WebApi.Controllers
             var createdUser = await this.userRepository.CreateAsync(user);
 
             session.Users.Add(createdUser);
-            await this.sessionRepository.UpdateAsync(EntityMapper.toSessionCreateUpdateDTO(session));
+            await this.sessionRepository.UpdateAsync(EntityMapper.ToSessionCreateUpdateDTO(session));
 
             return new UserStateResponseDTO { Token = this.userStateManager.CreateState(createdUser.Id) };
         }

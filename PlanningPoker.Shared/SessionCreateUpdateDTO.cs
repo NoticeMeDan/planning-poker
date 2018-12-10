@@ -11,7 +11,7 @@ namespace PlanningPoker.Shared
         public string SessionKey { get; set; }
 
         [Required]
-        public ICollection<ItemCreateUpdateDTO> Items { get; set; }
+        public List<ItemCreateUpdateDTO> Items { get; set; }
 
         public ICollection<UserCreateDTO> Users { get; set; }
     }
