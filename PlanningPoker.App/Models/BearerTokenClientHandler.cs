@@ -9,12 +9,12 @@ namespace PlanningPoker.App.Models
     using Microsoft.Identity.Client;
     using Xamarin.Android.Net;
 
-    public class BearerTokenHttpClientHandler : AndroidClientHandler
+    public class BearerTokenClientHandler : AndroidClientHandler
     {
         private readonly IPublicClientApplication publicClientApplication;
         private readonly IReadOnlyCollection<string> scopes;
 
-        public BearerTokenHttpClientHandler(IPublicClientApplication publicClientApplication, ISettings settings)
+        public BearerTokenClientHandler(IPublicClientApplication publicClientApplication, ISettings settings)
         {
             this.publicClientApplication = publicClientApplication;
             this.scopes = settings.Scopes;

@@ -72,7 +72,7 @@ namespace PlanningPoker.App
 
             var publicClientApplication = new PublicClientApplication(settings.ClientId, $"https://login.microsoftonline.com/{settings.TenantId}");
 
-            var handler = new BearerTokenHttpClientHandler(publicClientApplication, settings);
+            var handler = new BearerTokenClientHandler(publicClientApplication, settings);
 
             var client = new HttpClient(handler);
 
@@ -85,7 +85,6 @@ namespace PlanningPoker.App
             services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddScoped<ISummaryRepository, SummaryRepository>();
             services.AddScoped<IItemRepository, ItemRepository>();
-            // Adding the ViewModels
             services.AddScoped<LoginViewModel>();
             services.AddScoped<ItemsViewModel>();
 
