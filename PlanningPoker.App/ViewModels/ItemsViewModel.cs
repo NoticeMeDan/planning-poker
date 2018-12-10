@@ -1,41 +1,73 @@
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using PlanningPoker.App.Models;
+using Xamarin.Forms;
+
 namespace PlanningPoker.App.ViewModels
 {
     using System.Collections.ObjectModel;
     using System.Windows.Input;
+    using PlanningPoker.App.ViewModels.Interfaces;
     using PlanningPoker.Shared;
 
+    // This class contains data until repositories is setup
     public class ItemsViewModel : BaseViewModel
     {
         // TODO: Use API to get and set items.
-
-        // private readonly
+        private readonly IItemRepository itemRepo;
         public ObservableCollection<ItemDTO> Items { get; set; }
+        public string Session { get; }
 
         // public ICommand AddCommand { get; set; }
-        public ICommand LoadCommand { get; set; }
+        public ICommand LoadCommand { get; }
+        public ICommand SaveCommand { get; }
+
+        private string title;
+        public string Title
+        {
+            get => title;
+            set => SetProperty(ref title, value);
+        }
+
+        private string description;
+        public string Description
+        {
+            get => description;
+            set => SetProperty(ref description, value);
+        }
 
         public ItemsViewModel()
         {
-            this.Title = "Items";
+            this.Session = "New session";
 
             this.Items = new ObservableCollection<ItemDTO>();
 
             this.LoadCommand = new RelayCommand(_ => this.ExecuteLoadCommand());
+            this.SaveCommand = new RelayCommand(_ => this.ExecuteSaveCommand());
         }
 
-        private static ObservableCollection<ItemDTO> MockData()
+        private void ExecuteSaveCommand()
         {
-            var data = new ObservableCollection<ItemDTO>();
+            if (IsBusy)
+            {
+                return;
+            }
+            IsBusy = true;
 
-            var item1 = new ItemDTO { Id = 1, Title = "Item_1", Description = "First item" };
-            var item2 = new ItemDTO { Id = 2, Title = "Item_2", Description = "Second item" };
-            var item3 = new ItemDTO { Id = 3, Title = "Item_3", Description = "Third item" };
+            var toCreate = new ItemDTO()
+            {
+                Title = Title,
+                Description = Description
+            };
 
-            data.Add(item1);
-            data.Add(item2);
-            data.Add(item3);
+            Items.Add(toCreate);
 
-            return data;
+            Title = string.Empty;
+            Description = string.Empty;
+            this.LoadCommand.Execute(null);
+
+            IsBusy = false;
         }
 
         private void ExecuteLoadCommand()
@@ -49,7 +81,7 @@ namespace PlanningPoker.App.ViewModels
 
             this.Items.Clear();
 
-            var items = MockData();
+            var items = Items;
 
             foreach (var item in items)
             {

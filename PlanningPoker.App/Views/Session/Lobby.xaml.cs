@@ -1,18 +1,28 @@
 namespace PlanningPoker.App.Views.Session
 {
     using System;
+    using Microsoft.Extensions.DependencyInjection;
+    using ViewModels;
     using Xamarin.Forms;
+    using Xamarin.Forms.Xaml;
 
-    public partial class Lobby : ContentPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class Lobby : TabbedPage
     {
+        private readonly LobbyViewModel ViewModel;
+
         public Lobby()
         {
+            this.ViewModel = new LobbyViewModel();
+            this.BindingContext = this.ViewModel =
+                (Application.Current as App)?.Container.GetRequiredService<LobbyViewModel>();
+
             this.InitializeComponent();
         }
 
-        private void BeginSessionClicked(object sender, EventArgs e)
+        protected override void OnAppearing()
         {
-            this.Navigation.PushAsync(new Session());
+            this.ViewModel.LoadCommand.Execute(null);
         }
     }
 }

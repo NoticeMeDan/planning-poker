@@ -1,10 +1,10 @@
 namespace PlanningPoker.App.Views.SessionCreation
 {
     using System;
+    using Components;
     using Microsoft.Extensions.DependencyInjection;
-    using PlanningPoker.App.ViewModels;
-    using PlanningPoker.App.Views.CreateSession;
-    using PlanningPoker.App.Views.Session;
+    using Session;
+    using ViewModels;
     using Xamarin.Forms;
     using Xamarin.Forms.Xaml;
 
@@ -15,25 +15,26 @@ namespace PlanningPoker.App.Views.SessionCreation
 
         public CreateSession()
         {
-            this.InitializeComponent();
-
             this.BindingContext = this.viewModel =
                 (Application.Current as App)?.Container.GetRequiredService<ItemsViewModel>();
+
+            this.InitializeComponent();
         }
 
         protected override void OnAppearing()
         {
-            this.viewModel.LoadCommand.Execute(null);
-        }
-
-        private void ToolbarItem_OnActivated(object sender, EventArgs e)
-        {
-            this.Navigation.PushAsync(new NewItem());
+            viewModel.LoadCommand.Execute(null);
         }
 
         private void CreateSessionClicked(object sender, EventArgs e)
         {
-            this.Navigation.PushAsync(new Lobby());
+            this.Navigation.PushAsync(
+                new Lobby());
+        }
+
+        private void OnAddItem_Clicked(object sender, EventArgs e)
+        {
+            this.viewModel.SaveCommand.Execute(null);
         }
     }
 }

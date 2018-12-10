@@ -1,9 +1,12 @@
+using PlanningPoker.App.ViewModels.Interfaces;
+
 namespace PlanningPoker.App.ViewModels
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Threading.Tasks;
     using System.Windows.Input;
     using Microsoft.Identity.Client;
@@ -15,6 +18,7 @@ namespace PlanningPoker.App.ViewModels
     {
         public LoginViewModel()
         {
+            this.Title = "Login";
             this.LoginCommand = new Command(async () => await this.ExecuteLoginCommand());
         }
 
@@ -50,7 +54,7 @@ namespace PlanningPoker.App.ViewModels
         {
             HttpClient client = new HttpClient();
             HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, "https://graph.microsoft.com/v1.0/me");
-            message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", token);
+            message.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
             HttpResponseMessage response = await client.SendAsync(message);
             string responseString = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
