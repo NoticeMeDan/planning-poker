@@ -2,7 +2,7 @@ namespace PlanningPoker.App.ViewModels
 {
     using System.Collections.ObjectModel;
     using System.Windows.Input;
-    using PlanningPoker.Shared;
+    using Shared;
 
     public class ItemsViewModel : BaseViewModel
     {
@@ -46,15 +46,6 @@ namespace PlanningPoker.App.ViewModels
             }
 
             this.IsBusy = true;
-
-            this.Items.Clear();
-
-            var items = MockData();
-
-            foreach (var item in items)
-            {
-                this.Items.Add(item);
-            }
 
             this.IsBusy = false;
         }

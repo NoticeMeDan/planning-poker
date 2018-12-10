@@ -1,3 +1,5 @@
+using PlanningPoker.Services;
+
 namespace PlanningPoker.WebApi
 {
     using Entities;
@@ -32,6 +34,12 @@ namespace PlanningPoker.WebApi
             .AddAzureAdBearer(options => this.Configuration.Bind("AzureAd", options));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddScoped<ISessionRepository, SessionRepository>();
+            services.AddScoped<ISummaryRepository, SummaryRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddScoped<IPlanningPokerContext, PlanningPokerContext>();
 
             services.AddMemoryCache();
 
