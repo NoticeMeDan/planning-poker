@@ -6,7 +6,10 @@ namespace PlanningPoker.WebApi.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+#if DEBUG
+#else
     [Authorize]
+#endif
     public class ValuesController : ControllerBase
     {
         // GET api/values
