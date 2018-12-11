@@ -9,7 +9,7 @@ namespace PlanningPoker.Services
     {
         public static List<Item> ToItemEntities(List<ItemDTO> dtos)
         {
-            if(dtos == null)
+            if (dtos == null)
             {
                 return new List<Item>();
             }
