@@ -4,12 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:components="clr-namespace:PlanningPoker.App.Views.Components;assembly=PlanningPoker.App"
     x:Class="PlanningPoker.App.Views.Session.Lobby"
-    Title="{Binding Title}"
+    Title="{Binding BaseTitle}"
 
 >
     <components:Users/>
     <ContentPage>
-        <components:Items/>
     </ContentPage>
 
 </TabbedPage>

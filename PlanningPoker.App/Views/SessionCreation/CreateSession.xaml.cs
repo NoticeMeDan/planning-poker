@@ -11,11 +11,11 @@ namespace PlanningPoker.App.Views.SessionCreation
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CreateSession : ContentPage
     {
-        private readonly ItemsViewModel viewModel;
+        private readonly ItemsViewModel itemsViewModel;
 
         public CreateSession()
         {
-            this.BindingContext = this.viewModel =
+            this.BindingContext = this.itemsViewModel =
                 (Application.Current as App)?.Container.GetRequiredService<ItemsViewModel>();
 
             this.InitializeComponent();
@@ -23,19 +23,19 @@ namespace PlanningPoker.App.Views.SessionCreation
 
         protected override void OnAppearing()
         {
-            this.viewModel.LoadCommand.Execute(null);
+            this.itemsViewModel.LoadCommand.Execute(null);
         }
 
         private void CreateSessionClicked(object sender, EventArgs e)
         {
-            this.viewModel.CreateSessionCommand.Execute(null);
+            this.itemsViewModel.CreateSessionCommand.Execute(null);
             this.Navigation.PushModalAsync(
                 new Lobby());
         }
 
         private void OnAddItem_Clicked(object sender, EventArgs e)
         {
-            this.viewModel.SaveCommand.Execute(null);
+            this.itemsViewModel.AddItemCommand.Execute(null);
         }
     }
 }

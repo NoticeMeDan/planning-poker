@@ -8,7 +8,7 @@ namespace PlanningPoker.App.ViewModels {
 
         public LobbyViewModel()
         {
-            this.Title = "Lobby";
+            this.BaseTitle = "Lobby";
 
             this.LoadCommand = new RelayCommand(_ => this.ExecuteLoadCommand());
         }

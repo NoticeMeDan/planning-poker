@@ -14,7 +14,7 @@ namespace PlanningPoker.App.ViewModels
 
         public JoinViewModel()
         {
-            this.Title = "Join";
+            this.BaseTitle = "Join";
 
             this.JoinLobbyCommand = new RelayCommand(_ => this.JoinLobby());
         }

@@ -1,45 +1,49 @@
 namespace PlanningPoker.App.ViewModels
 {
-    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Diagnostics;
+    using System.Linq;
     using System.Threading.Tasks;
     using System.Windows.Input;
     using Models;
     using Shared;
+    using Xamarin.Forms;
 
     // This class contains data until repositories is setup
     public class ItemsViewModel : BaseViewModel
     {
         private readonly ISessionRepository sessionRepo;
-        private string itemTitle;
+        private string title;
         private string description;
 
         public ItemsViewModel(ISessionRepository sessionRepo)
         {
             this.sessionRepo = sessionRepo;
 
-            this.Items = new List<ItemCreateUpdateDTO>();
+            this.BaseTitle = "Items";
 
-            this.LoadCommand = new RelayCommand(_ => this.ExecuteLoadCommand());
-            this.SaveCommand = new RelayCommand(_ => this.ExecuteSaveCommand());
+            this.Items = new ObservableCollection<ItemCreateUpdateDTO>();
+
+            this.AddItemCommand = new RelayCommand(_ => this.ExecuteAddItemCommand());
+            this.LoadCommand = new Command(() => this.ExecuteLoadCommand());
             this.CreateSessionCommand = new RelayCommand(async _ => await this.ExecuteCreateSessionCommand());
         }
 
-        public List<ItemCreateUpdateDTO> Items { get; set; }
+        public ObservableCollection<ItemCreateUpdateDTO> Items { get; set; }
 
-        public ICommand LoadCommand { get; }
-
-        public ICommand SaveCommand { get; }
+        public ICommand AddItemCommand { get; }
 
         public ICommand CreateSessionCommand { get; }
 
-        private string ItemTitle
+        public ICommand LoadCommand { get; }
+
+        public string Title
         {
-            get => this.itemTitle;
-            set => this.SetProperty(ref this.itemTitle, value);
+            get => this.title;
+            set => this.SetProperty(ref this.title, value);
         }
 
-        private string Description
+        public string Description
         {
             get => this.description;
             set => this.SetProperty(ref this.description, value);
@@ -56,15 +60,14 @@ namespace PlanningPoker.App.ViewModels
 
             var toCreate = new SessionCreateUpdateDTO
             {
-                Items = this.Items
+                Items = this.Items.ToList()
             };
 
             var result = await this.sessionRepo.CreateAsync(toCreate);
-            Debug.WriteLine(result);
             this.IsBusy = false;
         }
 
-        private void ExecuteSaveCommand()
+        private void ExecuteAddItemCommand()
         {
             if (this.IsBusy)
             {
@@ -75,15 +78,16 @@ namespace PlanningPoker.App.ViewModels
 
             var toCreate = new ItemCreateUpdateDTO
             {
-                Title = this.ItemTitle,
+                Title = this.Title,
                 Description = this.Description
             };
 
             this.Items.Add(toCreate);
 
+            MessagingCenter.Send(this, "ItemAdded", toCreate);
+
             this.Title = string.Empty;
             this.Description = string.Empty;
-            this.LoadCommand.Execute(null);
 
             this.IsBusy = false;
         }
@@ -99,7 +103,7 @@ namespace PlanningPoker.App.ViewModels
 
             this.Items.Clear();
 
-            var items = this.Items;
+            var items = this.Items.ToList();
 
             foreach (var item in items)
             {

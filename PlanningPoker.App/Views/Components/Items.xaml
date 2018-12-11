@@ -8,13 +8,15 @@ ItemsSource="{Binding Items}"
 VerticalOptions="FillAndExpand"
 HasUnevenRows="true"
 IsPullToRefreshEnabled="true"
+RefreshCommand="{Binding LoadCommand}"
+IsRefreshing="{Binding IsBusy, Mode=OneWay}"
 SelectionMode="None">
 
     <ListView.ItemTemplate>
         <DataTemplate>
             <ViewCell>
                 <StackLayout>
-                    <Label Text="{Binding Title}"
+                    <Label Text="{Binding ItemTitle}"
                            LineBreakMode="NoWrap" />
                     <Label Text="{Binding Description}"
                            LineBreakMode="NoWrap" />

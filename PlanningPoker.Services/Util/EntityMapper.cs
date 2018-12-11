@@ -9,6 +9,10 @@ namespace PlanningPoker.Services
     {
         public static List<Item> ToItemEntities(List<ItemDTO> dtos)
         {
+            if(dtos == null)
+            {
+                return new List<Item>();
+            }
             var entities = new List<Item>();
             dtos.ToList().ForEach(i => entities.Add(
                 new Item
@@ -24,6 +28,10 @@ namespace PlanningPoker.Services
 
         public static List<Item> ToItemEntities(List<ItemCreateUpdateDTO> dtos)
         {
+            if (dtos == null)
+            {
+                return new List<Item>();
+            }
             var entities = new List<Item>();
             dtos.ToList().ForEach(i => entities.Add(
                 new Item
@@ -59,6 +67,10 @@ namespace PlanningPoker.Services
 
         public static List<ItemDTO> ToItemDtos(List<Item> entities)
         {
+            if (entities == null)
+            {
+                return new List<ItemDTO>();
+            }
             var dtos = new List<ItemDTO>();
             entities.ToList().ForEach(i => dtos.Add(
                 new ItemDTO
@@ -74,6 +86,10 @@ namespace PlanningPoker.Services
 
         public static ICollection<Round> ToRoundEntities(ICollection<RoundDTO> dtos)
         {
+            if (dtos == null)
+            {
+                return new List<Round>();
+            }
             var entities = new HashSet<Round>();
             dtos.ToList().ForEach(r => entities.Add(
                 new Round
@@ -87,6 +103,10 @@ namespace PlanningPoker.Services
 
         public static ICollection<RoundDTO> ToRoundDtos(ICollection<Round> entities)
         {
+            if (entities == null)
+            {
+                return new List<RoundDTO>();
+            }
             var dtos = new HashSet<RoundDTO>();
             entities.ToList().ForEach(r => dtos.Add(
                 new RoundDTO

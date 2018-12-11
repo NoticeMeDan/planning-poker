@@ -18,7 +18,7 @@ namespace PlanningPoker.App.ViewModels
 
         public UsersViewModel()
         {
-            this.Title = "Users";
+            this.BaseTitle = "Users";
 
             this.Users = new ObservableCollection<UserDTO>();
 

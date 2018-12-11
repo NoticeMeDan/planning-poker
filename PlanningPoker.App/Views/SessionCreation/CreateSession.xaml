@@ -4,15 +4,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:components="clr-namespace:PlanningPoker.App.Views.Components;assembly=PlanningPoker.App"
     x:Class="PlanningPoker.App.Views.SessionCreation.CreateSession"
-    Title="{Binding SessionTitle}"
+    Title="{Binding BaseTitle}"
 >
         <StackLayout>
             <StackLayout
                 Orientation="Horizontal"
                 >
             <Entry
-                    Placeholder="Item title"
-                    Text="{Binding ItemTitle, Mode=TwoWay}"
+                    Placeholder="Title"
+                    Text="{Binding Title, Mode=TwoWay}"
                 />
                 <Entry
                     Placeholder="Description"
@@ -23,7 +23,31 @@
                     Clicked="OnAddItem_Clicked"
                 />
             </StackLayout>
-        <components:Items/>
+                <ListView
+        xmlns="http://xamarin.com/schemas/2014/forms"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        x:Class="PlanningPoker.App.Views.Components.Items"
+        ItemsSource="{Binding Items}"
+        VerticalOptions="FillAndExpand"
+        HasUnevenRows="true"
+        IsPullToRefreshEnabled="true"
+        RefreshCommand="{Binding LoadCommand}"
+        IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+        SelectionMode="None">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout>
+                            <Label Text="{Binding Title}"
+                                   LineBreakMode="NoWrap" />
+                            <Label Text="{Binding Description}"
+                                   LineBreakMode="NoWrap" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
         <Button Text="CREATE SESSION"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="EndAndExpand"
