@@ -16,35 +16,35 @@ namespace PlanningPoker.App.Models
 
         public async Task<SessionDTO> CreateAsync(SessionCreateUpdateDTO session)
         {
-            var response = await this.httpClient.PostAsJsonAsync("api/sessions", session);
+            var response = await this.httpClient.PostAsJsonAsync("api/session", session);
 
             return await response.Content.ReadAsAsync<SessionDTO>();
         }
 
         public async Task<SessionDTO> FindAsync(int sessionId)
         {
-            var response = await this.httpClient.GetAsync($"api/sessions/{sessionId}");
+            var response = await this.httpClient.GetAsync($"api/session/{sessionId}");
 
             return await response.Content.ReadAsAsync<SessionDTO>();
         }
 
         public async Task<IEnumerable<SessionDTO>> ReadAsync()
         {
-            var response = await this.httpClient.GetAsync("api/sessions");
+            var response = await this.httpClient.GetAsync("api/session");
 
             return await response.Content.ReadAsAsync<IEnumerable<SessionDTO>>();
         }
 
         public async Task<bool> UpdateAsync(SessionCreateUpdateDTO session)
         {
-            var response = await this.httpClient.PutAsJsonAsync($"api/sessions/{session.Id}", session);
+            var response = await this.httpClient.PutAsJsonAsync($"api/session/{session.Id}", session);
 
             return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> DeleteAsync(int sessionId)
         {
-            var response = await this.httpClient.DeleteAsync($"api/sessions/{sessionId}");
+            var response = await this.httpClient.DeleteAsync($"api/session/{sessionId}");
 
             return response.IsSuccessStatusCode;
         }
