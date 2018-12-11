@@ -10,7 +10,7 @@ namespace PlanningPoker.App.ViewModels
     // This class contains data until repositories is setup
     public class ItemsViewModel : BaseViewModel
     {
-        // TODO: Use API to get and set items.
+
         private readonly ISessionRepository sessionRepo;
         private readonly string SessionTitle;
         private string title;
