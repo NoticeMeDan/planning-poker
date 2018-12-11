@@ -7,9 +7,18 @@
 
 >
     <StackLayout>
-        <Label Text="Title"/>
-        <Label Text="Description"/>
+      <StackLayout Orientation="Vertical" VerticalOptions="Start">
+            <Label Text="Title"/>
+            <Label Text="Description"/>
+      </StackLayout>
 
-        <components:VotingNumbers />
+      <StackLayout VerticalOptions="CenterAndExpand">
+       
+      </StackLayout>
+
+      <StackLayout Orientation="Horizontal" VerticalOptions="End">
+            <components:VotingNumbers x:Name="Votes"/>
+      </StackLayout>
     </StackLayout>
+    
 </ContentPage>

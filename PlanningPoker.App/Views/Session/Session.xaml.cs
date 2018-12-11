@@ -12,11 +12,8 @@ namespace PlanningPoker.App.Views.Session
 
         private void EstimateItem_Clicked(object sender, EventArgs e)
         {
+            Votes.GetEstimate();
             this.Navigation.PushAsync(new ItemEstimation());
-        }
-
-        private void OnVote_Clicked(object sender, EventArgs e) {
-            throw new NotImplementedException();
         }
     }
 }

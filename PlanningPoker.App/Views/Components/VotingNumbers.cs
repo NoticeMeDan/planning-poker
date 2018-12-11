@@ -7,15 +7,23 @@ namespace PlanningPoker.App.Views.Components
 
     public partial class VotingNumbers : Grid
     {
+        private string estimate;
+
         public VotingNumbers()
         {
             InitializeComponent();
+            this.estimate = "None";
         }
 
-        private void OnVote_Clicked(object sender, EventArgs e)
+        public string GetEstimate()
         {
-            Debug.WriteLine(e);
-            Debug.WriteLine(sender);
+            return this.estimate;
+        }
+
+        private void OnVote_Clicked(Button sender, EventArgs e)
+        {
+            this.estimate = sender.Text;
+            Debug.WriteLine(estimate);
         }
     }
 }
