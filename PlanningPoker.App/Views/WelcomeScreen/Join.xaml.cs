@@ -10,12 +10,12 @@ namespace PlanningPoker.App.Views.WelcomeScreen
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Join : ContentPage
     {
-        private readonly JoinViewModel ViewModel;
+        private readonly JoinViewModel joinViewModel;
 
         public Join()
         {
-            this.ViewModel = new JoinViewModel();
-            this.BindingContext = this.ViewModel =
+            this.joinViewModel = new JoinViewModel();
+            this.BindingContext = this.joinViewModel =
                 (Application.Current as App)?.Container.GetRequiredService<JoinViewModel>();
 
             this.InitializeComponent();

@@ -10,8 +10,6 @@ namespace PlanningPoker.App.ViewModels
      */
     public class JoinViewModel : BaseViewModel, IJoinViewModel
     {
-        private ICommand JoinLobbyCommand;
-
         public JoinViewModel()
         {
             this.BaseTitle = "Join";
@@ -19,9 +17,7 @@ namespace PlanningPoker.App.ViewModels
             this.JoinLobbyCommand = new RelayCommand(_ => this.JoinLobby());
         }
 
-        /*
-         * Returns allowance
-         */
+        private ICommand JoinLobbyCommand { get; }
 
         public void JoinLobby()
         {
@@ -37,7 +33,7 @@ namespace PlanningPoker.App.ViewModels
         public bool KeyExist(int key)
         {
             // Call the api to see if key exist and return
-            //return (key == this.testKey) ? true : false;
+            // return (key == this.testKey) ? true : false;
             return true;
         }
     }

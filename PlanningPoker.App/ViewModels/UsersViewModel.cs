@@ -7,15 +7,6 @@ namespace PlanningPoker.App.ViewModels
     // This class contains testdata until repositories is setup
     public class UsersViewModel : BaseViewModel
     {
-        // TODO: Use API to get and set items.
-        // Connect to repositories and get data
-
-        // public ICommand AddCommand { get; set; }
-        public ICommand LoadCommand { get; }
-
-        // Only for testing until repositories are ready
-        public ObservableCollection<UserDTO> Users { get; }
-
         public UsersViewModel()
         {
             this.BaseTitle = "Users";
@@ -24,6 +15,11 @@ namespace PlanningPoker.App.ViewModels
 
             this.LoadCommand = new RelayCommand(_ => this.ExecuteLoadCommand());
         }
+
+        public ICommand LoadCommand { get; }
+
+        // Only for testing until repositories are ready
+        public ObservableCollection<UserDTO> Users { get; }
 
         private static ObservableCollection<UserDTO> MockDataUsers()
         {

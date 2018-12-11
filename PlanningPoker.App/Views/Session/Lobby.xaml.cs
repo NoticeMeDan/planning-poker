@@ -9,12 +9,12 @@ namespace PlanningPoker.App.Views.Session
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Lobby : TabbedPage
     {
-        private readonly LobbyViewModel ViewModel;
+        private readonly LobbyViewModel lobbyViewModel;
 
         public Lobby()
         {
-            this.ViewModel = new LobbyViewModel();
-            this.BindingContext = this.ViewModel =
+            this.lobbyViewModel = new LobbyViewModel();
+            this.BindingContext = this.lobbyViewModel =
                 (Application.Current as App)?.Container.GetRequiredService<LobbyViewModel>();
 
             this.InitializeComponent();
@@ -22,7 +22,7 @@ namespace PlanningPoker.App.Views.Session
 
         protected override void OnAppearing()
         {
-            this.ViewModel.LoadCommand.Execute(null);
+            this.lobbyViewModel.LoadCommand.Execute(null);
         }
     }
 }

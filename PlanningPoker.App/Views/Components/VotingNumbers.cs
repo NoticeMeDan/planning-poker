@@ -9,7 +9,7 @@ namespace PlanningPoker.App.Views.Components
     {
         public VotingNumbers()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void OnVote_Clicked(object sender, EventArgs e)

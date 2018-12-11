@@ -21,7 +21,6 @@ namespace PlanningPoker.App.Models
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-
             var accounts = await this.publicClientApplication.GetAccountsAsync();
 
             var result = await this.publicClientApplication.AcquireTokenSilentAsync(this.scopes, accounts.First());

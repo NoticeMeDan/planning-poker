@@ -8,27 +8,27 @@ namespace PlanningPoker.App.Views.Components
 
     public partial class Users : ContentPage
     {
-        private readonly UsersViewModel ViewModel;
+        private readonly UsersViewModel usersViewModel;
 
         public Users()
         {
-            this.ViewModel = new UsersViewModel();
+            this.usersViewModel = new UsersViewModel();
 
-            this.BindingContext = this.ViewModel =
+            this.BindingContext = this.usersViewModel =
                 (Application.Current as App)?.Container.GetRequiredService<UsersViewModel>();
 
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         protected override void OnAppearing()
         {
-            this.ViewModel.LoadCommand.Execute(null);
+            this.usersViewModel.LoadCommand.Execute(null);
         }
 
         private void OnStartSession_Clicked(object sender, EventArgs e)
         {
-            Debug.WriteLine(this.ViewModel.LoadCommand);
-            Debug.WriteLine(this.ViewModel.Users);
+            Debug.WriteLine(this.usersViewModel.LoadCommand);
+            Debug.WriteLine(this.usersViewModel.Users);
             this.Navigation.PushAsync(new Session.Session());
         }
     }

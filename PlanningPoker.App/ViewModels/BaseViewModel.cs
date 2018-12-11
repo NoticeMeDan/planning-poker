@@ -10,6 +10,8 @@ namespace PlanningPoker.App.ViewModels
     {
         private bool isBusyValue = false;
 
+        private string baseTitle = string.Empty;
+
         public INavigation Navigation { get; }
 
         public bool IsBusy
@@ -17,8 +19,6 @@ namespace PlanningPoker.App.ViewModels
             get { return this.isBusyValue; }
             set { this.SetProperty(ref this.isBusyValue, value); }
         }
-
-        private string baseTitle = string.Empty;
 
         public string BaseTitle
         {
