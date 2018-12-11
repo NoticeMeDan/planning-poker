@@ -11,8 +11,8 @@
                 Orientation="Horizontal"
                 >
             <Entry
-                    Placeholder="Title"
-                    Text="{Binding Title, Mode=TwoWay}"
+                    Placeholder="Item title"
+                    Text="{Binding ItemTitle, Mode=TwoWay}"
                 />
                 <Entry
                     Placeholder="Description"

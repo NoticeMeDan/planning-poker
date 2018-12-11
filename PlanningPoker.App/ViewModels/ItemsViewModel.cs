@@ -10,16 +10,12 @@ namespace PlanningPoker.App.ViewModels
     // This class contains data until repositories is setup
     public class ItemsViewModel : BaseViewModel
     {
-
         private readonly ISessionRepository sessionRepo;
-        private readonly string SessionTitle;
-        private string title;
+        private string itemTitle;
         private string description;
 
         public ItemsViewModel(ISessionRepository sessionRepo)
         {
-            this.SessionTitle = "New session";
-
             this.sessionRepo = sessionRepo;
 
             this.Items = new List<ItemCreateUpdateDTO>();
@@ -36,6 +32,18 @@ namespace PlanningPoker.App.ViewModels
         public ICommand SaveCommand { get; }
 
         public ICommand CreateSessionCommand { get; }
+
+        private string ItemTitle
+        {
+            get => this.itemTitle;
+            set => this.SetProperty(ref this.itemTitle, value);
+        }
+
+        private string Description
+        {
+            get => this.description;
+            set => this.SetProperty(ref this.description, value);
+        }
 
         public async Task ExecuteCreateSessionCommand()
         {
@@ -56,18 +64,6 @@ namespace PlanningPoker.App.ViewModels
             this.IsBusy = false;
         }
 
-        private string Title
-        {
-            get => this.title;
-            set => this.SetProperty(ref this.title, value);
-        }
-
-        private string Description
-        {
-            get => this.description;
-            set => this.SetProperty(ref this.description, value);
-        }
-
         private void ExecuteSaveCommand()
         {
             if (this.IsBusy)
@@ -79,7 +75,7 @@ namespace PlanningPoker.App.ViewModels
 
             var toCreate = new ItemCreateUpdateDTO
             {
-                Title = this.Title,
+                Title = this.ItemTitle,
                 Description = this.Description
             };
 
@@ -112,6 +108,5 @@ namespace PlanningPoker.App.ViewModels
 
             this.IsBusy = false;
         }
-
     }
 }
