@@ -1,5 +1,3 @@
-using PlanningPoker.App.ViewModels.Interfaces;
-
 namespace PlanningPoker.App.ViewModels
 {
     using System;
@@ -18,13 +16,12 @@ namespace PlanningPoker.App.ViewModels
     {
         public LoginViewModel()
         {
-            this.Title = "Login";
             this.LoginCommand = new Command(async () => await this.ExecuteLoginCommand());
         }
 
         public ICommand LoginCommand { get; }
 
-         public async Task<bool> ExecuteLoginCommand()
+        public async Task<bool> ExecuteLoginCommand()
         {
             var settings = new Settings();
             AuthenticationResult authResult = null;

@@ -23,12 +23,13 @@ namespace PlanningPoker.App.Views.SessionCreation
 
         protected override void OnAppearing()
         {
-            viewModel.LoadCommand.Execute(null);
+            this.viewModel.LoadCommand.Execute(null);
         }
 
         private void CreateSessionClicked(object sender, EventArgs e)
         {
-            this.Navigation.PushAsync(
+            this.viewModel.CreateSessionCommand.Execute(null);
+            this.Navigation.PushModalAsync(
                 new Lobby());
         }
 

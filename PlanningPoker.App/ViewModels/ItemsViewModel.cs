@@ -1,6 +1,7 @@
 namespace PlanningPoker.App.ViewModels
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Threading.Tasks;
     using System.Windows.Input;
     using Models;
@@ -11,7 +12,7 @@ namespace PlanningPoker.App.ViewModels
     {
         // TODO: Use API to get and set items.
         private readonly ISessionRepository sessionRepo;
-        private string SessionTitle;
+        private readonly string SessionTitle;
         private string title;
         private string description;
 
@@ -30,12 +31,30 @@ namespace PlanningPoker.App.ViewModels
 
         public List<ItemCreateUpdateDTO> Items { get; set; }
 
-
         public ICommand LoadCommand { get; }
 
         public ICommand SaveCommand { get; }
 
-        private ICommand CreateSessionCommand { get; }
+        public ICommand CreateSessionCommand { get; }
+
+        public async Task ExecuteCreateSessionCommand()
+        {
+            if (this.IsBusy)
+            {
+                return;
+            }
+
+            this.IsBusy = true;
+
+            var toCreate = new SessionCreateUpdateDTO
+            {
+                Items = this.Items
+            };
+
+            var result = await this.sessionRepo.CreateAsync(toCreate);
+            Debug.WriteLine(result);
+            this.IsBusy = false;
+        }
 
         private string Title
         {
@@ -55,6 +74,7 @@ namespace PlanningPoker.App.ViewModels
             {
                 return;
             }
+
             this.IsBusy = true;
 
             var toCreate = new ItemCreateUpdateDTO
@@ -83,7 +103,7 @@ namespace PlanningPoker.App.ViewModels
 
             this.Items.Clear();
 
-            var items = Items;
+            var items = this.Items;
 
             foreach (var item in items)
             {
@@ -93,23 +113,5 @@ namespace PlanningPoker.App.ViewModels
             this.IsBusy = false;
         }
 
-        private async Task ExecuteCreateSessionCommand()
-        {
-            if (this.IsBusy)
-            {
-                return;
-            }
-
-            this.IsBusy = true;
-
-            var toCreate = new SessionCreateUpdateDTO
-            {
-                Items = this.Items
-            };
-
-            await this.sessionRepo.CreateAsync(toCreate);
-
-            this.IsBusy = false;
-        }
     }
 }

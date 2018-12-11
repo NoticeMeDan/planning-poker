@@ -13,7 +13,6 @@ namespace PlanningPoker.App.Views.WelcomeScreen
 
         public Login()
         {
-            this.viewModel = new LoginViewModel();
             this.BindingContext = this.viewModel =
                 (Application.Current as App)?.Container.GetRequiredService<LoginViewModel>();
             this.InitializeComponent();
