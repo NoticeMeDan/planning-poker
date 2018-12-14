@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace PlanningPoker.WebApi.Controllers
 {
     using System.Threading.Tasks;
@@ -18,10 +20,14 @@ namespace PlanningPoker.WebApi.Controllers
 
         Task<ActionResult<ItemDTO>> NextItem(string key);
 
+        Task<ActionResult<ICollection<ItemDTO>>> GetAllItems(string key);
+
         Task<ActionResult<ItemDTO>> GetCurrentItem(string key);
 
         Task<ActionResult> Vote(string key, VoteDTO vote);
 
         Task<ActionResult> ThrowNitpickerCard(string key);
+
+        Task<ActionResult> KickUser(string key, int userId);
     }
 }
