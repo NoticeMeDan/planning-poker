@@ -28,7 +28,5 @@ namespace PlanningPoker.App.Views.Components
         {
             this.Navigation.PushAsync(new NewItem());
         }
-
-
     }
 }

@@ -15,8 +15,10 @@
       <StackLayout VerticalOptions="CenterAndExpand">
        
       </StackLayout>
+        <Button Text="Estimate Item" Clicked="EstimateItem_Clicked" />
 
-      <StackLayout Orientation="Horizontal" VerticalOptions="End">
+        <StackLayout Orientation="Horizontal" VerticalOptions="End">
+            <components:Cards />
             <components:VotingNumbers x:Name="Votes"/>
       </StackLayout>
     </StackLayout>

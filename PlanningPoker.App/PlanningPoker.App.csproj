@@ -23,6 +23,12 @@
     <Compile Remove="Models\Item.cs" />
     <Compile Remove="Services\IDataStore.cs" />
     <Compile Remove="Views\MainPage.xaml.cs" />
+    <Compile Update="Views\Components\Cards.xaml.cs">
+      <DependentUpon>Cards.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Session\Summary.xaml.cs">
+      <DependentUpon>Summary.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\WelcomeScreen\Login.xaml.cs">
       <DependentUpon>JoinSession.xaml</DependentUpon>
     </Compile>
@@ -93,6 +99,9 @@
     <ProjectReference Include="..\PlanningPoker.Shared\PlanningPoker.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Update="Views\Components\Cards.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Components\Items.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
@@ -115,6 +124,9 @@
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Session\Lobby.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Session\Summary.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Session\Session.xaml">

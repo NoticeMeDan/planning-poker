@@ -12,6 +12,10 @@
                 <Setter Property="BorderColor" Value="Transparent" />
                 <Setter Property="BackgroundColor" Value="Transparent" />
             </Style>
+            <Style x:Key="votingCard" TargetType="Label">
+                <Setter Property="BorderColor" Value="Black" />
+                <Setter Property="BackgroundColor" Value="Blue" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

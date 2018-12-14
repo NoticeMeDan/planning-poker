@@ -12,16 +12,18 @@ namespace PlanningPoker.App.Views.Session
         public Session()
         {
             this.ViewModel = new SessionViewModel();
-            this.BindingContext = this.ViewModel =
-                (Application.Current as App)?.Container.GetRequiredService<SessionViewModel>();
+           // this.BindingContext = this.ViewModel =
+            //    (Application.Current as App)?.Container.GetRequiredService<SessionViewModel>();
 
             this.InitializeComponent();
         }
 
         private void EstimateItem_Clicked(object sender, EventArgs e)
         {
-            Votes.GetEstimate();
-            this.Navigation.PushAsync(new ItemEstimation());
+            //ViewModel.Estimate(Votes.GetEstimate());
+
+            //This should get the current vote
+            this.Navigation.PushAsync(new Summary());
         }
     }
 }
