@@ -25,6 +25,8 @@
     <Compile Update="Views\WelcomeScreen\Login.xaml.cs">
       <DependentUpon>JoinSession.xaml</DependentUpon>
     </Compile>
+    <Compile Remove="Models\IItemRepository.cs" />
+    <Compile Remove="Models\ItemRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
