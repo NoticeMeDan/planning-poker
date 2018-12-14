@@ -8,12 +8,10 @@ namespace PlanningPoker.App.Models
     public class SessionRepository : ISessionRepository
     {
         private readonly HttpClient httpClient;
-        private readonly UserRepository userRepository;
 
-        public SessionRepository(HttpClient httpClient, UserRepository userRepository)
+        public SessionRepository(HttpClient httpClient)
         {
             this.httpClient = httpClient;
-            this.userRepository = userRepository;
         }
 
         public async Task<SessionDTO> CreateAsync(SessionCreateUpdateDTO session)
@@ -60,42 +58,42 @@ namespace PlanningPoker.App.Models
 
         public async Task<RoundDTO> NextRoundAsync(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/items/rounds/next");
+            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/round/next");
 
             return await response.Content.ReadAsAsync<RoundDTO>();
         }
 
         public async Task<RoundDTO> GetCurrentRound(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/items/rounds/current");
+            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/round/current");
 
             return await response.Content.ReadAsAsync<RoundDTO>();
         }
 
         public async Task<ItemDTO> NextItemAsync(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/items/next");
+            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/next");
 
             return await response.Content.ReadAsAsync<ItemDTO>();
         }
 
         public async Task<ICollection<ItemDTO>> GetAllItems(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/items");
+            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item");
 
             return await response.Content.ReadAsAsync<ICollection<ItemDTO>>();
         }
 
         public async Task<ItemDTO> GetCurrentItem(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/items/current");
+            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/current");
 
             return await response.Content.ReadAsAsync<ItemDTO>();
         }
 
         public async Task<bool> Vote(string sessionKey, VoteDTO vote)
         {
-            var response = await this.httpClient.PostAsJsonAsync($"api/session/{sessionKey}/items/rounds/votes", vote);
+            var response = await this.httpClient.PostAsJsonAsync($"api/session/{sessionKey}/vote", vote);
 
             return response.IsSuccessStatusCode;
         }
