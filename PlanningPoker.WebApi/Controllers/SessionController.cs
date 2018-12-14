@@ -60,7 +60,7 @@ namespace PlanningPoker.WebApi.Controllers
             session.SessionKey = key;
             session.Users = new List<UserCreateDTO>();
             var created = await this.sessionRepository.CreateAsync(session);
-            return this.CreatedAtAction(nameof(this.GetByKey), new { created.SessionKey }, created);
+            return created;
         }
 
         // POST api/session/{key}/join
