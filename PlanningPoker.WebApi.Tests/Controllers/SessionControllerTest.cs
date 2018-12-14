@@ -66,7 +66,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             var cache = new Mock<IMemoryCache>();
             var controller = new SessionController(sessionRepo.Object, null, cache.Object);
             var post = await controller.Join("ABC123", input);
-            Assert.IsType<NotFoundResult>(post.Result);
+            Assert.IsType<BadRequestResult>(post.Result);
         }
 
         [Fact]
