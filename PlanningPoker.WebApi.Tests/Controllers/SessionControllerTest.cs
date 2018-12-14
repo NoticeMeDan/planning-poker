@@ -53,10 +53,9 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.CreateAsync(input)).ReturnsAsync(output);
             var controller = new SessionController(sessionRepo.Object, null, null);
             var post = await controller.Create(input);
-            var result = post.Result as CreatedAtActionResult;
-            Assert.Equal("GetByKey", result.ActionName);
-            Assert.Equal("ABC1234", result.RouteValues["SessionKey"]);
-            Assert.Equal(output, result.Value);
+            var result = post.Value;
+            Assert.Equal("ABC1234", result.SessionKey);
+            Assert.Equal(42, result.Id);
         }
 
         [Fact]
