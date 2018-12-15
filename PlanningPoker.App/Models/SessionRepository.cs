@@ -3,6 +3,7 @@ namespace PlanningPoker.App.Models
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using Newtonsoft.Json;
     using Shared;
 
     public class SessionRepository : ISessionRepository
@@ -18,7 +19,9 @@ namespace PlanningPoker.App.Models
         {
             var response = await this.httpClient.PostAsJsonAsync("api/session", session);
 
-            return await response.Content.ReadAsAsync<SessionDTO>();
+            var result = JsonConvert.DeserializeObject<SessionDTO>(response.Content.ReadAsStringAsync().Result);
+
+            return result;
         }
 
         public async Task<SessionDTO> FindAsync(int sessionId)
@@ -32,7 +35,9 @@ namespace PlanningPoker.App.Models
         {
             var response = await this.httpClient.GetAsync("api/session");
 
-            return await response.Content.ReadAsAsync<IEnumerable<SessionDTO>>();
+            var result = JsonConvert.DeserializeObject<IEnumerable<SessionDTO>>(response.Content.ReadAsStringAsync().Result);
+
+            return result;
         }
 
         public async Task<bool> UpdateAsync(SessionCreateUpdateDTO session)
@@ -44,51 +49,65 @@ namespace PlanningPoker.App.Models
 
         public async Task<SessionDTO> GetByKeyAsync(string sessionKey)
         {
-            var reponse = await this.httpClient.GetAsync($"api/session/{sessionKey}");
+            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}");
 
-            return await reponse.Content.ReadAsAsync<SessionDTO>();
+            var result = JsonConvert.DeserializeObject<SessionDTO>(response.Content.ReadAsStringAsync().Result);
+
+            return result;
         }
 
         public async Task<UserStateResponseDTO> Join(string sessionKey, UserCreateDTO user)
         {
-            var reponse = await this.httpClient.PostAsJsonAsync($"api/session/{sessionKey}/join", user);
+            var response = await this.httpClient.PostAsJsonAsync($"api/session/{sessionKey}/join", user);
 
-            return await reponse.Content.ReadAsAsync<UserStateResponseDTO>();
+            var result = JsonConvert.DeserializeObject<UserStateResponseDTO>(response.Content.ReadAsStringAsync().Result);
+
+            return result;
         }
 
         public async Task<RoundDTO> NextRoundAsync(string sessionKey)
         {
             var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/round/next");
 
-            return await response.Content.ReadAsAsync<RoundDTO>();
+            var result = JsonConvert.DeserializeObject<RoundDTO>(response.Content.ReadAsStringAsync().Result);
+
+            return result;
         }
 
         public async Task<RoundDTO> GetCurrentRound(string sessionKey)
         {
             var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/round");
 
-            return await response.Content.ReadAsAsync<RoundDTO>();
+            var result = JsonConvert.DeserializeObject<RoundDTO>(response.Content.ReadAsStringAsync().Result);
+
+            return result;
         }
 
         public async Task<ItemDTO> NextItemAsync(string sessionKey)
         {
             var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/next");
 
-            return await response.Content.ReadAsAsync<ItemDTO>();
+            var result = JsonConvert.DeserializeObject<ItemDTO>(response.Content.ReadAsStringAsync().Result);
+
+            return result;
         }
 
         public async Task<ICollection<ItemDTO>> GetAllItems(string sessionKey)
         {
             var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item");
 
-            return await response.Content.ReadAsAsync<ICollection<ItemDTO>>();
+            var result = JsonConvert.DeserializeObject<ICollection<ItemDTO>>(response.Content.ReadAsStringAsync().Result);
+
+            return result;
         }
 
         public async Task<ItemDTO> GetCurrentItem(string sessionKey)
         {
             var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/current");
 
-            return await response.Content.ReadAsAsync<ItemDTO>();
+            var result = JsonConvert.DeserializeObject<ItemDTO>(response.Content.ReadAsStringAsync().Result);
+
+            return result;
         }
 
         public async Task<bool> Vote(string sessionKey, VoteDTO vote)
