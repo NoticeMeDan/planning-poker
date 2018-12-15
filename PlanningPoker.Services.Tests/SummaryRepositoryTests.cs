@@ -270,7 +270,7 @@ namespace PlanningPoker.Services.Tests
             {
                 Id = 42,
                 SessionKey = "A1B2C3D",
-                Items = this.CreateDummyItemHashSet(),
+                Items = this.CreateDummyItemHashSet().ToList(),
                 Users = new HashSet<UserDTO>
                 {
                     new UserDTO { Id = 1, IsHost = true, Email = string.Empty, Nickname = "user1" },
