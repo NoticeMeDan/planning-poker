@@ -7,10 +7,10 @@ namespace PlanningPoker.WebApi.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;
     using Optional.Unsafe;
-    using Shared;
     using Security;
     using Services;
     using Services.Util;
+    using Shared;
     using Utils;
 
     [Route("api/[controller]")]

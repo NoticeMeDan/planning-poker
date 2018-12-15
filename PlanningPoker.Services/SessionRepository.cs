@@ -3,9 +3,9 @@ namespace PlanningPoker.Services
     using System.Linq;
     using System.Threading.Tasks;
     using Entities;
-    using Util;
-    using Shared;
     using Microsoft.EntityFrameworkCore;
+    using Shared;
+    using Util;
 
     public class SessionRepository : ISessionRepository
     {

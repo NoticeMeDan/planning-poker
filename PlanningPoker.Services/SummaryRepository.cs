@@ -2,8 +2,8 @@ namespace PlanningPoker.Services
 {
     using System.Linq;
     using System.Threading.Tasks;
-    using Microsoft.EntityFrameworkCore;
     using Entities;
+    using Microsoft.EntityFrameworkCore;
     using Shared;
     using Util;
 
