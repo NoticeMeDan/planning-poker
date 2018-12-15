@@ -1,34 +1,42 @@
 namespace PlanningPoker.App.ViewModels
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
+    using PlanningPoker.App.Models;
+    using PlanningPoker.Shared;
 
-    /*
-     * Waiting for api until implementation
-     * what you will see is pseudocode
-     */
     public class JoinViewModel
     {
-        private string testKey = "1234567";
+        private readonly ISessionRepository repository;
 
-        public JoinViewModel()
+        public UserCreateDTO user { get; set; }
+
+        public JoinViewModel(ISessionRepository repository)
         {
+            this.user = new UserCreateDTO
+            {
+                IsHost = false,
+                Email = string.Empty,
+                Nickname = "Guest"
+            };
+
+            this.repository = repository;
         }
 
-        /*
-         * Returns allowance
-         */
-        public void JoinLobby(string key)
+        public async void JoinLobby(string key)
         {
             Debug.WriteLine("Connection!");
 
-            // Connect to database and find session
-        }
-
-        private bool KeyExist(string key)
-        {
-            // Call the api to see if key exist and return
-            return (key == this.testKey) ? true : false;
+            try
+            {
+                await this.repository.Join(key, this.user);
+            }
+            catch (KeyNotFoundException e)
+            {
+                Debug.WriteLine("No session with that key exists.");
+                Debug.WriteLine(e.StackTrace);
+            }
         }
     }
 }

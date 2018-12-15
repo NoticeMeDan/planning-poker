@@ -1,6 +1,7 @@
 namespace PlanningPoker.App.Models
 {
     using System.Collections.Generic;
+    using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
     using Shared;
@@ -59,6 +60,10 @@ namespace PlanningPoker.App.Models
         public async Task<RoundDTO> NextRoundAsync(string sessionKey)
         {
             var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/round/next");
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new KeyNotFoundException();
+            }
 
             return await response.Content.ReadAsAsync<RoundDTO>();
         }

@@ -8,7 +8,10 @@
 >
 
     <StackLayout>
-        <Entry Text="Type Session Key" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" Margin="5" />
+        <Label Text="Nickname"/>
+        <Entry Text="{Binding Nickname}" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" Margin="5" />
+        <Label Text="Session-key"/>
+        <Entry Text="{Binding Key}" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" Margin="5" />
         <Button Text="Join"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="EndAndExpand"
