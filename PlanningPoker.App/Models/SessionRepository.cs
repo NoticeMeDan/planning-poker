@@ -65,7 +65,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<RoundDTO> GetCurrentRound(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/round/current");
+            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/round");
 
             return await response.Content.ReadAsAsync<RoundDTO>();
         }
@@ -100,14 +100,14 @@ namespace PlanningPoker.App.Models
 
         public async Task<bool> ThrowNitpickerCard(string sessionKey)
         {
-            var response = await this.httpClient.PostAsync($"api/session/{sessionKey}/nitpicker", default (HttpContent));
+            var response = await this.httpClient.PostAsync($"api/session/{sessionKey}/nitpicker", default(HttpContent));
 
             return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> KickUser(string sessionKey, int userId)
         {
-            var response = await this.httpClient.PostAsJsonAsync($"api/session/{sessionKey}", userId);
+            var response = await this.httpClient.PostAsJsonAsync($"api/session/{sessionKey}/user/kick", userId);
 
             return response.IsSuccessStatusCode;
         }

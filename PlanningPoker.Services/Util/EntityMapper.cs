@@ -1,4 +1,4 @@
-namespace PlanningPoker.Services
+namespace PlanningPoker.Services.Util
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -51,7 +51,7 @@ namespace PlanningPoker.Services
                     Id = i.Id,
                     Title = i.Title,
                     Description = i.Description,
-                    Rounds = i.Rounds
+                    Rounds = ToRoundCreateUpdateDtos(i.Rounds)
                 }));
 
             return entities;
@@ -72,6 +72,21 @@ namespace PlanningPoker.Services
             return dtos;
         }
 
+        public static List<ItemDTO> ToItemDtos(List<ItemCreateUpdateDTO> entities)
+        {
+            var dtos = new List<ItemDTO>();
+            entities.ToList().ForEach(i => dtos.Add(
+                new ItemDTO
+                {
+                    Id = i.Id,
+                    Title = i.Title,
+                    Description = i.Description,
+                    Rounds = ToRoundDtos(i.Rounds)
+                }));
+
+            return dtos;
+        }
+
         public static ICollection<Round> ToRoundEntities(ICollection<RoundDTO> dtos)
         {
             var entities = new HashSet<Round>();
@@ -85,7 +100,46 @@ namespace PlanningPoker.Services
             return entities;
         }
 
+        public static ICollection<Round> ToRoundEntities(ICollection<RoundCreateUpdateDTO> dtos)
+        {
+            var entities = new HashSet<Round>();
+            dtos.ToList().ForEach(r => entities.Add(
+                new Round
+                {
+                    Id = r.Id,
+                    Votes = ToVoteEntities(r.Votes)
+                }));
+
+            return entities;
+        }
+
+        public static ICollection<RoundCreateUpdateDTO> ToRoundCreateUpdateDtos(ICollection<RoundDTO> entities)
+        {
+            var dtos = new HashSet<RoundCreateUpdateDTO>();
+            entities.ToList().ForEach(r => dtos.Add(
+                new RoundCreateUpdateDTO
+                {
+                    Id = r.Id,
+                    Votes = ToVoteCreateUpdateDtos(r.Votes)
+                }));
+
+            return dtos;
+        }
+
         public static ICollection<RoundDTO> ToRoundDtos(ICollection<Round> entities)
+        {
+            var dtos = new HashSet<RoundDTO>();
+            entities.ToList().ForEach(r => dtos.Add(
+                new RoundDTO
+                {
+                    Id = r.Id,
+                    Votes = ToVoteDtos(r.Votes)
+                }));
+
+            return dtos;
+        }
+
+        public static ICollection<RoundDTO> ToRoundDtos(ICollection<RoundCreateUpdateDTO> entities)
         {
             var dtos = new HashSet<RoundDTO>();
             entities.ToList().ForEach(r => dtos.Add(
@@ -112,7 +166,49 @@ namespace PlanningPoker.Services
             return entities;
         }
 
+        public static ICollection<Vote> ToVoteEntities(ICollection<VoteCreateUpdateDTO> dtos)
+        {
+            var entities = new HashSet<Vote>();
+            dtos.ToList().ForEach(v => entities.Add(
+                new Vote
+                {
+                    Id = v.Id,
+                    UserId = v.UserId,
+                    Estimate = v.Estimate
+                }));
+
+            return entities;
+        }
+
         public static ICollection<VoteDTO> ToVoteDtos(ICollection<Vote> entities)
+        {
+            var dtos = new HashSet<VoteDTO>();
+            entities.ToList().ForEach(v => dtos.Add(
+                new VoteDTO
+                {
+                    Id = v.Id,
+                    UserId = v.UserId,
+                    Estimate = v.Estimate
+                }));
+
+            return dtos;
+        }
+
+        public static ICollection<VoteCreateUpdateDTO> ToVoteCreateUpdateDtos(ICollection<VoteDTO> entities)
+        {
+            var dtos = new HashSet<VoteCreateUpdateDTO>();
+            entities.ToList().ForEach(v => dtos.Add(
+                new VoteCreateUpdateDTO
+                {
+                    Id = v.Id,
+                    UserId = v.UserId,
+                    Estimate = v.Estimate
+                }));
+
+            return dtos;
+        }
+
+        public static ICollection<VoteDTO> ToVoteDtos(ICollection<VoteCreateUpdateDTO> entities)
         {
             var dtos = new HashSet<VoteDTO>();
             entities.ToList().ForEach(v => dtos.Add(
@@ -171,6 +267,21 @@ namespace PlanningPoker.Services
             return dtos;
         }
 
+        public static ICollection<UserDTO> ToUserDtos(ICollection<UserCreateDTO> entities)
+        {
+            var dtos = new HashSet<UserDTO>();
+            entities.ToList().ForEach(u => dtos.Add(
+                new UserDTO
+                {
+                    Id = u.Id,
+                    IsHost = u.IsHost,
+                    Email = u.Email,
+                    Nickname = u.Nickname
+                }));
+
+            return dtos;
+        }
+
         public static ICollection<UserCreateDTO> ToUserCreateDtos(ICollection<UserDTO> users)
         {
             var dtos = new HashSet<UserCreateDTO>();
@@ -214,7 +325,7 @@ namespace PlanningPoker.Services
             return dtos;
         }
 
-        public static SessionDTO ToSessionDTO(Session session)
+        public static SessionDTO ToSessionDto(Session session)
         {
             return new SessionDTO
             {
@@ -225,7 +336,18 @@ namespace PlanningPoker.Services
             };
         }
 
-        public static SessionCreateUpdateDTO ToSessionCreateUpdateDTO(SessionDTO session)
+        public static SessionDTO ToSessionDto(SessionCreateUpdateDTO session)
+        {
+            return new SessionDTO
+            {
+                Id = session.Id,
+                Items = ToItemDtos(session.Items),
+                SessionKey = session.SessionKey,
+                Users = ToUserDtos(session.Users)
+            };
+        }
+
+        public static SessionCreateUpdateDTO ToSessionCreateUpdateDto(SessionDTO session)
         {
             return new SessionCreateUpdateDTO
             {

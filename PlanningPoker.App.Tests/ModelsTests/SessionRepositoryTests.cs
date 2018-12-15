@@ -299,7 +299,7 @@ namespace PlanningPoker.App.Tests.ModelsTests
                 Times.Once(),
                 ItExpr.Is<HttpRequestMessage>(req =>
                     req.Method == HttpMethod.Get
-                    && req.RequestUri == new Uri("https://localhost:5001/api/session/42/item/round/current")),
+                    && req.RequestUri == new Uri("https://localhost:5001/api/session/42/item/round")),
                 ItExpr.IsAny<CancellationToken>());
         }
 
@@ -519,7 +519,7 @@ namespace PlanningPoker.App.Tests.ModelsTests
                 Times.Once(),
                 ItExpr.Is<HttpRequestMessage>(req =>
                     req.Method == HttpMethod.Post
-                    && req.RequestUri == new Uri("https://localhost:5001/api/session/42")),
+                    && req.RequestUri == new Uri("https://localhost:5001/api/session/42/user/kick")),
                 ItExpr.IsAny<CancellationToken>());
         }
     }

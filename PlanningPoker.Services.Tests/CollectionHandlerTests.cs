@@ -2,8 +2,9 @@ namespace PlanningPoker.Services.Tests
 {
     using System.Collections.Generic;
     using System.Linq;
-    using PlanningPoker.Entities;
-    using PlanningPoker.Shared;
+    using Entities;
+    using PlanningPoker.Services.Util;
+    using Shared;
     using Xunit;
 
     public class CollectionHandlerTests
@@ -283,7 +284,7 @@ namespace PlanningPoker.Services.Tests
         {
             var session = this.CreateSession();
 
-            var result = EntityMapper.ToSessionDTO(session);
+            var result = EntityMapper.ToSessionDto(session);
 
             var firstResultItem = result.Items.FirstOrDefault();
             var firstExpectedItem = this.CreateItemDTOList().FirstOrDefault();
