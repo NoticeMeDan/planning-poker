@@ -149,7 +149,7 @@ namespace PlanningPoker.WebApi.Controllers
                 return this.NotFound();
             }
 
-            var currentItem = SessionUtils.GetCurrentActiveItem(session.Items);
+            var currentItem = SessionUtils.GetCurrentActiveItem(session.Items, session.Users.Count);
 
             if (!currentItem.HasValue)
             {

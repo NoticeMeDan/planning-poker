@@ -14,7 +14,7 @@ namespace PlanningPoker.WebApi.Utils
         /// </summary>
         /// <param name="items">list of ItemDTOs</param>
         /// <returns>Option.Some if a current Item is found, Option.None otherwise</returns>
-        public static Option<ItemDTO> GetCurrentActiveItem(List<ItemDTO> items)
+        public static Option<ItemDTO> GetCurrentActiveItem(List<ItemDTO> items, int userCount)
         {
             return items
                 .LastOrNone(item => item.Rounds.Count > 0)
@@ -23,7 +23,7 @@ namespace PlanningPoker.WebApi.Utils
                     var isOngoing = item.Rounds.Any(round =>
                     {
                         var firstEstimate = round.Votes.First().Estimate;
-                        return round.Votes.Any(v => v.Estimate != firstEstimate);
+                        return round.Votes.Any(v => v.Estimate != firstEstimate) || round.Votes.Count != userCount;
                     });
 
                     return isOngoing;
