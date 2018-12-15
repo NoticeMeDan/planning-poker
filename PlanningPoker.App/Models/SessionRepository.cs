@@ -42,72 +42,9 @@ namespace PlanningPoker.App.Models
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<SessionDTO> GetByKeyAsync(string sessionKey)
+        public async Task<bool> DeleteAsync(int sessionId)
         {
-            var reponse = await this.httpClient.GetAsync($"api/session/{sessionKey}");
-
-            return await reponse.Content.ReadAsAsync<SessionDTO>();
-        }
-
-        public async Task<UserStateResponseDTO> Join(string sessionKey, UserCreateDTO user)
-        {
-            var reponse = await this.httpClient.PostAsJsonAsync($"api/session/{sessionKey}/join", user);
-
-            return await reponse.Content.ReadAsAsync<UserStateResponseDTO>();
-        }
-
-        public async Task<RoundDTO> NextRoundAsync(string sessionKey)
-        {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/round/next");
-
-            return await response.Content.ReadAsAsync<RoundDTO>();
-        }
-
-        public async Task<RoundDTO> GetCurrentRound(string sessionKey)
-        {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/round/current");
-
-            return await response.Content.ReadAsAsync<RoundDTO>();
-        }
-
-        public async Task<ItemDTO> NextItemAsync(string sessionKey)
-        {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/next");
-
-            return await response.Content.ReadAsAsync<ItemDTO>();
-        }
-
-        public async Task<ICollection<ItemDTO>> GetAllItems(string sessionKey)
-        {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item");
-
-            return await response.Content.ReadAsAsync<ICollection<ItemDTO>>();
-        }
-
-        public async Task<ItemDTO> GetCurrentItem(string sessionKey)
-        {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/current");
-
-            return await response.Content.ReadAsAsync<ItemDTO>();
-        }
-
-        public async Task<bool> Vote(string sessionKey, VoteDTO vote)
-        {
-            var response = await this.httpClient.PostAsJsonAsync($"api/session/{sessionKey}/vote", vote);
-
-            return response.IsSuccessStatusCode;
-        }
-
-        public async Task<bool> ThrowNitpickerCard(string sessionKey)
-        {
-            var response = await this.httpClient.PostAsync($"api/session/{sessionKey}/nitpicker", default (HttpContent));
-
-            return response.IsSuccessStatusCode;
-        }
-
-        public async Task<bool> KickUser(string sessionKey, int userId)
-        {
-            var response = await this.httpClient.PostAsJsonAsync($"api/session/{sessionKey}", userId);
+            var response = await this.httpClient.DeleteAsync($"api/session/{sessionId}");
 
             return response.IsSuccessStatusCode;
         }

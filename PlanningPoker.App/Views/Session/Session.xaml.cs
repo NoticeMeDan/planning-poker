@@ -14,5 +14,10 @@ namespace PlanningPoker.App.Views.Session
         {
             this.Navigation.PushAsync(new ItemEstimation());
         }
+
+        private void OnVote_Clicked(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

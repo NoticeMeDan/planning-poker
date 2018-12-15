@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ContentPage
+<TabbedPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:components="clr-namespace:PlanningPoker.App.Views.Components;assembly=PlanningPoker.App"
     x:Class="PlanningPoker.App.Views.Session.Lobby"
+    Title="{Binding BaseTitle}"
+
 >
+    <components:Users/>
+    <ContentPage>
+    </ContentPage>
 
-    <StackLayout>
-        <Label Text="Welcome to the lobby"/>
-
-        <Button Text="Begin Session"
-                HorizontalOptions="CenterAndExpand"
-                VerticalOptions="EndAndExpand"
-
-                Clicked="BeginSessionClicked"/>
-    </StackLayout>
-
-</ContentPage>
+</TabbedPage>
