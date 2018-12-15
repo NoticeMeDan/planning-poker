@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace PlanningPoker.WebApi.Tests.Controllers
 {
     using System.Collections.Generic;
@@ -393,6 +395,76 @@ namespace PlanningPoker.WebApi.Tests.Controllers
 
             Assert.IsType<ItemDTO>(result.Value);
             Assert.Equal(2, result.Value.Id);
+        }
+
+        [Fact]
+        public static async Task GetAllItems_given_invalid_token_returns_unauthorized()
+        {
+            var cache = new MemoryCache(new MemoryCacheOptions());
+
+            var controller = new SessionController(null, null, cache);
+
+            var result = await controller.GetAllItems("IDontExist", "ABC1234");
+
+            Assert.IsType<UnauthorizedResult>(result.Result);
+        }
+
+        [Fact]
+        public static async Task GetAllItems_given_nonexisting_session_returns_notfound()
+        {
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var sessionRepo = new Mock<ISessionRepository>();
+
+            var token = CreateUserState(cache, 42, "ABC1234");
+            sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
+                .ReturnsAsync(default(SessionDTO));
+
+            var controller = new SessionController(sessionRepo.Object, null, cache);
+
+            var result = await controller.GetAllItems(token, "ABC1234");
+
+            Assert.IsType<NotFoundResult>(result.Result);
+        }
+
+        [Fact]
+        public static async Task GetAllItems_given_existing_session_returns_items()
+        {
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var sessionRepo = new Mock<ISessionRepository>();
+
+            var token = CreateUserState(cache, 42, "ABC1234");
+
+            var mockSession = new SessionDTO
+            {
+                Id = 42,
+                Items = new List<ItemDTO>
+                {
+                    new ItemDTO
+                    {
+                        Id = 1,
+                        Rounds = new List<RoundDTO>()
+                    },
+                    new ItemDTO
+                    {
+                        Id = 2,
+                        Rounds = new List<RoundDTO>()
+                    }
+                },
+                SessionKey = "ABC1234",
+                Users = new List<UserDTO> { new UserDTO(), new UserDTO() }
+            };
+
+            sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
+                .ReturnsAsync(mockSession);
+
+            var controller = new SessionController(sessionRepo.Object, null, cache);
+
+            var result = await controller.GetAllItems(token, "ABC1234");
+
+            Assert.IsType<List<ItemDTO>>(result.Value);
+            Assert.Equal(2, result.Value.Count);
+            Assert.Equal(1, result.Value.ToList()[0].Id);
+            Assert.Equal(2, result.Value.ToList()[1].Id);
         }
 
         private static string CreateUserState(IMemoryCache cache, int userId, string sessionKey)
