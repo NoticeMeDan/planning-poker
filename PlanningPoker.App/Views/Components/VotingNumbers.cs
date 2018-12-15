@@ -1,3 +1,6 @@
+using Microsoft.Extensions.DependencyInjection;
+using PlanningPoker.App.ViewModels;
+
 namespace PlanningPoker.App.Views.Components {
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -6,10 +9,14 @@ namespace PlanningPoker.App.Views.Components {
 
     public partial class VotingNumbers : Grid {
         private string estimate;
+        private readonly VotingNumbersViewModel ViewModel;
 
         public VotingNumbers() {
+
             InitializeComponent();
             this.estimate = "None";
+            this.BindingContext = this.ViewModel =
+                (Application.Current as App)?.Container.GetRequiredService<VotingNumbersViewModel>();
         }
 
         public string GetEstimate() {

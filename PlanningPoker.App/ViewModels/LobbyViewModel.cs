@@ -1,21 +1,60 @@
 namespace PlanningPoker.App.ViewModels
 {
+    using System.Collections.ObjectModel;
     using System.Windows.Input;
-    using Interfaces;
+    using Shared;
 
-    public class LobbyViewModel : BaseViewModel, ILobbyViewModel
+    // This class contains testdata until repositories is setup
+    public class LobbyViewModel : BaseViewModel
     {
         public LobbyViewModel()
         {
             this.BaseTitle = "Lobby";
 
+            this.Users = new ObservableCollection<UserDTO>();
+
             this.LoadCommand = new RelayCommand(_ => this.ExecuteLoadCommand());
         }
 
-        public ICommand LoadCommand { get; private set; }
+        public ICommand LoadCommand { get; }
+
+        // Only for testing until repositories are ready
+        public ObservableCollection<UserDTO> Users { get; }
+
+        private static ObservableCollection<UserDTO> MockDataUsers()
+        {
+            var data = new ObservableCollection<UserDTO>();
+
+            var item1 = new UserDTO { Nickname = "Franz" };
+            var item2 = new UserDTO { Nickname = "Isabel" };
+            var item3 = new UserDTO { Nickname = "Magnus" };
+
+            data.Add(item1);
+            data.Add(item2);
+            data.Add(item3);
+
+            return data;
+        }
 
         private void ExecuteLoadCommand()
         {
+            if (this.IsBusy)
+            {
+                return;
+            }
+
+            this.IsBusy = true;
+
+            this.Users.Clear();
+
+            var users = MockDataUsers();
+
+            foreach (var user in users)
+            {
+                this.Users.Add(user);
+            }
+
+            this.IsBusy = false;
         }
     }
 }

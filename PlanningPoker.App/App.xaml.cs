@@ -75,11 +75,12 @@ namespace PlanningPoker.App
             //services.AddScoped<IItemRepository, ItemRepository>();
             services.AddScoped<LoginViewModel>();
             services.AddScoped<ItemsViewModel>();
-            services.AddScoped<UsersViewModel>();
             services.AddScoped<JoinViewModel>();
             services.AddScoped<LobbyViewModel>();
             services.AddScoped<SummaryViewModel>();
             services.AddScoped<SessionViewModel>();
+            services.AddScoped<CardsViewModel>();
+            services.AddScoped<VotingNumbersViewModel>();
 
             return services.BuildServiceProvider();
         }

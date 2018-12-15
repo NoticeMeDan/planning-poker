@@ -10,18 +10,18 @@
     </Grid.RowDefinitions>
 
     <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="35" />
-        <ColumnDefinition Width="35" />
-        <ColumnDefinition Width="35" />
-        <ColumnDefinition Width="35" />
-        <ColumnDefinition Width="40" />
-        <ColumnDefinition Width="40" />
+        <ColumnDefinition Width="2" />
+        <ColumnDefinition Width="2" />
+        <ColumnDefinition Width="2" />
+        <ColumnDefinition Width="2" />
+        <ColumnDefinition Width="2" />
+        <ColumnDefinition Width="2" />
     </Grid.ColumnDefinitions>
 
-    <Button Text="1" Grid.Row="0" Grid.Column="0" Clicked="OnVote_Clicked" Style="{StaticResource voteButton}"/>
-    <Button Text="3" Grid.Row="0" Grid.Column="1" Clicked="OnVote_Clicked" Style="{StaticResource voteButton}"/>
-    <Button Text="5" Grid.Row="0" Grid.Column="2" Clicked="OnVote_Clicked" Style="{StaticResource voteButton}"/>
-    <Button Text="8" Grid.Row="0" Grid.Column="3" Clicked="OnVote_Clicked" Style="{StaticResource voteButton}"/>
-    <Button Text="13" Grid.Row="0" Grid.Column="4" Clicked="OnVote_Clicked" Style="{StaticResource voteButton}"/>
-    <Button Text="20" Grid.Row="0" Grid.Column="5" Clicked="OnVote_Clicked" Style="{StaticResource voteButton}"/>
+    <Button Text="1" Grid.Row="0" Grid.Column="0" Clicked="OnVote_Clicked" />
+    <Button Text="3" Grid.Row="0" Grid.Column="1" Clicked="OnVote_Clicked" />
+    <Button Text="5" Grid.Row="0" Grid.Column="2" Clicked="OnVote_Clicked" />
+    <Button Text="8" Grid.Row="0" Grid.Column="3" Clicked="OnVote_Clicked" />
+    <Button Text="13" Grid.Row="0" Grid.Column="4" Clicked="OnVote_Clicked" />
+    <Button Text="20" Grid.Row="0" Grid.Column="5" Clicked="OnVote_Clicked" />
 </Grid>
