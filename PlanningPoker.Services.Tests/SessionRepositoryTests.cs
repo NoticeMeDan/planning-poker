@@ -219,8 +219,8 @@ namespace PlanningPoker.Services.Tests
                 SessionKey = "A1B2C3D",
                 Items = new List<ItemCreateUpdateDTO>
                 {
-                    new ItemCreateUpdateDTO { Title = "item 1", Rounds = new HashSet<RoundDTO>() },
-                    new ItemCreateUpdateDTO { Title = "item 2", Rounds = new HashSet<RoundDTO>() }
+                    new ItemCreateUpdateDTO { Title = "item 1", Rounds = new HashSet<RoundCreateUpdateDTO>() },
+                    new ItemCreateUpdateDTO { Title = "item 2", Rounds = new HashSet<RoundCreateUpdateDTO>() }
                 },
                 Users = new List<UserCreateDTO>
                 {

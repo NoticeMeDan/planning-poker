@@ -2,9 +2,10 @@ namespace PlanningPoker.Services
 {
     using System.Linq;
     using System.Threading.Tasks;
+    using Entities;
     using Microsoft.EntityFrameworkCore;
-    using PlanningPoker.Entities;
-    using PlanningPoker.Shared;
+    using Shared;
+    using Util;
 
     public class SummaryRepository : ISummaryRepository
     {

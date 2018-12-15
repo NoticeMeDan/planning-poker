@@ -12,6 +12,6 @@ namespace PlanningPoker.Shared
 
         public string Description { get; set; }
 
-        public ICollection<RoundDTO> Rounds { get; set; }
+        public ICollection<RoundCreateUpdateDTO> Rounds { get; set; }
     }
 }

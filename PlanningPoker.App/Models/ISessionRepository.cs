@@ -13,7 +13,5 @@ namespace PlanningPoker.App.Models
         Task<IEnumerable<SessionDTO>> ReadAsync();
 
         Task<bool> UpdateAsync(SessionCreateUpdateDTO session);
-
-        Task<bool> DeleteAsync(int sessionId);
     }
 }
