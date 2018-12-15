@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Client;
@@ -14,21 +15,22 @@ namespace PlanningPoker.App
 {
     public partial class App : Application
     {
-        private static PublicClientApplication publicClientApplication = null;
-
         public static UIParent UiParent { get; set; }
 
         private readonly Lazy<IServiceProvider> lazyProvider;
+
+        private IPublicClientApplication publicClientApplication;
 
         public IServiceProvider Container => this.lazyProvider.Value;
 
         public App()
         {
             this.InitializeComponent();
+
             var settings = new Settings();
 
             this.lazyProvider = new Lazy<IServiceProvider>(() => this.ConfigureServices());
-            publicClientApplication = new PublicClientApplication(settings.ClientId)
+            this.publicClientApplication = new PublicClientApplication(settings.ClientId)
             {
                 RedirectUri = $"msal{settings.ClientId}://auth",
             };
@@ -37,16 +39,6 @@ namespace PlanningPoker.App
 
             // Change Screen for faster development. Standard page is WelcomeScreen()
             this.MainPage = new NavigationPage(new WelcomeScreen());
-        }
-
-        public static IPublicClientApplication GetPublicClientApplication()
-        {
-            return publicClientApplication;
-        }
-
-        public static void SetPublicClientApplication(PublicClientApplication pca)
-        {
-            publicClientApplication = pca;
         }
 
         protected override void OnStart()
@@ -67,18 +59,25 @@ namespace PlanningPoker.App
         private IServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
-
             var settings = new Settings();
-
-            var handler = new HttpClientHandler();
-
+            var publicClientApplication = new PublicClientApplication(settings.ClientId, $"https://login.microsoftonline.com/{settings.TenantId}");
+            var handler = new BearerTokenClientHandler(publicClientApplication, settings);
             var httpClient = new HttpClient(handler) { BaseAddress = settings.BackendUrl };
 
             services.AddSingleton(_ => httpClient);
+            services.AddSingleton<ISettings>(settings);
+            services.AddSingleton<IPublicClientApplication>(publicClientApplication);
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
             // Adding the ViewModels
+            services.AddScoped<ISessionRepository, SessionRepository>();
+            services.AddScoped<ISummaryRepository, SummaryRepository>();
+            //services.AddScoped<IItemRepository, ItemRepository>();
             services.AddScoped<LoginViewModel>();
             services.AddScoped<ItemsViewModel>();
+            services.AddScoped<UsersViewModel>();
+            services.AddScoped<JoinViewModel>();
+            services.AddScoped<LobbyViewModel>();
 
             return services.BuildServiceProvider();
         }
