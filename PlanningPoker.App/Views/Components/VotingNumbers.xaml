@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<Grid VerticalOptions="End"
-
+<Grid
+    VerticalOptions="End"
+    Margin="20"
+    ColumnSpacing="5"
       xmlns="http://xamarin.com/schemas/2014/forms"
       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
       x:Class="PlanningPoker.App.Views.Components.VotingNumbers">
     <Grid.RowDefinitions>
-        <RowDefinition Height="*" />
+        <RowDefinition Height="100" />
     </Grid.RowDefinitions>
 
     <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="2" />
-        <ColumnDefinition Width="2" />
-        <ColumnDefinition Width="2" />
-        <ColumnDefinition Width="2" />
-        <ColumnDefinition Width="2" />
-        <ColumnDefinition Width="2" />
+        <ColumnDefinition Width="55" />
+        <ColumnDefinition Width="55" />
+        <ColumnDefinition Width="55" />
+        <ColumnDefinition Width="55" />
+        <ColumnDefinition Width="55" />
+        <ColumnDefinition Width="55" />
     </Grid.ColumnDefinitions>
 
     <Button Text="1" Grid.Row="0" Grid.Column="0" Clicked="OnVote_Clicked" />
