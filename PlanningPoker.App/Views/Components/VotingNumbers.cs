@@ -1,21 +1,24 @@
-namespace PlanningPoker.App.Views.Components
-{
+namespace PlanningPoker.App.Views.Components {
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
     using Xamarin.Forms;
 
-    public partial class VotingNumbers : Grid
-    {
-        public VotingNumbers()
-        {
-            this.InitializeComponent();
+    public partial class VotingNumbers : Grid {
+        private string estimate;
+
+        public VotingNumbers() {
+            InitializeComponent();
+            this.estimate = "None";
         }
 
-        private void OnVote_Clicked(object sender, EventArgs e)
-        {
-            Debug.WriteLine(e);
-            Debug.WriteLine(sender);
+        public string GetEstimate() {
+            return this.estimate;
+        }
+
+        private void OnVote_Clicked(object o, EventArgs e) {
+            // this.estimate = sender.Text;
+            Debug.WriteLine(estimate);
         }
     }
 }
