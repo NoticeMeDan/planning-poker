@@ -38,6 +38,7 @@ namespace PlanningPoker.WebApi
 
             services.AddDbContext<PlanningPokerContext>(options =>
                 options.UseSqlServer(this.Configuration.GetConnectionString("PlanningPokerDatabase")));
+            services.AddScoped<IPlanningPokerContext, PlanningPokerContext>();
             services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddScoped<ISummaryRepository, SummaryRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
