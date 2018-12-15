@@ -27,4 +27,7 @@
       <ProjectReference Include="..\PlanningPoker.App\PlanningPoker.App.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="ModelsTests\ItemRepositoryTests.cs" />
+    </ItemGroup>
 </Project>

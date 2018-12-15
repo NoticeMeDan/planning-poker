@@ -4,6 +4,7 @@ namespace PlanningPoker.Services.Tests.Util
     using System.Linq;
     using DeepEqual.Syntax;
     using Entities;
+    using PlanningPoker.Services.Util;
     using Shared;
     using Xunit;
 
@@ -268,7 +269,7 @@ namespace PlanningPoker.Services.Tests.Util
         {
             var session = this.CreateSession();
 
-            var result = EntityMapper.ToSessionDTO(session);
+            var result = EntityMapper.ToSessionDto(session);
 
             Assert.Equal(this.CreateSession().Id, result.Id);
             Assert.Equal(this.CreateSession().SessionKey, result.SessionKey);

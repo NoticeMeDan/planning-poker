@@ -3,7 +3,7 @@ namespace PlanningPoker.WebApi.Utils
     using System;
     using System.Linq;
 
-    public class StringUtils
+    public static class StringUtils
     {
         public static string RandomSessionKey()
         {

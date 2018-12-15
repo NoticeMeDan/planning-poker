@@ -27,6 +27,8 @@
     </Compile>
     <Compile Remove="Views\Components\NewItem.xaml.cs" />
     <Compile Remove="Views\Components\Items.xaml.cs" />
+    <Compile Remove="Models\IItemRepository.cs" />
+    <Compile Remove="Models\ItemRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
