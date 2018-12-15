@@ -16,7 +16,7 @@ namespace PlanningPoker.WebApi.Security
         public string CreateState(int userId, string sessionKey)
         {
             var token = Guid.NewGuid().ToString();
-            var userState = new UserState { Id = userId, SessionKey = sessionKey};
+            var userState = new UserState { Id = userId, SessionKey = sessionKey };
 
             var cacheOptions = new MemoryCacheEntryOptions()
                 .SetSlidingExpiration(TimeSpan.FromHours(1));

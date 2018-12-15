@@ -2,9 +2,10 @@ namespace PlanningPoker.Services
 {
     using System.Linq;
     using System.Threading.Tasks;
+    using Entities;
+    using Util;
+    using Shared;
     using Microsoft.EntityFrameworkCore;
-    using PlanningPoker.Entities;
-    using PlanningPoker.Shared;
 
     public class SessionRepository : ISessionRepository
     {
@@ -49,7 +50,7 @@ namespace PlanningPoker.Services
         {
             return await this.context.Sessions
                 .Where(s => s.Id == sessionId)
-                .Select(s => EntityMapper.ToSessionDTO(s))
+                .Select(s => EntityMapper.ToSessionDto(s))
                 .FirstAsync();
         }
 
@@ -57,7 +58,7 @@ namespace PlanningPoker.Services
         {
             return await this.context.Sessions
                 .Where(s => s.SessionKey == sessionKey)
-                .Select(s => EntityMapper.ToSessionDTO(s))
+                .Select(s => EntityMapper.ToSessionDto(s))
                 .FirstOrDefaultAsync();
         }
 

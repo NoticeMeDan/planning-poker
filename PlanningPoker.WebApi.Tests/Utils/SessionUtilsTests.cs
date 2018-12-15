@@ -1,8 +1,7 @@
-using Optional.Unsafe;
-
 namespace PlanningPoker.WebApi.Tests.Utils
 {
     using System.Collections.Generic;
+    using Optional.Unsafe;
     using PlanningPoker.WebApi.Utils;
     using Shared;
     using Xunit;

@@ -1,5 +1,3 @@
-using Optional.Unsafe;
-
 namespace PlanningPoker.WebApi.Controllers
 {
     using System.Collections.Generic;
@@ -8,9 +6,11 @@ namespace PlanningPoker.WebApi.Controllers
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;
+    using Optional.Unsafe;
+    using Shared;
     using Security;
     using Services;
-    using Shared;
+    using Services.Util;
     using Utils;
 
     [Route("api/[controller]")]
@@ -69,29 +69,38 @@ namespace PlanningPoker.WebApi.Controllers
 
             if (session == null)
             {
-                return this.BadRequest();
+                return this.NotFound();
             }
 
             if (session.Users.ToList().Find(u => u.IsHost) != default(UserDTO) && user.IsHost)
             {
                 // If joining user IsHost, but session already has a host
-                return this.Forbid();
+                return this.BadRequest();
             }
 
             var createdUser = await this.userRepository.CreateAsync(user);
 
             session.Users.Add(createdUser);
-            await this.sessionRepository.UpdateAsync(EntityMapper.ToSessionCreateUpdateDTO(session));
+            await this.sessionRepository.UpdateAsync(EntityMapper.ToSessionCreateUpdateDto(session));
 
             return new UserStateResponseDTO { Token = this.userStateManager.CreateState(createdUser.Id, sessionKey) };
         }
 
+        public Task<ActionResult<RoundDTO>> NextRound(string authToken, string sessionKey)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<ActionResult<RoundDTO>> GetCurrentRound(string authToken, string sessionKey)
+        {
+            throw new System.NotImplementedException();
+        }
+
         [Authorize]
         [HttpPost("{key}/item/next")]
-        public async Task<ActionResult<ItemDTO>> NextItem(string sessionKey)
+        public async Task<ActionResult<ItemDTO>> NextItem([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey)
         {
-            var authHeader = this.HttpContext.Request.Headers["PPAuthorization"];
-            if (!SecurityFilter.RequestIsValid(authHeader, sessionKey, this.userStateManager))
+            if (!SecurityFilter.RequestIsValid(authToken, sessionKey, this.userStateManager))
             {
                 return this.Unauthorized();
             }
@@ -99,32 +108,36 @@ namespace PlanningPoker.WebApi.Controllers
             var session = await this.sessionRepository.FindByKeyAsync(sessionKey);
 
             if (session == null)
-            {
-                return this.BadRequest();
-            }
-
-            var nextItem = session.Items.FirstOrDefault(item => item.Rounds.Count == 0);
-
-            // If there are no more rounds, the session is complete
-            // TODO: Generate summary when this happens
-            if (nextItem == default(ItemDTO))
             {
                 return this.NotFound();
             }
 
-            nextItem.Rounds.Add(new RoundDTO { Votes = new List<VoteDTO>()});
+            var nextItem = session.Items.FirstOrDefault(item => item.Rounds.Count == 0);
+
+            // If there are no more items without any rounds, the session is complete
+            // TODO: Generate summary when this happens
+            if (nextItem == default(ItemDTO))
+            {
+                return this.BadRequest();
+            }
+
+            nextItem.Rounds.Add(new RoundDTO { Votes = new List<VoteDTO>() });
             session.Items[session.Items.FindIndex(item => item.Id == nextItem.Id)] = nextItem;
 
-            await this.sessionRepository.UpdateAsync(EntityMapper.ToSessionCreateUpdateDTO(session));
+            await this.sessionRepository.UpdateAsync(EntityMapper.ToSessionCreateUpdateDto(session));
 
             return nextItem;
         }
 
-        [HttpPost("{key}/item")]
-        public async Task<ActionResult<ItemDTO>> GetCurrentItem(string sessionKey)
+        public Task<ActionResult<ICollection<ItemDTO>>> GetAllItems(string authToken, string sessionKey)
         {
-            var authHeader = this.HttpContext.Request.Headers["PPAuthorization"];
-            if (!SecurityFilter.RequestIsValid(authHeader, sessionKey, this.userStateManager))
+            throw new System.NotImplementedException();
+        }
+
+        [HttpPost("{key}/item")]
+        public async Task<ActionResult<ItemDTO>> GetCurrentItem(string authToken, string sessionKey)
+        {
+            if (!SecurityFilter.RequestIsValid(authToken, sessionKey, this.userStateManager))
             {
                 return this.Unauthorized();
             }
@@ -133,59 +146,30 @@ namespace PlanningPoker.WebApi.Controllers
 
             if (session == null)
             {
-                return this.BadRequest();
+                return this.NotFound();
             }
 
             var currentItem = SessionUtils.GetCurrentActiveItem(session.Items);
 
             if (!currentItem.HasValue)
             {
-                return this.NotFound();
+                return this.BadRequest();
             }
 
             return currentItem.ValueOrDefault();
         }
 
-        [Authorize]
-        public async Task<ActionResult<RoundDTO>> NextRound(string sessionKey)
-        {
-            var authHeader = this.HttpContext.Request.Headers["PPAuthorization"];
-            if (!SecurityFilter.RequestIsValid(authHeader, sessionKey, this.userStateManager))
-            {
-                return this.Unauthorized();
-            }
-
-            var session = await this.sessionRepository.FindByKeyAsync(sessionKey);
-
-            if (session == null)
-            {
-                return this.BadRequest();
-            }
-
-            throw new System.NotImplementedException();
-        }
-
-        public Task<ActionResult<RoundDTO>> GetCurrentRound(string sessionKey)
+        public Task<ActionResult> Vote(string authToken, string sessionKey, VoteDTO vote)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<ActionResult<ICollection<ItemDTO>>> GetAllItems(string sessionKey)
+        public Task<ActionResult> ThrowNitpickerCard(string authToken, string sessionKey)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<ActionResult> Vote(string sessionKey, VoteDTO vote)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<ActionResult> ThrowNitpickerCard(string sessionKey)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<ActionResult> KickUser(string sessionKey, int userId)
+        public Task<ActionResult> KickUser(string authToken, string sessionKey, int userId)
         {
             throw new System.NotImplementedException();
         }

@@ -6,6 +6,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
     using Microsoft.Extensions.Caching.Memory;
     using Moq;
     using PlanningPoker.WebApi.Controllers;
+    using PlanningPoker.WebApi.Security;
     using Services;
     using Shared;
     using Xunit;
@@ -66,11 +67,11 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             var cache = new Mock<IMemoryCache>();
             var controller = new SessionController(sessionRepo.Object, null, cache.Object);
             var post = await controller.Join("ABC123", input);
-            Assert.IsType<BadRequestResult>(post.Result);
+            Assert.IsType<NotFoundResult>(post.Result);
         }
 
         [Fact]
-        public async Task Join_given_host_where_session_already_has_hosts_returns_forbidden()
+        public async Task Join_given_host_where_session_already_has_hosts_returns_badrequest()
         {
             var sessionRepo = new Mock<ISessionRepository>();
             var cache = new Mock<IMemoryCache>();
@@ -82,7 +83,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             var controller = new SessionController(sessionRepo.Object, null, cache.Object);
             var input = new UserCreateDTO { Nickname = "Marty McTestface", IsHost = true };
             var post = await controller.Join("ABC123", input);
-            Assert.IsType<ForbidResult>(post.Result);
+            Assert.IsType<BadRequestResult>(post.Result);
         }
 
         [Fact]
@@ -127,6 +128,114 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             Assert.IsType<UserStateResponseDTO>(post.Value);
             Assert.IsType<string>(post.Value.Token);
             Assert.True(post.Value.Token != string.Empty);
+        }
+
+        [Fact]
+        public async Task NextItem_given_invalid_token_returns_forbidden()
+        {
+            var cache = new MemoryCache(new MemoryCacheOptions());
+
+            var controller = new SessionController(null, null, cache);
+
+            var result = await controller.NextItem("IDoNotExist", "ABC1234");
+
+            Assert.IsType<UnauthorizedResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task NextItem_given_nonexistant_sessionkey_returns_notfound()
+        {
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var sessionRepo = new Mock<ISessionRepository>();
+
+            var token = CreateUserState(cache, 42, "ABC1234");
+            sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
+                .ReturnsAsync(default(SessionDTO));
+
+            var controller = new SessionController(sessionRepo.Object, null, cache);
+
+            var result = await controller.NextItem(token, "ABC1234");
+
+            Assert.IsType<NotFoundResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task NextItem_given_completed_session_returns_badrequest()
+        {
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var sessionRepo = new Mock<ISessionRepository>();
+
+            var token = CreateUserState(cache, 42, "ABC1234");
+
+            var mockSession = new SessionDTO
+            {
+                Items = new List<ItemDTO>
+                {
+                    new ItemDTO
+                    {
+                        Rounds = new List<RoundDTO>
+                        {
+                            new RoundDTO(),
+                            new RoundDTO()
+                        }
+                    }
+                }
+            };
+            sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
+                .ReturnsAsync(mockSession);
+
+            var controller = new SessionController(sessionRepo.Object, null, cache);
+
+            var result = await controller.NextItem(token, "ABC1234");
+
+            Assert.IsType<BadRequestResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task NextItem_given_active_session_returns_nextItem()
+        {
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var sessionRepo = new Mock<ISessionRepository>();
+
+            var token = CreateUserState(cache, 42, "ABC1234");
+
+            var mockSession = new SessionDTO
+            {
+                Id = 42,
+                Items = new List<ItemDTO>
+                {
+                    new ItemDTO
+                    {
+                        Rounds = new List<RoundDTO>
+                        {
+                            new RoundDTO(),
+                            new RoundDTO()
+                        }
+                    },
+                    new ItemDTO { Rounds = new List<RoundDTO>() }
+                },
+                SessionKey = "ABC1234",
+                Users = new List<UserDTO>()
+            };
+
+            sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
+                .ReturnsAsync(mockSession);
+
+            sessionRepo.Setup(s => s.UpdateAsync(It.IsAny<SessionCreateUpdateDTO>()))
+                .ReturnsAsync(true);
+
+            var controller = new SessionController(sessionRepo.Object, null, cache);
+
+            var result = await controller.NextItem(token, "ABC1234");
+
+            Assert.IsType<ItemDTO>(result.Value);
+            Assert.Equal(1, result.Value.Rounds.Count);
+        }
+
+        private static string CreateUserState(IMemoryCache cache, int userId, string sessionKey)
+        {
+            var sm = new UserStateManager(cache);
+            return sm.CreateState(userId, sessionKey);
         }
     }
 }
