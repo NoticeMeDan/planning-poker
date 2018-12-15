@@ -1,5 +1,6 @@
 namespace PlanningPoker.Services
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Entities;
@@ -59,6 +60,20 @@ namespace PlanningPoker.Services
             return await entities.FirstOrDefaultAsync();
         }
 
+        public async Task<SummaryDTO> FindBySessionIdAsync(int sessionId)
+        {
+            var entities = this.context.Summaries
+                .Where(s => s.SessionId == sessionId)
+                .Select(s => new SummaryDTO
+                {
+                    Id = s.Id,
+                    ItemEstimates = CollectionHandler.ToItemEstimateDtos(s.ItemEstimates),
+                    SessionId = s.SessionId
+                });
+
+            return await entities.FirstOrDefaultAsync();
+        }
+
         public IQueryable<SummaryDTO> Read()
         {
             var entities = this.context.Summaries
@@ -88,6 +103,29 @@ namespace PlanningPoker.Services
             this.context.SaveChanges();
 
             return true;
+        }
+
+        public async Task<SummaryDTO> BuildSummary(SessionDTO session)
+        {
+            var summary = new SummaryCreateUpdateDTO
+            {
+                SessionId = session.Id,
+                ItemEstimates = this.BuildItemEstimates(session)
+            };
+
+            return await this.CreateAsync(summary);
+        }
+
+        private ICollection<ItemEstimateDTO> BuildItemEstimates(SessionDTO session)
+        {
+            var itemEstimates = new HashSet<ItemEstimateDTO>();
+            session.Items.ToList().ForEach(i => itemEstimates.Add(
+                new ItemEstimateDTO
+                {
+                    Estimate = i.Rounds.LastOrDefault().Votes.FirstOrDefault().Estimate,
+                    ItemTitle = i.Title
+                }));
+            return itemEstimates;
         }
     }
 }
