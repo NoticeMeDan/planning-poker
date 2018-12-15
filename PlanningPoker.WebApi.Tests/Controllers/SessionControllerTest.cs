@@ -1,8 +1,7 @@
-using System.Linq;
-
 namespace PlanningPoker.WebApi.Tests.Controllers
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;
@@ -398,7 +397,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         }
 
         [Fact]
-        public static async Task GetAllItems_given_invalid_token_returns_unauthorized()
+        public async Task GetAllItems_given_invalid_token_returns_unauthorized()
         {
             var cache = new MemoryCache(new MemoryCacheOptions());
 
@@ -410,7 +409,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         }
 
         [Fact]
-        public static async Task GetAllItems_given_nonexisting_session_returns_notfound()
+        public async Task GetAllItems_given_nonexisting_session_returns_notfound()
         {
             var cache = new MemoryCache(new MemoryCacheOptions());
             var sessionRepo = new Mock<ISessionRepository>();
@@ -427,7 +426,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         }
 
         [Fact]
-        public static async Task GetAllItems_given_existing_session_returns_items()
+        public async Task GetAllItems_given_existing_session_returns_items()
         {
             var cache = new MemoryCache(new MemoryCacheOptions());
             var sessionRepo = new Mock<ISessionRepository>();
