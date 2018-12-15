@@ -2,16 +2,26 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:components="clr-namespace:PlanningPoker.App.Views.Components;assembly=PlanningPoker.App"
     x:Class="PlanningPoker.App.Views.Session.ItemEstimation"
 >
 
     <StackLayout>
-        <Label Text="Welcome to the lobby"/>
+        <StackLayout Orientation="Vertical" VerticalOptions="Start">
+            <Label Text="Title"/>
+            <Label Text="Description"/>
+        </StackLayout>
 
-        <Button Text="VOTE"
-                HorizontalOptions="CenterAndExpand"
-                VerticalOptions="EndAndExpand"
-                Clicked="Vote_Clicked"/>
+        <StackLayout VerticalOptions="CenterAndExpand">
+
+        </StackLayout>
+        
+        <Button Text="Estimate Item" Clicked="EstimateItem_Clicked" />
+
+        <StackLayout Orientation="Horizontal" VerticalOptions="End">
+            <components:Cards />
+            <components:VotingNumbers x:Name="Votes"/>
+        </StackLayout>
     </StackLayout>
 
 </ContentPage>

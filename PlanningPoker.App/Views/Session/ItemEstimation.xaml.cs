@@ -14,5 +14,9 @@ namespace PlanningPoker.App.Views.Session
         {
             this.DisplayAlert("Send Vote?", string.Empty, "Yes", "No");
         }
+
+        private void EstimateItem_Clicked(object sender, EventArgs e) {
+            this.DisplayAlert("Send Vote?", string.Empty, "Yes", "No");
+        }
     }
 }
