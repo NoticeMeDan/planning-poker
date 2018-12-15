@@ -6,7 +6,6 @@
     Title="Join"
     Padding="10,0,10,0"
 >
-
     <StackLayout>
         <Label Text="Nickname"/>
         <Entry Text="{Binding Nickname}" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" Margin="5" />
