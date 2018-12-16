@@ -1,17 +1,15 @@
-using Newtonsoft.Json;
-
 namespace PlanningPoker.App.Models
 {
-    using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using Newtonsoft.Json;
     using Shared;
 
-    public class SummaryRepository : ISummaryRepository
+    public class SummaryClient : ISummaryClient
     {
         private readonly HttpClient httpClient;
 
-        public SummaryRepository(HttpClient httpClient)
+        public SummaryClient(HttpClient httpClient)
         {
             this.httpClient = httpClient;
         }

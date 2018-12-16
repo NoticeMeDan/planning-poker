@@ -11,12 +11,12 @@ namespace PlanningPoker.App.Tests.ModelsTests
     using Shared;
     using Xunit;
 
-    public class SummaryRepositoryTests
+    public class SummaryClientTests
     {
         private readonly Uri baseAddress = new Uri("https://localhost:5001/");
 
         [Fact]
-        public async Task FindAsync_sends_ok()
+        public async Task FindBySessionIdAsync_sends_ok()
         {
             var handler = new Mock<HttpMessageHandler>();
             handler.Protected()
@@ -30,21 +30,21 @@ namespace PlanningPoker.App.Tests.ModelsTests
                     Content = new StringContent(string.Empty)
                 });
 
-            var client = new HttpClient(handler.Object)
+            var httpClient = new HttpClient(handler.Object)
             {
                 BaseAddress = this.baseAddress
             };
 
-            var repository = new SummaryRepository(client);
+            var client = new SummaryClient(httpClient);
 
-            await repository.FindAsync(42);
+            await client.FindBySessionIdAsync(42);
 
             handler.Protected().Verify(
                 "SendAsync",
                 Times.Once(),
                 ItExpr.Is<HttpRequestMessage>(req =>
                     req.Method == HttpMethod.Get
-                    && req.RequestUri == new Uri("https://localhost:5001/api/summaries/42")),
+                    && req.RequestUri == new Uri("https://localhost:5001/api/session/42")),
                 ItExpr.IsAny<CancellationToken>());
         }
     }
