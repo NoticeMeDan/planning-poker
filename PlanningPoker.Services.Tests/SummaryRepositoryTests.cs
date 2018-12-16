@@ -208,7 +208,7 @@ namespace PlanningPoker.Services.Tests
                 var repository = new SummaryRepository(context);
                 var session = this.CreateDummySessionDTO();
 
-                var summary = await repository.BuildSummary(session); ;
+                var summary = await repository.BuildSummary(session);
 
                 Assert.Equal("item1", summary.ItemEstimates.FirstOrDefault().ItemTitle);
                 Assert.Equal("item2", summary.ItemEstimates.LastOrDefault().ItemTitle);
@@ -270,7 +270,7 @@ namespace PlanningPoker.Services.Tests
             {
                 Id = 42,
                 SessionKey = "A1B2C3D",
-                Items = this.CreateDummyItemHashSet(),
+                Items = this.CreateDummyItemHashSet().ToList(),
                 Users = new HashSet<UserDTO>
                 {
                     new UserDTO { Id = 1, IsHost = true, Email = string.Empty, Nickname = "user1" },
@@ -291,11 +291,11 @@ namespace PlanningPoker.Services.Tests
                     {
                         new RoundDTO
                         {
-                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 5}, new VoteDTO { UserId = 2, Estimate = 8 } }
+                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 5 }, new VoteDTO { UserId = 2, Estimate = 8 } }
                         },
                         new RoundDTO
                         {
-                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 13}, new VoteDTO { UserId = 2, Estimate = 13 } }
+                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 13 }, new VoteDTO { UserId = 2, Estimate = 13 } }
                         }
                     }
                 },
@@ -307,11 +307,11 @@ namespace PlanningPoker.Services.Tests
                     {
                         new RoundDTO
                         {
-                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 15}, new VoteDTO { UserId = 2, Estimate = 21 } }
+                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 15 }, new VoteDTO { UserId = 2, Estimate = 21 } }
                         },
                         new RoundDTO
                         {
-                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 37}, new VoteDTO { UserId = 2, Estimate = 37 } }
+                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 37 }, new VoteDTO { UserId = 2, Estimate = 37 } }
                         }
                     }
                 }

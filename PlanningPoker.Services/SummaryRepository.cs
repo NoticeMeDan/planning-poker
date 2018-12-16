@@ -68,7 +68,7 @@ namespace PlanningPoker.Services
                 .Select(s => new SummaryDTO
                 {
                     Id = s.Id,
-                    ItemEstimates = CollectionHandler.ToItemEstimateDtos(s.ItemEstimates),
+                    ItemEstimates = EntityMapper.ToItemEstimateDtos(s.ItemEstimates),
                     SessionId = s.SessionId
                 });
 
@@ -112,7 +112,7 @@ namespace PlanningPoker.Services
             var summary = new SummaryCreateUpdateDTO
             {
                 SessionId = session.Id,
-                ItemEstimates = this.BuildItemEstimates(session)
+                ItemEstimates = this.BuildItemEstimates(session).ToList()
             };
 
             return await this.CreateAsync(summary);
