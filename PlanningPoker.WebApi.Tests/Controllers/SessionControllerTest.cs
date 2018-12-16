@@ -534,6 +534,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             Assert.IsType<BadRequestResult>(result.Result);
         }
 
+        [Fact]
         public async Task NextRound_given_round_without_consensus_return_new_round()
         {
             var cache = new MemoryCache(new MemoryCacheOptions());
@@ -570,6 +571,113 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             var result = await controller.NextRound(token, "ABC1234");
 
             Assert.Equal(0, result.Value.Votes.Count);
+        }
+
+        [Fact]
+        public async Task GetCurrentRound_given_invalid_token_returns_unauthorized()
+        {
+            var cache = new MemoryCache(new MemoryCacheOptions());
+
+            var controller = new SessionController(null, null, cache);
+
+            var result = await controller.GetCurrentRound("IDontExist", "ABC1234");
+
+            Assert.IsType<UnauthorizedResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task GetCurrentRound_given_nonexisting_session_returns_notfound()
+        {
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var sessionRepo = new Mock<ISessionRepository>();
+
+            var token = CreateUserState(cache, 42, "ABC1234");
+            sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
+                .ReturnsAsync(default(SessionDTO));
+
+            var controller = new SessionController(sessionRepo.Object, null, cache);
+
+            var result = await controller.GetCurrentRound(token, "ABC1234");
+
+            Assert.IsType<NotFoundResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task GetCurrentROund_given_round_withconsensus_return_badrequest()
+        {
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var sessionRepo = new Mock<ISessionRepository>();
+
+            var token = CreateUserState(cache, 42, "ABC1234");
+
+            var mockSession = new SessionDTO
+            {
+                Id = 42,
+                Items = new List<ItemDTO>
+                {
+                    new ItemDTO
+                    {
+                        Id = 1,
+                        Rounds = new List<RoundDTO>
+                        {
+                            new RoundDTO
+                            {
+                                Votes = new List<VoteDTO> { new VoteDTO { Estimate = 13 }, new VoteDTO { Estimate = 13 } }
+                            }
+                        }
+                    }
+                },
+                SessionKey = "ABC1234",
+                Users = new List<UserDTO> { new UserDTO(), new UserDTO() }
+            };
+
+            sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
+                .ReturnsAsync(mockSession);
+
+            var controller = new SessionController(sessionRepo.Object, null, cache);
+
+            var result = await controller.GetCurrentRound(token, "ABC1234");
+
+            Assert.IsType<BadRequestResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task GetCurrentROund_given_round_without_consensus_return_round()
+        {
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var sessionRepo = new Mock<ISessionRepository>();
+
+            var token = CreateUserState(cache, 42, "ABC1234");
+
+            var mockSession = new SessionDTO
+            {
+                Id = 42,
+                Items = new List<ItemDTO>
+                {
+                    new ItemDTO
+                    {
+                        Id = 1,
+                        Rounds = new List<RoundDTO>
+                        {
+                            new RoundDTO
+                            {
+                                Votes = new List<VoteDTO> { new VoteDTO { Estimate = 5 }, new VoteDTO { Estimate = 13 } }
+                            }
+                        }
+                    }
+                },
+                SessionKey = "ABC1234",
+                Users = new List<UserDTO> { new UserDTO(), new UserDTO() }
+            };
+
+            sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
+                .ReturnsAsync(mockSession);
+
+            var controller = new SessionController(sessionRepo.Object, null, cache);
+
+            var result = await controller.GetCurrentRound(token, "ABC1234");
+
+            Assert.Equal(2, result.Value.Votes.Count);
         }
 
         private static string CreateUserState(IMemoryCache cache, int userId, string sessionKey)
