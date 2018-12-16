@@ -6,6 +6,6 @@ namespace PlanningPoker.App.Models
 
     public interface ISummaryRepository
     {
-        Task<SummaryDTO> FindAsync(int summaryId);
+        Task<SummaryDTO> FindBySessionIdAsync(int summaryId);
     }
 }
