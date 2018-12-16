@@ -4,7 +4,7 @@ namespace PlanningPoker.App.Models
     using System.Threading.Tasks;
     using Shared;
 
-    public interface ISessionRepository
+    public interface ISessionClient
     {
         Task<SessionDTO> CreateAsync(SessionCreateUpdateDTO session);
 

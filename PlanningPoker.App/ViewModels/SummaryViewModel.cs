@@ -12,7 +12,7 @@ namespace PlanningPoker.App.ViewModels
 
     public class SummaryViewModel : BaseViewModel
     {
-        private readonly ISummaryRepository repository;
+        private readonly ISummaryClient _client;
 
         public ObservableCollection<SummaryDTO> Summary { get; }
 
