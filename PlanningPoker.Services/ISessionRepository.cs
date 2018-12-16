@@ -2,7 +2,7 @@ namespace PlanningPoker.Services
 {
     using System.Linq;
     using System.Threading.Tasks;
-    using PlanningPoker.Shared;
+    using Shared;
 
     public interface ISessionRepository
     {
