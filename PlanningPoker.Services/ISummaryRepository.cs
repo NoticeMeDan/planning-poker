@@ -1,18 +1,19 @@
 namespace PlanningPoker.Services
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using PlanningPoker.Shared;
+    using Shared;
 
     public interface ISummaryRepository
     {
         Task<SummaryDTO> CreateAsync(SummaryCreateUpdateDTO summary);
 
-        Task<SummaryDTO> FindAsync(int summaryId);
+        Task<SummaryDTO> FindBySessionIdAsync(int sessionId);
 
-        IQueryable<SummaryDTO> Read();
+        ICollection<ItemEstimateDTO> BuildItemEstimates(SessionDTO session);
 
-        Task<bool> UpdateAsync(SummaryCreateUpdateDTO summary);
+        Task<SummaryDTO> BuildSummary(SessionDTO session);
 
         Task<bool> DeleteAsync(int summaryId);
     }

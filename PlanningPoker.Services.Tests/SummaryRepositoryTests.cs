@@ -48,7 +48,7 @@ namespace PlanningPoker.Services.Tests
         }
 
         [Fact]
-        public async Task FindAsync_given_id_exists_returns_dto()
+        public async Task FindBySessionIdAsync_given_id_exists_returns_dto()
         {
             using (var connection = await this.CreateConnectionAsync())
             using (var context = await this.CreateContextAsync(connection))
@@ -65,88 +65,6 @@ namespace PlanningPoker.Services.Tests
                 Assert.Equal(1, summary.Id);
                 Assert.Equal(42, summary.SessionId);
                 Assert.Equal("item 1", summary.ItemEstimates.FirstOrDefault().ItemTitle);
-            }
-        }
-
-        [Fact]
-        public async Task FindBySessionIdAsync_given_id_exists_returns_dto()
-        {
-            using (var connection = await this.CreateConnectionAsync())
-            using (var context = await this.CreateContextAsync(connection))
-            {
-                var entity = this.CreateDummySummaryEntity();
-
-                context.Summaries.Add(entity);
-                context.SaveChanges();
-
-                var repository = new SummaryRepository(context);
-
-                var summary = await repository.FindAsync(1);
-
-                Assert.Equal(1, summary.Id);
-                Assert.Equal(42, summary.SessionId);
-                Assert.Equal("item 1", summary.ItemEstimates.FirstOrDefault().ItemTitle);
-            }
-        }
-
-        [Fact]
-        public async Task Read_returns_projection_of_all_Summarys()
-        {
-            using (var connection = await this.CreateConnectionAsync())
-            using (var context = await this.CreateContextAsync(connection))
-            {
-                var entity = this.CreateDummySummaryEntity();
-                context.Summaries.AddRange(entity);
-                context.SaveChanges();
-
-                var repository = new SummaryRepository(context);
-
-                var summarys = repository.Read();
-
-                var summary = await summarys.SingleAsync();
-
-                Assert.Equal(1, summary.Id);
-                Assert.Equal(42, summary.SessionId);
-            }
-        }
-
-        [Fact]
-        public async Task UpdateAsync_given_non_existing_dto_returns_false()
-        {
-            using (var connection = await this.CreateConnectionAsync())
-            using (var context = await this.CreateContextAsync(connection))
-            {
-                var repository = new SummaryRepository(context);
-                var dto = this.CreateDummySummaryDTO();
-                dto.Id = 0;
-
-                var updated = await repository.UpdateAsync(dto);
-
-                Assert.False(updated);
-            }
-        }
-
-        [Fact]
-        public async Task UpdateAsync_given_existing_dto_updates_entity()
-        {
-            using (var connection = await this.CreateConnectionAsync())
-            using (var context = await this.CreateContextAsync(connection))
-            {
-                context.Summaries.Add(this.CreateDummySummaryEntity());
-                context.SaveChanges();
-
-                var repository = new SummaryRepository(context);
-                var dto = this.CreateDummySummaryDTO();
-                dto.Id = 1;
-                dto.SessionId = 45;
-
-                var updated = await repository.UpdateAsync(dto);
-
-                Assert.True(updated);
-
-                var entity = await context.Summaries.FindAsync(1);
-
-                Assert.Equal(45, entity.SessionId);
             }
         }
 
@@ -208,7 +126,7 @@ namespace PlanningPoker.Services.Tests
                 var repository = new SummaryRepository(context);
                 var session = this.CreateDummySessionDTO();
 
-                var summary = await repository.BuildSummary(session); ;
+                var summary = await repository.BuildSummary(session);
 
                 Assert.Equal("item1", summary.ItemEstimates.FirstOrDefault().ItemTitle);
                 Assert.Equal("item2", summary.ItemEstimates.LastOrDefault().ItemTitle);
@@ -291,11 +209,11 @@ namespace PlanningPoker.Services.Tests
                     {
                         new RoundDTO
                         {
-                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 5}, new VoteDTO { UserId = 2, Estimate = 8 } }
+                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 5 }, new VoteDTO { UserId = 2, Estimate = 8 } }
                         },
                         new RoundDTO
                         {
-                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 13}, new VoteDTO { UserId = 2, Estimate = 13 } }
+                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 13 }, new VoteDTO { UserId = 2, Estimate = 13 } }
                         }
                     }
                 },
@@ -307,11 +225,11 @@ namespace PlanningPoker.Services.Tests
                     {
                         new RoundDTO
                         {
-                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 15}, new VoteDTO { UserId = 2, Estimate = 21 } }
+                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 15 }, new VoteDTO { UserId = 2, Estimate = 21 } }
                         },
                         new RoundDTO
                         {
-                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 37}, new VoteDTO { UserId = 2, Estimate = 37 } }
+                            Votes = new List<VoteDTO> { new VoteDTO { UserId = 1, Estimate = 37 }, new VoteDTO { UserId = 2, Estimate = 37 } }
                         }
                     }
                 }
