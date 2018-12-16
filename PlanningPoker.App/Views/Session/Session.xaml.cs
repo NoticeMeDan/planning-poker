@@ -22,9 +22,6 @@ namespace PlanningPoker.App.Views.Session
         protected override void OnAppearing()
         {
             this.ViewModel.LoadPlayersCommand.Execute(null);
-
-            //TODO: LoadItemsCommand should be executed when all players have played a card
-            this.ViewModel.LoadVotesCommand.Execute(null);
         }
 
         private void OnNitpicker_Clicked(object sender, EventArgs e)

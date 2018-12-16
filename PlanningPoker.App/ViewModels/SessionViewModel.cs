@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using PlanningPoker.Shared;
 
@@ -13,12 +15,15 @@ namespace PlanningPoker.App.ViewModels
     public class SessionViewModel : BaseViewModel
     {
         private SessionRepository Repository;
+        private readonly string sessionKey;
+
         private string currentDescription;
         private string currentTitle;
         private string result;
 
-        public ObservableCollection<UserDTO> PlayersToVote { get; set; }
 
+        public ObservableCollection<UserDTO> Players { get; set; }
+        public ObservableCollection<UserDTO> PlayersToVote { get; set; }
         public ObservableCollection<VoteDTO> Votes { get; set; }
 
         public ICommand AddCardCommand { get; }
@@ -39,10 +44,12 @@ namespace PlanningPoker.App.ViewModels
         public SessionViewModel()
         {
             this.Repository = new SessionRepository(new HttpClient());
+            this.sessionKey = "42";
 
             this.BaseTitle = "Session";
             this.currentTitle = "test title";
 
+            this.Players = new ObservableCollection<UserDTO>();
             this.PlayersToVote = new ObservableCollection<UserDTO>();
             this.Votes = new ObservableCollection<VoteDTO>();
 
@@ -52,15 +59,10 @@ namespace PlanningPoker.App.ViewModels
             this.LoadVotesCommand = new RelayCommand(_ => this.ExecuteLoadVotesCommand());
             this.RevoteCommand = new RelayCommand(_ => this.ExecuteRevoteCommand());
             this.NextItemCommand = new RelayCommand(_ => this.ExecuteNextItemCommand());
-            this.SendVoteCommand = new RelayCommand(number => this.ExecuteSendVoteCommand(number));
+            this.SendVoteCommand = new RelayCommand(this.ExecuteSendVoteCommand);
         }
 
-        private void ExecuteSendVoteCommand(object number) {
-            // cast to int.
-            var voteEstimate = int.Parse(number.ToString());
-            Debug.WriteLine(voteEstimate);
-            Debug.WriteLine("");
-        }
+
 
         /*public string Result
         {
@@ -79,6 +81,17 @@ namespace PlanningPoker.App.ViewModels
             get => this.CurrentDescription;
             set => this.SetProperty(ref this.currentTitle, value);
         }*/
+
+        private async Task GetPlayers() {
+            Debug.WriteLine("Starting testing GetByKeyAsync");
+            var session = await this.Repository.GetByKeyAsync(this.sessionKey).ConfigureAwait(false);
+            Debug.WriteLine("Hey testing GetByKeyAsync");
+            var players = session.Users;
+            foreach (var player in players) {
+                this.Players.Add(player);
+            }
+            Debug.WriteLine(session.Users);
+        }
 
         private void ExecuteLoadVotesCommand()
         {
@@ -115,7 +128,14 @@ namespace PlanningPoker.App.ViewModels
             throw new System.NotImplementedException();
         }
 
-        private void ExecuteLoadPlayersCommand()
+        private void ExecuteSendVoteCommand(object number) {
+            // cast to int.
+            var voteEstimate = int.Parse(number.ToString());
+            Debug.WriteLine(voteEstimate);
+            Debug.WriteLine("");
+        }
+
+        private async Task ExecuteLoadPlayersCommand()
         {
             if (this.IsBusy)
             {
@@ -124,12 +144,7 @@ namespace PlanningPoker.App.ViewModels
 
             this.IsBusy = true;
 
-            var players = PlayersMockData();
-
-            foreach (var player in players)
-            {
-                this.PlayersToVote.Add(player);
-            }
+            await this.GetPlayers();
 
             this.IsBusy = false;
         }

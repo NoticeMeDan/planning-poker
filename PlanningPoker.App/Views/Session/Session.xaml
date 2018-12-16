@@ -13,7 +13,7 @@
         <!-- List over the players who have played a card -->
         <controls:FlowListView
             FlowColumnCount="6" SeparatorVisibility="None" HasUnevenRows="false"
-            FlowItemsSource="{Binding PlayersToVote}"
+            FlowItemsSource="{Binding Players}"
             IsPullToRefreshEnabled="true"
             RefreshCommand="{Binding LoadPlayersCommand}"
             IsRefreshing="{Binding IsBusy, Mode=OneWay}"
@@ -77,8 +77,6 @@
             <Button Text="13" Grid.Row="0" Grid.Column="4" Command="{Binding SendVoteCommand}" CommandParameter="13"/>
             <Button Text="20" Grid.Row="0" Grid.Column="5" Command="{Binding SendVoteCommand}" CommandParameter="20"/>
         </Grid>
-
-
 
         <!-- Buttons for Play Nitpicker, Re-vote and Next item -->
         <Grid>
