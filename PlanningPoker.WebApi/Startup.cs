@@ -9,6 +9,7 @@ namespace PlanningPoker.WebApi
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using PlanningPoker.Services;
     using Swashbuckle.AspNetCore.Swagger;
 
     public class Startup
@@ -37,6 +38,10 @@ namespace PlanningPoker.WebApi
 
             services.AddDbContext<PlanningPokerContext>(options =>
                 options.UseSqlServer(this.Configuration.GetConnectionString("PlanningPokerDatabase")));
+            services.AddScoped<IPlanningPokerContext, PlanningPokerContext>();
+            services.AddScoped<ISessionRepository, SessionRepository>();
+            services.AddScoped<ISummaryRepository, SummaryRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "PlanningPoker API", Version = "v1" }));
         }
@@ -46,6 +51,11 @@ namespace PlanningPoker.WebApi
         {
             if (env.IsDevelopment())
             {
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                });
                 app.UseDeveloperExceptionPage();
             }
 

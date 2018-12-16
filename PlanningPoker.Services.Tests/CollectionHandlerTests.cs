@@ -2,8 +2,9 @@ namespace PlanningPoker.Services.Tests
 {
     using System.Collections.Generic;
     using System.Linq;
-    using PlanningPoker.Entities;
-    using PlanningPoker.Shared;
+    using Entities;
+    using PlanningPoker.Services.Util;
+    using Shared;
     using Xunit;
 
     public class CollectionHandlerTests
@@ -11,9 +12,9 @@ namespace PlanningPoker.Services.Tests
         [Fact]
         public void ToItemEntities_returns_Collection_of_equal_size()
         {
-            var dtos = this.CreateItemDTOHashSet();
+            var dtos = this.CreateItemDTOList();
 
-            var result = CollectionHandler.ToItemEntities(dtos);
+            var result = EntityMapper.ToItemEntities(dtos);
 
             Assert.Equal(dtos.Count, result.Count);
         }
@@ -21,11 +22,11 @@ namespace PlanningPoker.Services.Tests
         [Fact]
         public void ToItemEntities_returns_Collection_of_correct_entities()
         {
-            var dtos = this.CreateItemDTOHashSet();
+            var dtos = this.CreateItemDTOList();
 
-            var entities = this.CreateItemEntityHashSet();
+            var entities = this.CreateItemEntityList();
 
-            var result = CollectionHandler.ToItemEntities(dtos);
+            var result = EntityMapper.ToItemEntities(dtos);
 
             var firstItem = result.ToList().FirstOrDefault();
 
@@ -37,9 +38,9 @@ namespace PlanningPoker.Services.Tests
         [Fact]
         public void ToItemDtos_returns_Collection_of_equal_size()
         {
-           var entities = this.CreateItemEntityHashSet();
+           var entities = this.CreateItemEntityList();
 
-            var result = CollectionHandler.ToItemDtos(entities);
+            var result = EntityMapper.ToItemDtos(entities);
 
             Assert.Equal(entities.Count, result.Count);
         }
@@ -47,11 +48,11 @@ namespace PlanningPoker.Services.Tests
         [Fact]
         public void ToItemDtos_returns_Collection_of_correct_dtos()
         {
-            var dtos = this.CreateItemDTOHashSet();
+            var dtos = this.CreateItemDTOList();
 
-            var entities = this.CreateItemEntityHashSet();
+            var entities = this.CreateItemEntityList();
 
-            var result = CollectionHandler.ToItemDtos(entities);
+            var result = EntityMapper.ToItemDtos(entities);
 
             var firstItem = result.ToList().FirstOrDefault();
 
@@ -65,7 +66,7 @@ namespace PlanningPoker.Services.Tests
         {
             var dtos = this.CreateRoundDTOHashSet();
 
-            var result = CollectionHandler.ToRoundEntities(dtos);
+            var result = EntityMapper.ToRoundEntities(dtos);
 
             Assert.Equal(dtos.Count, result.Count);
         }
@@ -79,7 +80,7 @@ namespace PlanningPoker.Services.Tests
 
             var entityVote = entities.ToList().FirstOrDefault().Votes.ToList().FirstOrDefault();
 
-            var result = CollectionHandler.ToRoundEntities(dtos);
+            var result = EntityMapper.ToRoundEntities(dtos);
 
             var firstRound = result.ToList().FirstOrDefault();
 
@@ -95,7 +96,7 @@ namespace PlanningPoker.Services.Tests
         {
             var entities = this.CreateRoundEntityHashSet();
 
-            var result = CollectionHandler.ToRoundDtos(entities);
+            var result = EntityMapper.ToRoundDtos(entities);
 
             Assert.Equal(entities.Count, result.Count);
         }
@@ -109,7 +110,7 @@ namespace PlanningPoker.Services.Tests
 
             var entities = this.CreateRoundEntityHashSet();
 
-            var result = CollectionHandler.ToRoundDtos(entities);
+            var result = EntityMapper.ToRoundDtos(entities);
 
             var firstRound = result.ToList().FirstOrDefault();
 
@@ -125,7 +126,7 @@ namespace PlanningPoker.Services.Tests
         {
             var dtos = this.CreateVoteDTOHashSet();
 
-            var result = CollectionHandler.ToVoteEntities(dtos);
+            var result = EntityMapper.ToVoteEntities(dtos);
 
             Assert.Equal(dtos.Count, result.Count);
         }
@@ -137,7 +138,7 @@ namespace PlanningPoker.Services.Tests
 
             var entities = this.CreateVoteEntityHashSet();
 
-            var result = CollectionHandler.ToVoteEntities(dtos);
+            var result = EntityMapper.ToVoteEntities(dtos);
 
             var firstVote = result.ToList().FirstOrDefault();
 
@@ -151,7 +152,7 @@ namespace PlanningPoker.Services.Tests
         {
             var entities = this.CreateVoteEntityHashSet();
 
-            var result = CollectionHandler.ToVoteDtos(entities);
+            var result = EntityMapper.ToVoteDtos(entities);
 
             Assert.Equal(entities.Count, result.Count);
         }
@@ -163,7 +164,7 @@ namespace PlanningPoker.Services.Tests
 
             var entities = this.CreateVoteEntityHashSet();
 
-            var result = CollectionHandler.ToVoteDtos(entities);
+            var result = EntityMapper.ToVoteDtos(entities);
 
             var firstVote = result.ToList().FirstOrDefault();
 
@@ -177,7 +178,7 @@ namespace PlanningPoker.Services.Tests
         {
             var dtos = this.CreateUserDTOHashSet();
 
-            var result = CollectionHandler.ToUserEntities(dtos);
+            var result = EntityMapper.ToUserEntities(dtos);
 
             Assert.Equal(dtos.Count, result.Count);
         }
@@ -189,7 +190,7 @@ namespace PlanningPoker.Services.Tests
 
             var entities = this.CreateUserEntityHashSet();
 
-            var result = CollectionHandler.ToUserEntities(dtos);
+            var result = EntityMapper.ToUserEntities(dtos);
 
             var firstUser = result.ToList().FirstOrDefault();
 
@@ -204,7 +205,7 @@ namespace PlanningPoker.Services.Tests
         {
             var entities = this.CreateUserEntityHashSet();
 
-            var result = CollectionHandler.ToUserDtos(entities);
+            var result = EntityMapper.ToUserDtos(entities);
 
             Assert.Equal(entities.Count, result.Count);
         }
@@ -216,7 +217,7 @@ namespace PlanningPoker.Services.Tests
 
             var entities = this.CreateUserEntityHashSet();
 
-            var result = CollectionHandler.ToUserDtos(entities);
+            var result = EntityMapper.ToUserDtos(entities);
 
             var firstUser = result.ToList().FirstOrDefault();
 
@@ -229,9 +230,9 @@ namespace PlanningPoker.Services.Tests
         [Fact]
         public void ToItemEstimateEntities_returns_correct_size()
         {
-            var dtos = this.CreateItemEstimateDTOHashSet();
+            var dtos = this.CreateItemEstimateDTOList();
 
-            var result = CollectionHandler.ToItemEstimateEntities(dtos);
+            var result = EntityMapper.ToItemEstimateEntities(dtos);
 
             Assert.Equal(dtos.Count, result.Count);
         }
@@ -239,11 +240,11 @@ namespace PlanningPoker.Services.Tests
         [Fact]
         public void ToItemEstimateEntities_returns_correct_entities()
         {
-            var dtos = this.CreateItemEstimateDTOHashSet();
+            var dtos = this.CreateItemEstimateDTOList();
 
-            var entities = this.CreateItemEstimateEntityHashSet();
+            var entities = this.CreateItemEstimateEntityList();
 
-            var result = CollectionHandler.ToItemEstimateEntities(dtos);
+            var result = EntityMapper.ToItemEstimateEntities(dtos);
 
             var firstItemEstimate = result.ToList().FirstOrDefault();
 
@@ -255,9 +256,9 @@ namespace PlanningPoker.Services.Tests
         [Fact]
         public void ToItemEstimateDtos_returns_correct_size()
         {
-            var entities = this.CreateItemEstimateEntityHashSet();
+            var entities = this.CreateItemEstimateEntityList();
 
-            var result = CollectionHandler.ToItemEstimateDtos(entities);
+            var result = EntityMapper.ToItemEstimateDtos(entities);
 
             Assert.Equal(entities.Count, result.Count);
         }
@@ -265,11 +266,11 @@ namespace PlanningPoker.Services.Tests
         [Fact]
         public void ToItemEstimateDtos_returns_correct_dtos()
         {
-            var dtos = this.CreateItemEstimateDTOHashSet();
+            var dtos = this.CreateItemEstimateDTOList();
 
-            var entities = this.CreateItemEstimateEntityHashSet();
+            var entities = this.CreateItemEstimateEntityList();
 
-            var result = CollectionHandler.ToItemEstimateDtos(entities);
+            var result = EntityMapper.ToItemEstimateDtos(entities);
 
             var firstItemEstimate = result.ToList().FirstOrDefault();
 
@@ -278,9 +279,32 @@ namespace PlanningPoker.Services.Tests
             Assert.Equal(5, firstItemEstimate.Estimate);
         }
 
-        private HashSet<Item> CreateItemEntityHashSet()
+        [Fact]
+        public void ToSessionDto_returns_correct_dto()
         {
-            return new HashSet<Item>
+            var session = this.CreateSession();
+
+            var result = EntityMapper.ToSessionDto(session);
+
+            var firstResultItem = result.Items.FirstOrDefault();
+            var firstExpectedItem = this.CreateItemDTOList().FirstOrDefault();
+            var firstResultUser = result.Users.FirstOrDefault();
+            var firstExpectedUser = this.CreateUserDTOHashSet().FirstOrDefault();
+
+            Assert.Equal(42, result.Id);
+            Assert.Equal("ABC123", result.SessionKey);
+            Assert.Equal(firstExpectedItem.Id, firstResultItem.Id);
+            Assert.Equal(firstExpectedItem.Description, firstResultItem.Description);
+            Assert.Equal(firstExpectedItem.Rounds.Count, firstResultItem.Rounds.Count);
+            Assert.Equal(firstExpectedUser.Id, firstResultUser.Id);
+            Assert.Equal(firstExpectedUser.Nickname, firstResultUser.Nickname);
+            Assert.Equal(firstExpectedUser.Email, firstResultUser.Email);
+            Assert.Equal(firstExpectedUser.IsHost, firstResultUser.IsHost);
+        }
+
+        private List<Item> CreateItemEntityList()
+        {
+            return new List<Item>
             {
                 new Item
                 {
@@ -299,9 +323,9 @@ namespace PlanningPoker.Services.Tests
             };
         }
 
-        private HashSet<ItemDTO> CreateItemDTOHashSet()
+        private List<ItemDTO> CreateItemDTOList()
         {
-            return new HashSet<ItemDTO>
+            return new List<ItemDTO>
             {
                 new ItemDTO
                 {
@@ -404,9 +428,9 @@ namespace PlanningPoker.Services.Tests
             };
         }
 
-        private HashSet<ItemEstimateDTO> CreateItemEstimateDTOHashSet()
+        private List<ItemEstimateDTO> CreateItemEstimateDTOList()
         {
-            return new HashSet<ItemEstimateDTO>
+            return new List<ItemEstimateDTO>
             {
                 new ItemEstimateDTO
                 {
@@ -417,9 +441,9 @@ namespace PlanningPoker.Services.Tests
             };
         }
 
-        private HashSet<ItemEstimate> CreateItemEstimateEntityHashSet()
+        private List<ItemEstimate> CreateItemEstimateEntityList()
         {
-            return new HashSet<ItemEstimate>
+            return new List<ItemEstimate>
             {
                 new ItemEstimate
                 {
@@ -427,6 +451,17 @@ namespace PlanningPoker.Services.Tests
                     ItemTitle = "Item 1",
                     Estimate = 5
                 }
+            };
+        }
+
+        private Session CreateSession()
+        {
+            return new Session
+            {
+                Id = 42,
+                Items = this.CreateItemEntityList(),
+                SessionKey = "ABC123",
+                Users = this.CreateUserEntityHashSet()
             };
         }
     }

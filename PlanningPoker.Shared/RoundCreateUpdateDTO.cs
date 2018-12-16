@@ -8,6 +8,6 @@ namespace PlanningPoker.Shared
         public int Id { get; set; }
 
         [Required]
-        public ICollection<VoteDTO> Votes { get; set; }
+        public ICollection<VoteCreateUpdateDTO> Votes { get; set; }
     }
 }

@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
+
+        <IsPackable>false</IsPackable>
+
+        <AssemblyName>PlanningPoker.App.Tests</AssemblyName>
+
+        <RootNamespace>PlanningPoker.App.Tests</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
+        <PackageReference Include="xunit" Version="2.3.1" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+        <PackageReference Include="Moq" Version="4.10.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Moq, Version=4.10.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920">
+        <HintPath>..\packages\Moq.4.10.1\lib\net45\Moq.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\PlanningPoker.App\PlanningPoker.App.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="ModelsTests\ItemRepositoryTests.cs" />
+    </ItemGroup>
+</Project>

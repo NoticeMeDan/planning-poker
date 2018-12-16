@@ -44,7 +44,7 @@ namespace PlanningPoker.WebApi.Controllers
         public async Task<ActionResult<SummaryDTO>> Post([FromBody] SummaryCreateUpdateDTO summary)
         {
             var created = await this.repository.CreateAsync(summary);
-             return this.CreatedAtAction(nameof(this.Get), new { created.Id }, created);
+            return this.CreatedAtAction(nameof(this.Get), new { created.Id }, created);
         }
 
         // PUT api/summaries/5

@@ -15,7 +15,7 @@ namespace PlanningPoker.WebApi.Tests.Security
             var cache = new MemoryCache(new MemoryCacheOptions());
             var stateManager = new UserStateManager(cache);
 
-            var token = stateManager.CreateState(1);
+            var token = stateManager.CreateState(1, "ABC1234");
             Assert.True(Guid.TryParse(token, out _));
         }
 
@@ -39,7 +39,7 @@ namespace PlanningPoker.WebApi.Tests.Security
             var cache = new MemoryCache(new MemoryCacheOptions());
             var stateManager = new UserStateManager(cache);
 
-            stateManager.CreateState(1);
+            stateManager.CreateState(1, "ABC1234");
             var result = stateManager.GetState("invalidToken");
             Assert.False(result.HasValue);
         }
@@ -49,7 +49,7 @@ namespace PlanningPoker.WebApi.Tests.Security
             var cache = new MemoryCache(new MemoryCacheOptions());
             var stateManager = new UserStateManager(cache);
 
-            var token = stateManager.CreateState(1);
+            var token = stateManager.CreateState(1, "ABC1234");
             return stateManager.GetState(token);
         }
     }

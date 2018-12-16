@@ -197,9 +197,9 @@ namespace PlanningPoker.Services.Tests
             };
         }
 
-        private UserCreateUpdateDTO CreateDummyUserDTO()
+        private UserCreateDTO CreateDummyUserDTO()
         {
-            return new UserCreateUpdateDTO
+            return new UserCreateDTO
             {
                 IsHost = true,
                 Email = "dummyuser@planningpoker.com",

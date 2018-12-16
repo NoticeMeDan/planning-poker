@@ -8,7 +8,7 @@ namespace PlanningPoker.Shared
 
         public string SessionKey { get; set; }
 
-        public ICollection<ItemDTO> Items { get; set; }
+        public List<ItemDTO> Items { get; set; }
 
         public ICollection<UserDTO> Users { get; set; }
     }

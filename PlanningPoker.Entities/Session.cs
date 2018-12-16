@@ -10,14 +10,14 @@ namespace PlanningPoker.Entities
         public string SessionKey { get; set; }
 
         [Required]
-        public ICollection<Item> Items { get; set; }
+        public List<Item> Items { get; set; }
 
         [Required]
         public ICollection<User> Users { get; set; }
 
         public Session()
         {
-            this.Items = new HashSet<Item>();
+            this.Items = new List<Item>();
             this.Users = new HashSet<User>();
         }
     }

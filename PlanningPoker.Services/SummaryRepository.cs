@@ -3,9 +3,10 @@ namespace PlanningPoker.Services
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Entities;
     using Microsoft.EntityFrameworkCore;
-    using PlanningPoker.Entities;
-    using PlanningPoker.Shared;
+    using Shared;
+    using Util;
 
     public class SummaryRepository : ISummaryRepository
     {
@@ -20,7 +21,7 @@ namespace PlanningPoker.Services
         {
             var entity = new Summary
             {
-                ItemEstimates = CollectionHandler.ToItemEstimateEntities(summary.ItemEstimates),
+                ItemEstimates = EntityMapper.ToItemEstimateEntities(summary.ItemEstimates),
                 SessionId = summary.SessionId
             };
 
@@ -49,10 +50,11 @@ namespace PlanningPoker.Services
         {
             var entities = this.context.Summaries
                 .Where(s => s.Id == summaryId)
+                .Include(ie => ie.ItemEstimates)
                 .Select(s => new SummaryDTO
                 {
                     Id = s.Id,
-                    ItemEstimates = CollectionHandler.ToItemEstimateDtos(s.ItemEstimates),
+                    ItemEstimates = EntityMapper.ToItemEstimateDtos(s.ItemEstimates),
                     SessionId = s.SessionId
                 });
 
@@ -76,10 +78,11 @@ namespace PlanningPoker.Services
         public IQueryable<SummaryDTO> Read()
         {
             var entities = this.context.Summaries
+                .Include(ie => ie.ItemEstimates)
                 .Select(s => new SummaryDTO
                 {
                     Id = s.Id,
-                    ItemEstimates = CollectionHandler.ToItemEstimateDtos(s.ItemEstimates),
+                    ItemEstimates = EntityMapper.ToItemEstimateDtos(s.ItemEstimates),
                     SessionId = s.SessionId
                 });
 
@@ -96,7 +99,7 @@ namespace PlanningPoker.Services
             }
 
             entity.Id = summary.Id;
-            entity.ItemEstimates = CollectionHandler.ToItemEstimateEntities(summary.ItemEstimates);
+            entity.ItemEstimates = EntityMapper.ToItemEstimateEntities(summary.ItemEstimates);
             entity.SessionId = summary.SessionId;
 
             this.context.SaveChanges();
