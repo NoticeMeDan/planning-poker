@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Client;
 using PlanningPoker.App.Models;
 using PlanningPoker.App.ViewModels;
+using PlanningPoker.App.Views.Session;
 using PlanningPoker.App.Views.WelcomeScreen;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -36,7 +37,7 @@ namespace PlanningPoker.App
             DependencyResolver.ResolveUsing(this.Container.GetService);
 
             // Change Screen for faster development. Standard page is WelcomeScreen()
-            this.MainPage = new NavigationPage(new WelcomeScreen());
+            this.MainPage = new NavigationPage(new Lobby("L11d1cK"));
         }
 
         public static IPublicClientApplication GetPublicClientApplication()
@@ -80,6 +81,7 @@ namespace PlanningPoker.App
             services.AddScoped<LoginViewModel>();
             services.AddScoped<ItemsViewModel>();
             services.AddScoped<JoinViewModel>();
+            services.AddScoped<LobbyViewModel>();
 
             return services.BuildServiceProvider();
         }

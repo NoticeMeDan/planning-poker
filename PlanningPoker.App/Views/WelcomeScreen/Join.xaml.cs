@@ -26,10 +26,10 @@ namespace PlanningPoker.App.Views.WelcomeScreen
         {
             Debug.WriteLine("try to connection?");
             this._vm.JoinCommand.Execute(e);
-            if (_vm.connection == true)
+            if (_vm.Connection == true)
             {
                 Debug.WriteLine("Connection!");
-                await this.Navigation.PushModalAsync(new Lobby());
+                await this.Navigation.PushModalAsync(new Lobby(this._vm.Key));
             }
         }
     }

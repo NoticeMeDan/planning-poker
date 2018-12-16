@@ -7,12 +7,26 @@
 
     <StackLayout>
         <Label Text="Welcome to the lobby"/>
+        <Label Text="{Binding Title}"/>
+        <ListView
+            ItemsSource="{Binding Users}"
+            SelectionMode="Single"
+            >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Margin="20,10,20,10">
+                            <Label Text="{Binding Nickname}"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
         <Button Text="Begin Session"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="EndAndExpand"
-
-                Clicked="BeginSessionClicked"/>
+                />
     </StackLayout>
 
 </ContentPage>

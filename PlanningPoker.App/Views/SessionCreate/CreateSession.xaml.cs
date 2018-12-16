@@ -33,7 +33,6 @@ namespace PlanningPoker.App.Views.SessionCreation
 
         private void CreateSessionClicked(object sender, EventArgs e)
         {
-            this.Navigation.PushAsync(new Lobby());
         }
     }
 }

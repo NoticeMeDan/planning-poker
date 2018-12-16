@@ -13,7 +13,7 @@ namespace PlanningPoker.App.ViewModels
 
         private bool Loading;
 
-        public bool connection { get; set; }
+        public bool Connection { get; set; }
 
         private readonly ISessionRepository repository;
 
@@ -46,18 +46,18 @@ namespace PlanningPoker.App.ViewModels
             }
 
             this.Loading = true;
-            this.connection = false;
+            this.Connection = false;
             this.User.Nickname = this.nickname;
 
             try
             {
                 var x = await this.repository.Join(this.key, this.User);
                 Debug.Write("User TOKEN: " + x.Token);
-                this.connection = true;
+                this.Connection = true;
             }
             catch (Exception e)
             {
-                this.connection = false;
+                this.Connection = false;
                 Debug.WriteLine("No session with that key exists.");
                 Debug.WriteLine(e.StackTrace);
             }
