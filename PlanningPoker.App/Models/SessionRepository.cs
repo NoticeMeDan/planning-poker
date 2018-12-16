@@ -52,18 +52,18 @@ namespace PlanningPoker.App.Models
 
         public async Task<UserStateResponseDTO> Join(string sessionKey, UserCreateDTO user)
         {
-            var reponse = await this.httpClient.PostAsJsonAsync($"api/session/{sessionKey}/join", user);
+            var response = await this.httpClient.PostAsJsonAsync($"api/session/{sessionKey}/join", user);
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new KeyNotFoundException();
+            }
 
-            return await reponse.Content.ReadAsAsync<UserStateResponseDTO>();
+            return await response.Content.ReadAsAsync<UserStateResponseDTO>();
         }
 
         public async Task<RoundDTO> NextRoundAsync(string sessionKey)
         {
             var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/round/next");
-            if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                throw new KeyNotFoundException();
-            }
 
             return await response.Content.ReadAsAsync<RoundDTO>();
         }

@@ -76,9 +76,10 @@ namespace PlanningPoker.App
 
             services.AddSingleton(_ => httpClient);
 
-            // Adding the ViewModels
+            services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddScoped<LoginViewModel>();
             services.AddScoped<ItemsViewModel>();
+            services.AddScoped<JoinViewModel>();
 
             return services.BuildServiceProvider();
         }

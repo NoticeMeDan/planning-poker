@@ -2,8 +2,10 @@ namespace PlanningPoker.App.Views.WelcomeScreen
 {
     using System;
     using System.Diagnostics;
+    using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
     using PlanningPoker.App.ViewModels;
+    using PlanningPoker.App.Views.Session;
     using Xamarin.Forms;
     using Xamarin.Forms.Xaml;
 
@@ -12,20 +14,23 @@ namespace PlanningPoker.App.Views.WelcomeScreen
     {
         private JoinViewModel _vm;
 
-        public string Nickname { get; set; }
-
-        public string Key { get; set; }
-
         public Join()
         {
             this.InitializeComponent();
+
+            this.BindingContext = this._vm =
+               (Application.Current as App)?.Container.GetRequiredService<JoinViewModel>();
         }
 
-        private void HandleClicked(object sender, EventArgs e)
+        private async Task HandleClickedAsync(object sender, EventArgs e)
         {
             Debug.WriteLine("try to connection?");
-            this._vm.user.Nickname = this.Nickname;
-            this._vm.JoinLobby(this.Key);
+            this._vm.JoinCommand.Execute(e);
+            if (_vm.connection == true)
+            {
+                Debug.WriteLine("Connection!");
+                await this.Navigation.PushModalAsync(new Lobby());
+            }
         }
     }
 }
