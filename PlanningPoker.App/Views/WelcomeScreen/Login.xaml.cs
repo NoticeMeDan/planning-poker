@@ -1,26 +1,26 @@
 namespace PlanningPoker.App.Views.WelcomeScreen
 {
     using System;
-    using System.Diagnostics;
     using Microsoft.Extensions.DependencyInjection;
-    using ViewModels;
+    using PlanningPoker.App.ViewModels;
     using Xamarin.Forms;
     using Xamarin.Forms.Xaml;
 
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Login : ContentPage
     {
-        private readonly LoginViewModel loginViewModel;
+        private readonly LoginViewModel viewModel;
 
         public Login()
         {
+            this.BindingContext = this.viewModel =
+                (Application.Current as App)?.Container.GetRequiredService<LoginViewModel>();
             this.InitializeComponent();
-            this.BindingContext = this.loginViewModel = ((App)Application.Current).Container.GetRequiredService<LoginViewModel>();
         }
 
         public async void LoginCommand(object sender, EventArgs e)
         {
-            var result = await this.loginViewModel.ExecuteLoginCommand();
+            var result = await this.viewModel.ExecuteLoginCommand();
             if (result)
             {
                 await this.Navigation.PushModalAsync(new SessionCreation.CreateSession());

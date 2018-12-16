@@ -5,7 +5,7 @@ namespace PlanningPoker.App.Models
 
     public class Settings : ISettings
     {
-        public Uri BackendUrl => new Uri("http://localhost:5001/");
+        public Uri BackendUrl => new Uri("http://planningpoker-webapi.azurewebsites.net/");
 
         public string ClientId => "e1ab0ad7-71d7-47a4-a01a-0d78e2a5cf22";
 
@@ -13,9 +13,9 @@ namespace PlanningPoker.App.Models
 
         public IReadOnlyCollection<string> Scopes => new[]
         {
-            "User.Read",
+            "https://ituniversity.onmicrosoft.com/PlanningPoker.WebApi/user_impersonation"
         };
 
-        public string Authority => $"https://login.microsoftonline.com/{this.TenantId}/v2.0/";
+        public string Authority => $"https://login.microsoftonline.com/{this.TenantId}/v2.0";
     }
 }

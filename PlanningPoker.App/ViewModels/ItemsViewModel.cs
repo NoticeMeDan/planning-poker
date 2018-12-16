@@ -1,41 +1,95 @@
 namespace PlanningPoker.App.ViewModels
 {
     using System.Collections.ObjectModel;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Threading.Tasks;
     using System.Windows.Input;
-    using PlanningPoker.Shared;
+    using Models;
+    using Shared;
+    using Xamarin.Forms;
 
+    // This class contains data until repositories is setup
     public class ItemsViewModel : BaseViewModel
     {
-        // TODO: Use API to get and set items.
+        private readonly ISessionRepository sessionRepo;
+        private string title;
+        private string description;
 
-        // private readonly
-        public ObservableCollection<ItemDTO> Items { get; set; }
-
-        // public ICommand AddCommand { get; set; }
-        public ICommand LoadCommand { get; set; }
-
-        public ItemsViewModel()
+        public ItemsViewModel(ISessionRepository sessionRepo)
         {
-            this.Title = "Items";
+            this.sessionRepo = sessionRepo;
 
-            this.Items = new ObservableCollection<ItemDTO>();
+            this.BaseTitle = "Items";
 
-            this.LoadCommand = new RelayCommand(_ => this.ExecuteLoadCommand());
+            this.Items = new ObservableCollection<ItemCreateUpdateDTO>();
+
+            this.AddItemCommand = new RelayCommand(_ => this.ExecuteAddItemCommand());
+            this.LoadCommand = new Command(() => this.ExecuteLoadCommand());
+            this.CreateSessionCommand = new RelayCommand(async _ => await this.ExecuteCreateSessionCommand());
         }
 
-        private static ObservableCollection<ItemDTO> MockData()
+        public ObservableCollection<ItemCreateUpdateDTO> Items { get; set; }
+
+        public ICommand AddItemCommand { get; }
+
+        public ICommand CreateSessionCommand { get; }
+
+        public ICommand LoadCommand { get; }
+
+        public string Title
         {
-            var data = new ObservableCollection<ItemDTO>();
+            get => this.title;
+            set => this.SetProperty(ref this.title, value);
+        }
 
-            var item1 = new ItemDTO { Id = 1, Title = "Item_1", Description = "First item" };
-            var item2 = new ItemDTO { Id = 2, Title = "Item_2", Description = "Second item" };
-            var item3 = new ItemDTO { Id = 3, Title = "Item_3", Description = "Third item" };
+        public string Description
+        {
+            get => this.description;
+            set => this.SetProperty(ref this.description, value);
+        }
 
-            data.Add(item1);
-            data.Add(item2);
-            data.Add(item3);
+        public async Task ExecuteCreateSessionCommand()
+        {
+            if (this.IsBusy)
+            {
+                return;
+            }
 
-            return data;
+            this.IsBusy = true;
+
+            var toCreate = new SessionCreateUpdateDTO
+            {
+                Items = this.Items.ToList()
+            };
+
+            var result = await this.sessionRepo.CreateAsync(toCreate);
+            this.IsBusy = false;
+        }
+
+        private void ExecuteAddItemCommand()
+        {
+            if (this.IsBusy)
+            {
+                return;
+            }
+
+            this.IsBusy = true;
+
+            var toCreate = new ItemCreateUpdateDTO
+            {
+                Title = this.Title,
+                Description = this.Description
+            };
+
+            this.Items.Add(toCreate);
+
+            MessagingCenter.Send(this, "ItemAdded", toCreate);
+
+            this.Title = string.Empty;
+            this.Description = string.Empty;
+
+            this.IsBusy = false;
         }
 
         private void ExecuteLoadCommand()
@@ -49,7 +103,7 @@ namespace PlanningPoker.App.ViewModels
 
             this.Items.Clear();
 
-            var items = MockData();
+            var items = this.Items.ToList();
 
             foreach (var item in items)
             {
