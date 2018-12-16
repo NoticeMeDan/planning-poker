@@ -129,9 +129,21 @@ namespace PlanningPoker.WebApi.Controllers
             return nextItem;
         }
 
-        public Task<ActionResult<ICollection<ItemDTO>>> GetAllItems(string authToken, string sessionKey)
+        public async Task<ActionResult<ICollection<ItemDTO>>> GetAllItems(string authToken, string sessionKey)
         {
-            throw new System.NotImplementedException();
+            if (!SecurityFilter.RequestIsValid(authToken, sessionKey, this.userStateManager))
+            {
+                return this.Unauthorized();
+            }
+
+            var session = await this.sessionRepository.FindByKeyAsync(sessionKey);
+
+            if (session == null)
+            {
+                return this.NotFound();
+            }
+
+            return session.Items;
         }
 
         [HttpPost("{key}/item")]
