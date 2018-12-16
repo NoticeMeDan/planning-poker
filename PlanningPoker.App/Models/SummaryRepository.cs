@@ -16,7 +16,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<SummaryDTO> FindAsync(int summaryId)
         {
-            var response = await this.httpClient.GetAsync($"api/summaries/{summaryId}");
+            var response = await this.httpClient.GetAsync($"api/summary/{summaryId}");
 
             return await response.Content.ReadAsAsync<SummaryDTO>();
         }
