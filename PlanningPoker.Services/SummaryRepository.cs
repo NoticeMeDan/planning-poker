@@ -118,7 +118,7 @@ namespace PlanningPoker.Services
             return await this.CreateAsync(summary);
         }
 
-        private ICollection<ItemEstimateDTO> BuildItemEstimates(SessionDTO session)
+        public ICollection<ItemEstimateDTO> BuildItemEstimates(SessionDTO session)
         {
             var itemEstimates = new HashSet<ItemEstimateDTO>();
             session.Items.ToList().ForEach(i => itemEstimates.Add(
