@@ -15,15 +15,16 @@ namespace PlanningPoker.App.ViewModels
     public class SummaryViewModel : BaseViewModel
     {
 
-        //private readonly ISummaryClient client;
+        private readonly ISummaryClient summaryClient;
 
-        // private string title;
-        // private int estimate;
+        private string title;
+        private int estimate;
 
-        public SummaryViewModel()
+        public int sessionId { get; set; }
+
+        public SummaryViewModel(ISummaryClient summaryClient)
         {
-            // this.client = summaryC;
-            // this.sessesionClient = sessionC;
+            this.summaryClient = summaryClient;
 
             this.BaseTitle = "Summary Overview";
 
@@ -33,15 +34,12 @@ namespace PlanningPoker.App.ViewModels
         }
 
 
-        // private readonly ISessionClient sessionClient;
-
-
-        // public ObservableCollection<SummaryDTO> Summary { get; }
+        //public ObservableCollection<SummaryDTO> Summary { get; set; }
 
         public ObservableCollection<ItemEstimateDTO> Items { get; set; }
 
         public ICommand LoadSummaryCommand { get; set; }
-        /*
+
         public string Title
         {
             get => this.title;
@@ -52,9 +50,9 @@ namespace PlanningPoker.App.ViewModels
         {
             get => this.estimate;
             set => this.SetProperty(ref this.estimate, value);
-        } */
+        }
 
-
+        /*
 
         private static ObservableCollection<ItemEstimateDTO> MockData()
         {
@@ -69,9 +67,9 @@ namespace PlanningPoker.App.ViewModels
             data.Add(item3);
 
             return data;
-        }
+        } */
 
-        private void ExecuteLoadSummaryCommand()
+        private async Task ExecuteLoadSummaryCommand()
         {
             if (this.IsBusy)
             {
@@ -80,16 +78,15 @@ namespace PlanningPoker.App.ViewModels
 
             this.IsBusy = true;
 
-
             this.Items.Clear();
+            //give input this.sessionId
+            var summary = await this.summaryClient.FindBySessionIdAsync(12);
 
-            // var summary = this.summaryClient.FindBySessionIdAsync(SessionId);
+            //var items = this.Items;
 
-            var items = MockData();
-
-            foreach (var item in items)
+            foreach (var s in summary.ItemEstimates)
             {
-                this.Items.Add(item);
+                this.Items.Add(s);
             }
 
             this.IsBusy = false;

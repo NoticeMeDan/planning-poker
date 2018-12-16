@@ -15,12 +15,14 @@ namespace PlanningPoker.App.Views
     {
         private readonly SummaryViewModel summaryViewModel;
 
-        public Summary()
+        public Summary(int sessionId)
         {
-            this.summaryViewModel = new SummaryViewModel();
+            // this.summaryViewModel = new SummaryViewModel();
 
             this.BindingContext = this.summaryViewModel =
                 (Application.Current as App)?.Container.GetRequiredService<SummaryViewModel>();
+
+            this.summaryViewModel.sessionId = sessionId;
 
             this.InitializeComponent();
         }
