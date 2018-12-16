@@ -70,7 +70,6 @@ namespace PlanningPoker.App
             services.AddSingleton<IPublicClientApplication>(publicClientApplication);
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-            // Adding the ViewModels
             services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddScoped<ISummaryRepository, SummaryRepository>();
             //services.AddScoped<IItemRepository, ItemRepository>();

@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace PlanningPoker.App.Views.Session
 {
     using System;
@@ -17,6 +19,14 @@ namespace PlanningPoker.App.Views.Session
             this.InitializeComponent();
         }
 
+        protected override void OnAppearing()
+        {
+            this.ViewModel.LoadPlayersCommand.Execute(null);
+
+            //TODO: LoadItemsCommand should be executed when all players have played a card
+            this.ViewModel.LoadVotesCommand.Execute(null);
+        }
+
         private void OnNitpicker_Clicked(object sender, EventArgs e)
         {
             throw new NotImplementedException();
@@ -34,7 +44,8 @@ namespace PlanningPoker.App.Views.Session
 
         private void OnVoteCard_Clicked(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            this.ViewModel.SendVoteCommand.Execute(null);
+
         }
     }
 }

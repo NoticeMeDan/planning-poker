@@ -2,55 +2,57 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
     x:Class="PlanningPoker.App.Views.Session.Session"
     Title="Title"
 >
     <StackLayout>
+        <!-- Item of the current item -->
         <Label Text="Item title"/>
 
-        <ListView
-             ItemsSource="{Binding Players}"
-             VerticalOptions="FillAndExpand"
-             HasUnevenRows="true"
-             IsPullToRefreshEnabled="true"
-             RefreshCommand="{Binding LoadPlayersCommand}"
-             IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-             SelectionMode="None">
-
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout>
-                            <Label Text="{Binding Nickname}"
-                                   LineBreakMode="NoWrap" />
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-
-        <!--<ListView
-            ItemsSource="{Binding Votes}"
-            VerticalOptions="FillAndExpand"
-            HasUnevenRows="true"
+        <!-- List over the players who have played a card -->
+        <controls:FlowListView
+            FlowColumnCount="6" SeparatorVisibility="None" HasUnevenRows="false"
+            FlowItemsSource="{Binding PlayersToVote}"
             IsPullToRefreshEnabled="true"
-            RefreshCommand="{Binding LoadEstimateVotesCommand}"
+            RefreshCommand="{Binding LoadPlayersCommand}"
             IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-            SelectionMode="None">
+            SelectionMode="None"
+            >
 
-            <ListView.ItemTemplate>
+            <controls:FlowListView.FlowColumnTemplate>
                 <DataTemplate>
-                    <ViewCell>
-                        <StackLayout>
-                            <Label Text="{Binding Estimate}"
-                                   LineBreakMode="NoWrap" />
-                        </StackLayout>
-                    </ViewCell>
+                    <Label HorizontalOptions="Fill" VerticalOptions="Fill"
+                           XAlign="Center" YAlign="Center" Text="{Binding Nickname}"/>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>-->
+            </controls:FlowListView.FlowColumnTemplate>
 
+        </controls:FlowListView>
+
+        <!-- List over the chosen estimate by players -->
+        <controls:FlowListView
+            FlowColumnCount="6" SeparatorVisibility="None" HasUnevenRows="false"
+            FlowItemsSource="{Binding Votes}"
+            IsPullToRefreshEnabled="true"
+            RefreshCommand="{Binding LoadVotesCommand}"
+            IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+            SelectionMode="None"
+        >
+            <controls:FlowListView.FlowColumnTemplate>
+                <DataTemplate>
+                    <StackLayout>
+                        <Label HorizontalOptions="Fill" VerticalOptions="Fill"
+                               XAlign="Center" YAlign="Center" Text="{Binding UserId, Mode=TwoWay}"/>
+                        <Label HorizontalOptions="Fill" VerticalOptions="Fill"
+                               XAlign="Center" YAlign="Center" Text="{Binding Estimate, Mode=TwoWay}"/>
+                    </StackLayout>
+                </DataTemplate>
+            </controls:FlowListView.FlowColumnTemplate>
+        </controls:FlowListView>
+
+        <!-- Available cards to play-->
         <Grid
+
             VerticalOptions="End"
             Margin="20"
             ColumnSpacing="5"
@@ -68,14 +70,17 @@
                 <ColumnDefinition Width="55" />
             </Grid.ColumnDefinitions>
 
-            <Button Text="1" Grid.Row="0" Grid.Column="0" Clicked="OnVoteCard_Clicked" />
-            <Button Text="3" Grid.Row="0" Grid.Column="1" Clicked="OnVoteCard_Clicked" />
-            <Button Text="5" Grid.Row="0" Grid.Column="2" Clicked="OnVoteCard_Clicked" />
-            <Button Text="8" Grid.Row="0" Grid.Column="3" Clicked="OnVoteCard_Clicked" />
-            <Button Text="13" Grid.Row="0" Grid.Column="4" Clicked="OnVoteCard_Clicked" />
-            <Button Text="20" Grid.Row="0" Grid.Column="5" Clicked="OnVoteCard_Clicked" />
+            <Button Text="1" Grid.Row="0" Grid.Column="0" Command="{Binding SendVoteCommand}" CommandParameter="1"/>
+            <Button Text="3" Grid.Row="0" Grid.Column="1" Command="{Binding SendVoteCommand}" CommandParameter="3"/>
+            <Button Text="5" Grid.Row="0" Grid.Column="2" Command="{Binding SendVoteCommand}" CommandParameter="5"/>
+            <Button Text="8" Grid.Row="0" Grid.Column="3" Command="{Binding SendVoteCommand}" CommandParameter="8"/>
+            <Button Text="13" Grid.Row="0" Grid.Column="4" Command="{Binding SendVoteCommand}" CommandParameter="13"/>
+            <Button Text="20" Grid.Row="0" Grid.Column="5" Command="{Binding SendVoteCommand}" CommandParameter="20"/>
         </Grid>
 
+
+
+        <!-- Buttons for Play Nitpicker, Re-vote and Next item -->
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
