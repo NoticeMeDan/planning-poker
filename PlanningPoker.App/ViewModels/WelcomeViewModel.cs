@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+
 namespace PlanningPoker.App.ViewModels
 {
     using System;
@@ -22,14 +25,22 @@ namespace PlanningPoker.App.ViewModels
             this.settings = settings;
             this.BaseTitle = "Login";
             this.LoginCommand = new Command(async () => await this.ExecuteLoginCommand());
+            this.JoinCommand = new Command(async () => await this.ExecuteJoinCommand());
         }
 
         public ICommand LoginCommand { get; }
+
+        public ICommand JoinCommand { get; }
 
         public string Username
         {
             get => this.username;
             set => this.SetProperty(ref this.username, value);
+        }
+
+        public async Task ExecuteJoinCommand()
+        {
+            Debug.WriteLine("Joined lobby!");
         }
 
         public async Task<bool> ExecuteLoginCommand()

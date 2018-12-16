@@ -19,9 +19,10 @@ namespace PlanningPoker.App.Views.WelcomeScreen
             this.InitializeComponent();
         }
 
-        public void JoinCommand(object sender, EventArgs e)
+        public async void JoinCommand(object sender, EventArgs e)
         {
-            this.Navigation.PushAsync(new Lobby());
+            await this.welcomeViewModel.ExecuteJoinCommand();
+            await this.Navigation.PushModalAsync(new Lobby());
         }
 
         public async void LoginCommand(object sender, EventArgs e)
