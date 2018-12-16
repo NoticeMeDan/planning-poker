@@ -33,7 +33,7 @@ namespace PlanningPoker.WebApi.Controllers
         public async Task<ActionResult<SessionDTO>> GetByKey(string key)
         {
             var session = await this.sessionRepository.FindByKeyAsync(key);
-             if (session == null)
+            if (session == null)
             {
                 return this.NotFound();
             }
@@ -43,7 +43,7 @@ namespace PlanningPoker.WebApi.Controllers
 
         // POST api/session
         [HttpPost]
-        [Authorize]
+//        [Authorize]
         public async Task<ActionResult<SessionDTO>> Create([FromBody] SessionCreateUpdateDTO session)
         {
             var key = string.Empty;
@@ -62,7 +62,7 @@ namespace PlanningPoker.WebApi.Controllers
         }
 
         // POST api/session/{key}/join
-        [HttpPost("{key}/join")]
+        [HttpPost("{sessionKey}/join")]
         public async Task<ActionResult<UserStateResponseDTO>> Join(string sessionKey, [FromBody] UserCreateDTO user)
         {
             var session = await this.sessionRepository.FindByKeyAsync(sessionKey);
@@ -83,22 +83,73 @@ namespace PlanningPoker.WebApi.Controllers
             session.Users.Add(createdUser);
             await this.sessionRepository.UpdateAsync(EntityMapper.ToSessionCreateUpdateDto(session));
 
-            return new UserStateResponseDTO { Token = this.userStateManager.CreateState(createdUser.Id, sessionKey) };
+            return new UserStateResponseDTO {Token = this.userStateManager.CreateState(createdUser.Id, sessionKey)};
         }
 
-        public Task<ActionResult<RoundDTO>> NextRound(string authToken, string sessionKey)
+        [HttpPost("{sessionKey}/item/round/next")]
+        public async Task<ActionResult<RoundDTO>> NextRound([FromHeader(Name = "PPAuthorization")] string authToken,
+            string sessionKey)
         {
-            throw new System.NotImplementedException();
+            if (!SecurityFilter.RequestIsValid(authToken, sessionKey, this.userStateManager))
+            {
+                return this.Unauthorized();
+            }
+
+            var session = await this.sessionRepository.FindByKeyAsync(sessionKey);
+
+            if (session == null)
+            {
+                return this.NotFound();
+            }
+
+            var currentItem = SessionUtils.GetCurrentActiveItem(session.Items, session.Users.Count);
+
+            if (!currentItem.HasValue)
+            {
+                return this.BadRequest();
+            }
+
+            var updatedItem = currentItem.ValueOrDefault();
+            var newRound = new RoundDTO {Votes = new List<VoteDTO>()};
+
+            updatedItem.Rounds.Add(newRound);
+            session.Items[session.Items.FindIndex(item => item.Id == updatedItem.Id)] = updatedItem;
+
+            await this.sessionRepository.UpdateAsync(EntityMapper.ToSessionCreateUpdateDto(session));
+
+            return newRound;
         }
 
-        public Task<ActionResult<RoundDTO>> GetCurrentRound(string authToken, string sessionKey)
+        [HttpGet("{sessionKey}/item/round")]
+        public async Task<ActionResult<RoundDTO>> GetCurrentRound(
+            [FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey)
         {
-            throw new System.NotImplementedException();
+            if (!SecurityFilter.RequestIsValid(authToken, sessionKey, this.userStateManager))
+            {
+                return this.Unauthorized();
+            }
+
+            var session = await this.sessionRepository.FindByKeyAsync(sessionKey);
+
+            if (session == null)
+            {
+                return this.NotFound();
+            }
+
+            var currentItem = SessionUtils.GetCurrentActiveItem(session.Items, session.Users.Count);
+
+            if (!currentItem.HasValue)
+            {
+                return this.BadRequest();
+            }
+
+            return currentItem.ValueOrDefault().Rounds.Last();
         }
 
         [Authorize]
-        [HttpPost("{key}/item/next")]
-        public async Task<ActionResult<ItemDTO>> NextItem([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey)
+        [HttpPost("{sessionKey}/item/next")]
+        public async Task<ActionResult<ItemDTO>> NextItem([FromHeader(Name = "PPAuthorization")] string authToken,
+            string sessionKey)
         {
             if (!SecurityFilter.RequestIsValid(authToken, sessionKey, this.userStateManager))
             {
@@ -121,7 +172,7 @@ namespace PlanningPoker.WebApi.Controllers
                 return this.BadRequest();
             }
 
-            nextItem.Rounds.Add(new RoundDTO { Votes = new List<VoteDTO>() });
+            nextItem.Rounds.Add(new RoundDTO {Votes = new List<VoteDTO>()});
             session.Items[session.Items.FindIndex(item => item.Id == nextItem.Id)] = nextItem;
 
             await this.sessionRepository.UpdateAsync(EntityMapper.ToSessionCreateUpdateDto(session));
@@ -129,7 +180,9 @@ namespace PlanningPoker.WebApi.Controllers
             return nextItem;
         }
 
-        public async Task<ActionResult<ICollection<ItemDTO>>> GetAllItems(string authToken, string sessionKey)
+        [HttpGet("{sessionKey}/item")]
+        public async Task<ActionResult<ICollection<ItemDTO>>> GetAllItems(
+            [FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey)
         {
             if (!SecurityFilter.RequestIsValid(authToken, sessionKey, this.userStateManager))
             {
@@ -146,8 +199,9 @@ namespace PlanningPoker.WebApi.Controllers
             return session.Items;
         }
 
-        [HttpPost("{key}/item")]
-        public async Task<ActionResult<ItemDTO>> GetCurrentItem(string authToken, string sessionKey)
+        [HttpGet("{sessionKey}/item/current")]
+        public async Task<ActionResult<ItemDTO>> GetCurrentItem([FromHeader(Name = "PPAuthorization")] string authToken,
+            string sessionKey)
         {
             if (!SecurityFilter.RequestIsValid(authToken, sessionKey, this.userStateManager))
             {
@@ -171,17 +225,23 @@ namespace PlanningPoker.WebApi.Controllers
             return currentItem.ValueOrDefault();
         }
 
-        public Task<ActionResult> Vote(string authToken, string sessionKey, VoteDTO vote)
+        [HttpPost("{sessionKey}/vote")]
+        public Task<ActionResult> Vote([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey,
+            [FromBody] VoteDTO vote)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<ActionResult> ThrowNitpickerCard(string authToken, string sessionKey)
+        [HttpPost("{sessionKey}/nitpicker")]
+        public Task<ActionResult> ThrowNitpickerCard([FromHeader(Name = "PPAuthorization")] string authToken,
+            string sessionKey)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<ActionResult> KickUser(string authToken, string sessionKey, int userId)
+        [HttpPost("{sessionKey}/user/kick")]
+        public Task<ActionResult> KickUser([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey,
+            int userId)
         {
             throw new System.NotImplementedException();
         }

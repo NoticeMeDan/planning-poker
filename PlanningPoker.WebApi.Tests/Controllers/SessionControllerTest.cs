@@ -72,7 +72,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         }
 
         [Fact]
-        public async Task Join_given_host_where_session_already_has_hosts_returns_badrequest()
+        public async Task Join_given_host_where_session_already_has_host_returns_badrequest()
         {
             var sessionRepo = new Mock<ISessionRepository>();
             var cache = new Mock<IMemoryCache>();
@@ -464,6 +464,35 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             Assert.Equal(2, result.Value.Count);
             Assert.Equal(1, result.Value.ToList()[0].Id);
             Assert.Equal(2, result.Value.ToList()[1].Id);
+        }
+
+        [Fact]
+        public async Task NextRound_given_invalid_token_returns_unauthorized()
+        {
+            var cache = new MemoryCache(new MemoryCacheOptions());
+
+            var controller = new SessionController(null, null, cache);
+
+            var result = await controller.NextRound("IDontExist", "ABC1234");
+
+            Assert.IsType<UnauthorizedResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task NextRound_given_nonexisting_session_returns_notfound()
+        {
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var sessionRepo = new Mock<ISessionRepository>();
+
+            var token = CreateUserState(cache, 42, "ABC1234");
+            sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
+                .ReturnsAsync(default(SessionDTO));
+
+            var controller = new SessionController(sessionRepo.Object, null, cache);
+
+            var result = await controller.NextRound(token, "ABC1234");
+
+            Assert.IsType<NotFoundResult>(result.Result);
         }
 
         private static string CreateUserState(IMemoryCache cache, int userId, string sessionKey)
