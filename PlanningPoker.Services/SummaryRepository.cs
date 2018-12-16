@@ -50,6 +50,7 @@ namespace PlanningPoker.Services
         {
             var entities = this.context.Summaries
                 .Where(s => s.Id == summaryId)
+                .Include(ie => ie.ItemEstimates)
                 .Select(s => new SummaryDTO
                 {
                     Id = s.Id,
@@ -77,6 +78,7 @@ namespace PlanningPoker.Services
         public IQueryable<SummaryDTO> Read()
         {
             var entities = this.context.Summaries
+                .Include(ie => ie.ItemEstimates)
                 .Select(s => new SummaryDTO
                 {
                     Id = s.Id,

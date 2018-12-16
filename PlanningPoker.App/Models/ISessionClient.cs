@@ -10,8 +10,6 @@ namespace PlanningPoker.App.Models
 
         Task<SessionDTO> FindAsync(int sessionId);
 
-        Task<IEnumerable<SessionDTO>> ReadAsync();
-
         Task<bool> UpdateAsync(SessionCreateUpdateDTO session);
 
         Task<SessionDTO> GetByKeyAsync(string key);

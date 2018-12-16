@@ -102,14 +102,14 @@ namespace PlanningPoker.App.Tests.ModelsTests
                     Content = new StringContent(string.Empty)
                 });
 
-            var httpClient = new HttpClient(handler.Object)
+            var client = new HttpClient(handler.Object)
             {
                 BaseAddress = this.baseAddress
             };
 
-            var client = new SessionClient(httpClient);
+            var repository = new SessionRepository(client);
 
-            await client.ReadAsync();
+            await repository.ReadAsync();
 
             handler.Protected().Verify(
                 "SendAsync",
