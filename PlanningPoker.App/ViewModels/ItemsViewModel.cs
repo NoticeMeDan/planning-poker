@@ -12,11 +12,11 @@ namespace PlanningPoker.App.ViewModels
     // This class contains data until repositories is setup
     public class ItemsViewModel : BaseViewModel
     {
-        private readonly ISessionRepository sessionRepo;
+        private readonly ISessionClient sessionRepo;
         private string title;
         private string description;
 
-        public ItemsViewModel(ISessionRepository sessionRepo)
+        public ItemsViewModel(ISessionClient sessionRepo)
         {
             this.sessionRepo = sessionRepo;
 

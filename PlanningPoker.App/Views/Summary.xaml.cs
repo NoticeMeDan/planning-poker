@@ -1,31 +1,33 @@
-using PlanningPoker.App.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
 namespace PlanningPoker.App.Views
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
+    using Microsoft.Extensions.DependencyInjection;
+    using PlanningPoker.App.ViewModels;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using Xamarin.Forms;
+    using Xamarin.Forms.Xaml;
+
     public partial class Summary : ContentPage
     {
-        private readonly SummaryViewModel viewmodel;
+        private readonly SummaryViewModel summaryViewModel;
 
         public Summary()
         {
-            this.InitializeComponent();
-            this.BindingContext = this.viewmodel = DependencyService.Resolve<SummaryViewModel>();
+            this.summaryViewModel = new SummaryViewModel();
 
+            this.BindingContext = this.summaryViewModel =
+                (Application.Current as App)?.Container.GetRequiredService<SummaryViewModel>();
+
+            this.InitializeComponent();
         }
-        /*
+
         protected override void OnAppearing()
         {
-            base.OnAppearing();
-            if (this.viewmodel.)
-        }*/
+            this.summaryViewModel.LoadSummaryCommand.Execute(null);
+        }
     }
 }

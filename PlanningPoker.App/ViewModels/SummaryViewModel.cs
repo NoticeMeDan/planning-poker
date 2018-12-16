@@ -1,32 +1,76 @@
 namespace PlanningPoker.App.ViewModels
 {
-    using PlanningPoker.App.Models;
-    using PlanningPoker.Shared;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Diagnostics;
     using System.Text;
     using System.Threading.Tasks;
     using System.Windows.Input;
+    using PlanningPoker.App.Models;
+    using PlanningPoker.App.Views;
+    using PlanningPoker.Shared;
     using Xamarin.Forms;
 
     public class SummaryViewModel : BaseViewModel
     {
-        private readonly ISummaryClient _client;
 
-        public ObservableCollection<SummaryDTO> Summary { get; }
+        //private readonly ISummaryClient client;
 
-        public ICommand LoadSummaryCommand { get; set; }
-        /*
-        public SummaryViewModel(ISummaryRepository repo)
+        // private string title;
+        // private int estimate;
+
+        public SummaryViewModel()
         {
-            this.repository = repo;
-            this.Title = "Summary Overview";
-            this.Summary = new ObservableCollection<SummaryDTO>();
+            // this.client = summaryC;
+            // this.sessesionClient = sessionC;
+
+            this.BaseTitle = "Summary Overview";
+
+            this.Items = new ObservableCollection<ItemEstimateDTO>();
 
             this.LoadSummaryCommand = new RelayCommand(_ => this.ExecuteLoadSummaryCommand());
         }
+
+
+        // private readonly ISessionClient sessionClient;
+
+
+        // public ObservableCollection<SummaryDTO> Summary { get; }
+
+        public ObservableCollection<ItemEstimateDTO> Items { get; set; }
+
+        public ICommand LoadSummaryCommand { get; set; }
         /*
+        public string Title
+        {
+            get => this.title;
+            set => this.SetProperty(ref this.title, value);
+        }
+
+        public int Estimate
+        {
+            get => this.estimate;
+            set => this.SetProperty(ref this.estimate, value);
+        } */
+
+
+
+        private static ObservableCollection<ItemEstimateDTO> MockData()
+        {
+            var data = new ObservableCollection<ItemEstimateDTO>();
+
+            var item1 = new ItemEstimateDTO { Id = 1, Estimate = 6, ItemTitle = "First item" };
+            var item2 = new ItemEstimateDTO { Id = 2, Estimate = 42, ItemTitle = "Second item" };
+            var item3 = new ItemEstimateDTO { Id = 3, Estimate = 7, ItemTitle = "Third item" };
+
+            data.Add(item1);
+            data.Add(item2);
+            data.Add(item3);
+
+            return data;
+        }
+
         private void ExecuteLoadSummaryCommand()
         {
             if (this.IsBusy)
@@ -36,25 +80,19 @@ namespace PlanningPoker.App.ViewModels
 
             this.IsBusy = true;
 
-            try
-            {
-                this.Summary.Clear();
 
-                var Summary = this.repository.BuildSummary(session);
+            this.Items.Clear();
 
-                foreach (var car in cars)
-                {
-                    Cars.Add(car);
-                }
-            }
-            catch (Exception ex)
+            // var summary = this.summaryClient.FindBySessionIdAsync(SessionId);
+
+            var items = MockData();
+
+            foreach (var item in items)
             {
-                Debug.WriteLine(ex);
+                this.Items.Add(item);
             }
-            finally
-            {
-                IsBusy = false;
-            }
-        }*/
+
+            this.IsBusy = false;
+        }
     }
 }
