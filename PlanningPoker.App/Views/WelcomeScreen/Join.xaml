@@ -7,11 +7,26 @@
 >
 
     <StackLayout>
-        <Entry  Text="{Binding Key}" Placeholder="Type Session Key" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" Margin="5" />
-        <Button Text="Join"
-                HorizontalOptions="CenterAndExpand"
-                VerticalOptions="EndAndExpand"
-                Clicked="HandleClicked" />
+        <Entry
+            Placeholder="Nickname"
+            Text="{Binding Nickname, Mode=TwoWay}"
+            HorizontalTextAlignment="Center"
+            HorizontalOptions="FillAndExpand"
+            Margin="5"
+        />
+        <Entry
+            Placeholder="Session-key"
+            Text="{Binding Key, Mode=TwoWay}"
+            HorizontalTextAlignment="Center"
+            HorizontalOptions="FillAndExpand"
+            MaxLength="7"
+            Margin="5"
+        />
+        <Button 
+            Text="Join"
+            HorizontalOptions="CenterAndExpand"
+            VerticalOptions="EndAndExpand"
+            Clicked="HandleClicked" />
     </StackLayout>
 
 </ContentPage>

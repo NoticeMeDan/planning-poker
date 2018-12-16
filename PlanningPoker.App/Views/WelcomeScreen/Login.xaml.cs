@@ -9,12 +9,12 @@ namespace PlanningPoker.App.Views.WelcomeScreen
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Login : ContentPage
     {
-        private readonly LoginViewModel viewModel;
+        private readonly WelcomeViewModel viewModel;
 
         public Login()
         {
             this.BindingContext = this.viewModel =
-                (Application.Current as App)?.Container.GetRequiredService<LoginViewModel>();
+                (Application.Current as App)?.Container.GetRequiredService<WelcomeViewModel>();
             this.InitializeComponent();
         }
 

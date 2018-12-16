@@ -10,13 +10,13 @@ namespace PlanningPoker.App.ViewModels
     using Models;
     using Xamarin.Forms;
 
-    public class LoginViewModel : BaseViewModel
+    public class WelcomeViewModel : BaseViewModel
     {
         private readonly IPublicClientApplication publicClientApplication;
         private readonly ISettings settings;
         private string username;
 
-        public LoginViewModel(IPublicClientApplication publicClientApplication, ISettings settings)
+        public WelcomeViewModel(IPublicClientApplication publicClientApplication, ISettings settings)
         {
             this.publicClientApplication = publicClientApplication;
             this.settings = settings;
