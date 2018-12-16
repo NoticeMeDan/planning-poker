@@ -25,6 +25,8 @@
     <Compile Update="Views\WelcomeScreen\Login.xaml.cs">
       <DependentUpon>JoinSession.xaml</DependentUpon>
     </Compile>
+    <Compile Remove="Views\Components\NewItem.xaml.cs" />
+    <Compile Remove="Views\Components\Items.xaml.cs" />
     <Compile Remove="Models\IItemRepository.cs" />
     <Compile Remove="Models\ItemRepository.cs" />
   </ItemGroup>
@@ -33,14 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Include="Views\SessionCreate\CreateSession.xaml">
-      <SubType>Designer</SubType>
-      <Generator></Generator>
-    </Page>
-    <Page Include="Views\SessionCreate\NewItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator></Generator>
-    </Page>
     <Page Include="Views\Session\ItemEstimation.xaml">
       <SubType>Designer</SubType>
       <Generator></Generator>
@@ -68,6 +62,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Views\MainPage.xaml" />
+    <EmbeddedResource Remove="Views\Components\NewItem.xaml" />
+    <EmbeddedResource Remove="Views\Components\Items.xaml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PlanningPoker.Shared\PlanningPoker.Shared.csproj" />

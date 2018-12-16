@@ -2,16 +2,18 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="PlanningPoker.App.Views.CreateSession.NewItem"
+    x:Class="PlanningPoker.App.Views.Components.NewItem"
+    Title="{Binding Title}"
 >
 
-    <StackLayout Margin="10, 0 ">
-        <Entry Placeholder="Title"/>
-        <Entry Placeholder="Description"/>
+    <StackLayout Margin="10, 0 " >
+        <Entry Placeholder="Title" Text="Title" />
+        <Entry Placeholder="Description" Text="Description" />
+
         <Button Text="SAVE ITEM"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="EndAndExpand"
-                Clicked="SaveItemClicked"/>
+                Clicked="SaveItemClicked" Command="SaveCommand"/>
     </StackLayout>
 
 </ContentPage>
