@@ -495,6 +495,83 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             Assert.IsType<NotFoundResult>(result.Result);
         }
 
+        [Fact]
+        public async Task NextRound_given_round_with_consensus_returns_badrequest()
+        {
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var sessionRepo = new Mock<ISessionRepository>();
+
+            var token = CreateUserState(cache, 42, "ABC1234");
+
+            var mockSession = new SessionDTO
+            {
+                Id = 42,
+                Items = new List<ItemDTO>
+                {
+                    new ItemDTO
+                    {
+                        Id = 1,
+                        Rounds = new List<RoundDTO>
+                        {
+                            new RoundDTO
+                            {
+                                Votes = new List<VoteDTO> { new VoteDTO { Estimate = 5 }, new VoteDTO { Estimate = 5 } }
+                            }
+                        }
+                    }
+                },
+                SessionKey = "ABC1234",
+                Users = new List<UserDTO> { new UserDTO(), new UserDTO() }
+            };
+
+            sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
+                .ReturnsAsync(mockSession);
+
+            var controller = new SessionController(sessionRepo.Object, null, cache);
+
+            var result = await controller.NextRound(token, "ABC1234");
+
+            Assert.IsType<BadRequestResult>(result.Result);
+        }
+
+        public async Task NextRound_given_round_without_consensus_return_new_round()
+        {
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var sessionRepo = new Mock<ISessionRepository>();
+
+            var token = CreateUserState(cache, 42, "ABC1234");
+
+            var mockSession = new SessionDTO
+            {
+                Id = 42,
+                Items = new List<ItemDTO>
+                {
+                    new ItemDTO
+                    {
+                        Id = 1,
+                        Rounds = new List<RoundDTO>
+                        {
+                            new RoundDTO
+                            {
+                                Votes = new List<VoteDTO> { new VoteDTO { Estimate = 5 }, new VoteDTO { Estimate = 13 } }
+                            }
+                        }
+                    }
+                },
+                SessionKey = "ABC1234",
+                Users = new List<UserDTO> { new UserDTO(), new UserDTO() }
+            };
+
+            sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
+                .ReturnsAsync(mockSession);
+
+            var controller = new SessionController(sessionRepo.Object, null, cache);
+
+            var result = await controller.NextRound(token, "ABC1234");
+
+            Assert.Equal(0, result.Value.Votes.Count);
+        }
+
         private static string CreateUserState(IMemoryCache cache, int userId, string sessionKey)
         {
             var sm = new UserStateManager(cache);
