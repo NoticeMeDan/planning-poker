@@ -43,10 +43,7 @@ namespace PlanningPoker.WebApi.Controllers
 
         // POST api/session
         [HttpPost]
-#if DEBUG
-#else
-    [Authorize]
-#endif
+        [Authorize]
         public async Task<ActionResult<SessionDTO>> Create([FromBody] SessionCreateUpdateDTO session)
         {
             var key = string.Empty;
@@ -142,7 +139,7 @@ namespace PlanningPoker.WebApi.Controllers
 
             if (!currentItem.HasValue)
             {
-                return this.BadRequest();
+                return this.StatusCode(404, "lol");
             }
 
             return currentItem.ValueOrDefault().Rounds.Last();
@@ -226,19 +223,31 @@ namespace PlanningPoker.WebApi.Controllers
         }
 
         [HttpPost("{sessionKey}/vote")]
-        public Task<ActionResult> Vote([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey, [FromBody] VoteDTO vote)
+        public async Task<ActionResult> Vote([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey, [FromBody] VoteDTO vote)
         {
-            throw new System.NotImplementedException();
-        }
+            if (!SecurityFilter.RequestIsValid(authToken, sessionKey, this.userStateManager))
+            {
+                return this.Unauthorized();
+            }
 
-        [HttpPost("{sessionKey}/nitpicker")]
-        public Task<ActionResult> ThrowNitpickerCard([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey)
-        {
-            throw new System.NotImplementedException();
+            var session = await this.sessionRepository.FindByKeyAsync(sessionKey);
+
+            if (session == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.Ok();
         }
 
         [HttpPost("{sessionKey}/user/kick")]
         public Task<ActionResult> KickUser([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey, int userId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        // [HttpPost("{sessionKey}/nitpicker")]
+        public Task<ActionResult> ThrowNitpickerCard([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey)
         {
             throw new System.NotImplementedException();
         }

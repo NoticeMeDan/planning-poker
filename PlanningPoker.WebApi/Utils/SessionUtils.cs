@@ -9,10 +9,11 @@ namespace PlanningPoker.WebApi.Utils
     public static class SessionUtils
     {
         /// <summary>
-        /// The definition of "current" is that the item has at least 1 round,
+        /// The definition of "current active" is that the item has at least 1 round,
         /// and that none of the rounds have reached consensus.
         /// </summary>
         /// <param name="items">list of ItemDTOs</param>
+        /// <param name="userCount">number of users in session</param>
         /// <returns>Option.Some if a current Item is found, Option.None otherwise</returns>
         public static Option<ItemDTO> GetCurrentActiveItem(List<ItemDTO> items, int userCount)
         {
@@ -28,6 +29,17 @@ namespace PlanningPoker.WebApi.Utils
 
                     return isOngoing;
                 });
+        }
+
+        /// <summary>
+        /// The definition of "current active" is that the round has less votes than the amount of users in the session.
+        /// </summary>
+        /// <param name="rounds"></param>
+        /// <param name="userCount"></param>
+        /// <returns>Option.Some if a current round is found, Option.None otherwise</returns>
+        public static Option<RoundDTO> GetCurrentActiveRound(List<RoundDTO> rounds, int userCount)
+        {
+            return rounds.LastOrNone(round => round.Votes.Count < userCount);
         }
     }
 }
