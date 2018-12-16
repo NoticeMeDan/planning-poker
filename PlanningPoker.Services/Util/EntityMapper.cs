@@ -122,8 +122,7 @@ namespace PlanningPoker.Services.Util
 
         public static ICollection<Round> ToRoundEntities(ICollection<RoundCreateUpdateDTO> dtos)
         {
-
-            if(dtos == null)
+            if (dtos == null)
             {
                 return new List<Round>();
             }

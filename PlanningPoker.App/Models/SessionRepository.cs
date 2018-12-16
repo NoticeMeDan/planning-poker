@@ -31,15 +31,6 @@ namespace PlanningPoker.App.Models
             return await response.Content.ReadAsAsync<SessionDTO>();
         }
 
-        public async Task<IEnumerable<SessionDTO>> ReadAsync()
-        {
-            var response = await this.httpClient.GetAsync("api/session");
-
-            var result = JsonConvert.DeserializeObject<IEnumerable<SessionDTO>>(response.Content.ReadAsStringAsync().Result);
-
-            return result;
-        }
-
         public async Task<bool> UpdateAsync(SessionCreateUpdateDTO session)
         {
             var response = await this.httpClient.PutAsJsonAsync($"api/session/{session.Id}", session);
