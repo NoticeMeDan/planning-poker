@@ -8,54 +8,52 @@ namespace PlanningPoker.App.ViewModels
     using System.Windows.Input;
     using Microsoft.Identity.Client;
     using Models;
-    using Newtonsoft.Json.Linq;
     using Xamarin.Forms;
 
     public class LoginViewModel : BaseViewModel
     {
-        public LoginViewModel()
+        private readonly IPublicClientApplication publicClientApplication;
+        private readonly ISettings settings;
+        private string username;
+
+        public LoginViewModel(IPublicClientApplication publicClientApplication, ISettings settings)
         {
+            this.publicClientApplication = publicClientApplication;
+            this.settings = settings;
+            this.BaseTitle = "Login";
             this.LoginCommand = new Command(async () => await this.ExecuteLoginCommand());
         }
 
         public ICommand LoginCommand { get; }
 
-         public async Task<bool> ExecuteLoginCommand()
+        public string Username
         {
-            var settings = new Settings();
-            AuthenticationResult authResult = null;
-            IEnumerable<IAccount> accounts = await App.GetPublicClientApplication().GetAccountsAsync();
-            try
-            {
-                IAccount firstAccount = accounts.FirstOrDefault();
-                authResult = await App.GetPublicClientApplication().AcquireTokenSilentAsync(settings.Scopes, firstAccount);
-                await this.RefreshUserDataAsync(authResult.AccessToken).ConfigureAwait(false);
-                return true;
-            }
-            catch (MsalUiRequiredException ex)
-            {
-                authResult = await App.GetPublicClientApplication().AcquireTokenAsync(settings.Scopes, App.UiParent);
-                await this.RefreshUserDataAsync(authResult.AccessToken);
-                Console.WriteLine(ex.StackTrace);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.StackTrace);
-                return false;
-            }
+            get => this.username;
+            set => this.SetProperty(ref this.username, value);
         }
 
-        public async Task RefreshUserDataAsync(string token)
+        public async Task<bool> ExecuteLoginCommand()
         {
-            HttpClient client = new HttpClient();
-            HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, "https://graph.microsoft.com/v1.0/me");
-            message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", token);
-            HttpResponseMessage response = await client.SendAsync(message);
-            string responseString = await response.Content.ReadAsStringAsync();
-            if (response.IsSuccessStatusCode)
+            AuthenticationResult authenticationResult = null;
+            IEnumerable<IAccount> accounts = await this.publicClientApplication.GetAccountsAsync();
+            try
             {
-                JObject user = JObject.Parse(responseString);
+                IAccount account = accounts.FirstOrDefault();
+                authenticationResult =
+                    await this.publicClientApplication.AcquireTokenSilentAsync(this.settings.Scopes, account);
+                return true;
+            }
+            catch (MsalUiRequiredException e)
+            {
+                authenticationResult =
+                    await this.publicClientApplication.AcquireTokenAsync(this.settings.Scopes, App.UiParent);
+                var message = e.StackTrace;
+                return true;
+            }
+            catch (Exception e)
+            {
+                var message = e.Message;
+                return false;
             }
         }
     }

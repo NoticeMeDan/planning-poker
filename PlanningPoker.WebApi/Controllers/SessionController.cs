@@ -43,7 +43,10 @@ namespace PlanningPoker.WebApi.Controllers
 
         // POST api/session
         [HttpPost]
-        [Authorize]
+#if DEBUG
+#else
+    [Authorize]
+#endif
         public async Task<ActionResult<SessionDTO>> Create([FromBody] SessionCreateUpdateDTO session)
         {
             var key = string.Empty;
@@ -58,7 +61,8 @@ namespace PlanningPoker.WebApi.Controllers
 
             session.SessionKey = key;
             session.Users = new List<UserCreateDTO>();
-            return await this.sessionRepository.CreateAsync(session);
+            var created = await this.sessionRepository.CreateAsync(session);
+            return created;
         }
 
         // POST api/session/{key}/join
