@@ -50,6 +50,8 @@ namespace PlanningPoker.Services
         {
             return await this.context.Sessions
                 .Where(s => s.Id == sessionId)
+                .Include("Items.Rounds.Votes")
+                .Include(u => u.Users)
                 .Select(s => EntityMapper.ToSessionDto(s))
                 .FirstAsync();
         }
@@ -58,6 +60,8 @@ namespace PlanningPoker.Services
         {
             return await this.context.Sessions
                 .Where(s => s.SessionKey == sessionKey)
+                .Include("Items.Rounds.Votes")
+                .Include(u => u.Users)
                 .Select(s => EntityMapper.ToSessionDto(s))
                 .FirstOrDefaultAsync();
         }
@@ -65,6 +69,8 @@ namespace PlanningPoker.Services
         public IQueryable<SessionDTO> Read()
         {
             var entities = this.context.Sessions
+                .Include("Items.Rounds.Votes")
+                .Include(u => u.Users)
                 .Select(s => new SessionDTO
                 {
                     Id = s.Id,

@@ -39,7 +39,7 @@ namespace PlanningPoker.App
             DependencyResolver.ResolveUsing(this.Container.GetService);
 
             // Change Screen for faster development. Standard page is WelcomeScreen()
-            this.MainPage = new NavigationPage(new Session());
+            this.MainPage = new NavigationPage(new WelcomeScreen());
         }
 
         protected override void OnStart()
@@ -72,7 +72,6 @@ namespace PlanningPoker.App
 
             services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddScoped<ISummaryRepository, SummaryRepository>();
-            //services.AddScoped<IItemRepository, ItemRepository>();
             services.AddScoped<LoginViewModel>();
             services.AddScoped<ItemsViewModel>();
             services.AddScoped<JoinViewModel>();

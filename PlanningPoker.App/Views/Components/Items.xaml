@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ListView
-    xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="PlanningPoker.App.Views.Components.Items"
-    ItemsSource="{Binding Items}"
-    VerticalOptions="FillAndExpand"
-    HasUnevenRows="true"
-    IsPullToRefreshEnabled="true"
-    RefreshCommand="{Binding LoadCommand}"
-    IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-    SelectionMode="None">
+xmlns="http://xamarin.com/schemas/2014/forms"
+xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+x:Class="PlanningPoker.App.Views.Components.Items"
+ItemsSource="{Binding Items}"
+VerticalOptions="FillAndExpand"
+HasUnevenRows="true"
+IsPullToRefreshEnabled="true"
+RefreshCommand="{Binding LoadCommand}"
+IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+SelectionMode="None">
 
     <ListView.ItemTemplate>
         <DataTemplate>

@@ -26,6 +26,7 @@
     <Compile Update="Views\WelcomeScreen\Login.xaml.cs">
       <DependentUpon>JoinSession.xaml</DependentUpon>
     </Compile>
+    <Compile Remove="Views\Components\Items.xaml.cs" />
     <Compile Remove="Models\IItemRepository.cs" />
     <Compile Remove="Models\ItemRepository.cs" />
     <Compile Update="Views\Components\VotingNumbers.cs">
@@ -72,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Views\MainPage.xaml" />
+    <EmbeddedResource Remove="Views\Components\Items.xaml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PlanningPoker.Shared\PlanningPoker.Shared.csproj" />

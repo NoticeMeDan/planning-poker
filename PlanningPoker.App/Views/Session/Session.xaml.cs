@@ -47,5 +47,10 @@ namespace PlanningPoker.App.Views.Session
             this.ViewModel.SendVoteCommand.Execute(null);
 
         }
+
+        private void OnVote_Clicked(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
