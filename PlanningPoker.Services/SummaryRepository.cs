@@ -28,7 +28,7 @@ namespace PlanningPoker.Services
             this.context.Summaries.Add(entity);
             this.context.SaveChanges();
 
-            return await this.FindAsync(entity.Id);
+            return await this.FindBySessionIdAsync(entity.SessionId);
         }
 
         public async Task<bool> DeleteAsync(int summaryId)
@@ -46,21 +46,6 @@ namespace PlanningPoker.Services
             return true;
         }
 
-        public async Task<SummaryDTO> FindAsync(int summaryId)
-        {
-            var entities = this.context.Summaries
-                .Where(s => s.Id == summaryId)
-                .Include(ie => ie.ItemEstimates)
-                .Select(s => new SummaryDTO
-                {
-                    Id = s.Id,
-                    ItemEstimates = EntityMapper.ToItemEstimateDtos(s.ItemEstimates),
-                    SessionId = s.SessionId
-                });
-
-            return await entities.FirstOrDefaultAsync();
-        }
-
         public async Task<SummaryDTO> FindBySessionIdAsync(int sessionId)
         {
             var entities = this.context.Summaries
@@ -73,38 +58,6 @@ namespace PlanningPoker.Services
                 });
 
             return await entities.FirstOrDefaultAsync();
-        }
-
-        public IQueryable<SummaryDTO> Read()
-        {
-            var entities = this.context.Summaries
-                .Include(ie => ie.ItemEstimates)
-                .Select(s => new SummaryDTO
-                {
-                    Id = s.Id,
-                    ItemEstimates = EntityMapper.ToItemEstimateDtos(s.ItemEstimates),
-                    SessionId = s.SessionId
-                });
-
-            return entities;
-        }
-
-        public async Task<bool> UpdateAsync(SummaryCreateUpdateDTO summary)
-        {
-            var entity = await this.context.Summaries.FindAsync(summary.Id);
-
-            if (entity == null)
-            {
-                return false;
-            }
-
-            entity.Id = summary.Id;
-            entity.ItemEstimates = EntityMapper.ToItemEstimateEntities(summary.ItemEstimates);
-            entity.SessionId = summary.SessionId;
-
-            this.context.SaveChanges();
-
-            return true;
         }
 
         public async Task<SummaryDTO> BuildSummary(SessionDTO session)
