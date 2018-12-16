@@ -16,7 +16,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<SummaryDTO> FindBySessionIdAsync(int sessionId)
         {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionId}");
+            var response = await this.httpClient.GetAsync($"api/summary/{sessionId}");
             var result = JsonConvert.DeserializeObject<SummaryDTO>(response.Content.ReadAsStringAsync().Result);
 
             return result;
