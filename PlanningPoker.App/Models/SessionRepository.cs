@@ -1,6 +1,7 @@
 namespace PlanningPoker.App.Models
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -50,7 +51,9 @@ namespace PlanningPoker.App.Models
 
         public async Task<UserStateResponseDTO> Join(string sessionKey, UserCreateDTO user)
         {
+            Debug.Write("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! IsHost: " + user.IsHost);
             var response = await this.httpClient.PostAsJsonAsync($"api/session/{sessionKey}/join", user);
+            Debug.Write("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Response: " + response.StatusCode);
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 throw new KeyNotFoundException();

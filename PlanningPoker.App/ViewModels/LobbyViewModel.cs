@@ -8,15 +8,12 @@ namespace PlanningPoker.App.ViewModels
     using PlanningPoker.App.Models;
     using PlanningPoker.Shared;
 
-    class LobbyViewModel : BaseViewModel
+    public class LobbyViewModel : BaseViewModel
     {
-
-        private bool Loading;
-
+        private readonly ISessionRepository repository;
+        private bool loading;
         private string key;
         private string title;
-
-        private readonly ISessionRepository repository;
 
         public ObservableCollection<UserDTO> Users { get; set; }
 
@@ -30,17 +27,17 @@ namespace PlanningPoker.App.ViewModels
         {
             this.repository = repository;
             this.Users = new ObservableCollection<UserDTO>();
-            this.GetUsersCommand = new RelayCommand(async _ => await this.ExecuteGetUsersCommand()); 
+            this.GetUsersCommand = new RelayCommand(async _ => await this.ExecuteGetUsersCommand());
         }
 
         private async Task ExecuteGetUsersCommand()
         {
-            if (this.Loading)
+            if (this.loading)
             {
                 return;
             }
 
-            this.Loading = true;
+            this.loading = true;
 
             this.Users.Clear();
             /*
@@ -54,12 +51,12 @@ namespace PlanningPoker.App.ViewModels
                 }
             });*/
 
-            //MOCKDATA VILFRED-STYLE
+            // MOCKDATA VILFRED-STYLE
             this.Users.Add(new UserDTO { Nickname = "mips" });
             this.Users.Add(new UserDTO { Nickname = "alol" });
             this.Users.Add(new UserDTO { Nickname = "vidr" });
 
-            this.Loading = false;
+            this.loading = false;
         }
 
         public string Title

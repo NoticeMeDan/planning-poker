@@ -7,17 +7,17 @@ namespace PlanningPoker.App.Views.Session
 
     public partial class Lobby : ContentPage
     {
-        private LobbyViewModel _vm;
+        private LobbyViewModel viewModel;
 
         public Lobby(string sessionKey)
         {
             this.InitializeComponent();
 
-            this.BindingContext = this._vm =
+            this.BindingContext = this.viewModel =
                (Application.Current as App)?.Container.GetRequiredService<LobbyViewModel>();
 
-            this._vm.Key = sessionKey;
-            this._vm.Title = sessionKey;
+            this.viewModel.Key = sessionKey;
+            this.viewModel.Title = sessionKey;
         }
 
         private void BeginSessionClicked(object sender, EventArgs e)
@@ -27,7 +27,7 @@ namespace PlanningPoker.App.Views.Session
 
         protected override void OnAppearing()
         {
-            this._vm.GetUsersCommand.Execute(null);
+            this.viewModel.GetUsersCommand.Execute(null);
             base.OnAppearing();
         }
     }

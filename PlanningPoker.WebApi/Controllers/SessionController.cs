@@ -82,12 +82,18 @@ namespace PlanningPoker.WebApi.Controllers
                 return this.BadRequest();
             }
 
-            var createdUser = await this.userRepository.CreateAsync(user);
+            //var createdUser = await this.userRepository.CreateAsync(user);
+            var userDto = new UserDTO
+            {
+                Nickname = user.Nickname,
+                IsHost = user.IsHost,
+                Email = user.Email,
+            };
 
-            session.Users.Add(createdUser);
+            session.Users.Add(userDto);
             await this.sessionRepository.UpdateAsync(EntityMapper.ToSessionCreateUpdateDto(session));
 
-            return new UserStateResponseDTO { Token = this.userStateManager.CreateState(createdUser.Id, sessionKey) };
+            return new UserStateResponseDTO { Token = this.userStateManager.CreateState(userDto.Id, sessionKey) };
         }
 
         [HttpPost("{sessionKey}/item/round/next")]

@@ -30,7 +30,7 @@ namespace PlanningPoker.App.Views.SessionCreation
         {
             this.itemsViewModel.CreateSessionCommand.Execute(null);
             this.Navigation.PushModalAsync(
-                new Lobby());
+                new Lobby("42"));
         }
 
         private void OnAddItem_Clicked(object sender, EventArgs e)

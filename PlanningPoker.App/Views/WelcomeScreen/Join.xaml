@@ -25,7 +25,7 @@
         <Button Text="Join"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="EndAndExpand"
-                Clicked="HandleClicked" />
+                Clicked="HandleClickedAsync" />
     </StackLayout>
 
 </ContentPage>

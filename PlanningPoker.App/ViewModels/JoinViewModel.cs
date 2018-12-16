@@ -10,8 +10,7 @@ namespace PlanningPoker.App.ViewModels
 
     public class JoinViewModel : BaseViewModel
     {
-
-        private bool Loading;
+        private bool loading;
 
         public bool Connection { get; set; }
 
@@ -40,12 +39,12 @@ namespace PlanningPoker.App.ViewModels
 
         private async Task ExecuteJoinCommand()
         {
-            if (this.Loading)
+            if (this.loading)
             {
                 return;
             }
 
-            this.Loading = true;
+            this.loading = true;
             this.Connection = false;
             this.User.Nickname = this.nickname;
 
@@ -63,7 +62,7 @@ namespace PlanningPoker.App.ViewModels
             }
 
             this.Key = string.Empty;
-            this.Loading = false;
+            this.loading = false;
         }
 
         public string Nickname
