@@ -9,6 +9,7 @@ namespace PlanningPoker.App.Models
     public class SessionRepository : ISessionRepository
     {
         private readonly HttpClient httpClient;
+        private readonly string Url = $"http://planningpoker-webapi.azurewebsites.net/";
 
         public SessionRepository(HttpClient httpClient)
         {
@@ -40,7 +41,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<SessionDTO> GetByKeyAsync(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}");
+            var response = await this.httpClient.GetAsync($"{this.Url}api/session/{sessionKey}", HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
 
             var result = JsonConvert.DeserializeObject<SessionDTO>(response.Content.ReadAsStringAsync().Result);
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -82,15 +83,18 @@ namespace PlanningPoker.App.ViewModels
             set => this.SetProperty(ref this.currentTitle, value);
         }*/
 
-        private async Task GetPlayers() {
+        private void GetPlayers() {
             Debug.WriteLine("Starting testing GetByKeyAsync");
-            var session = await this.Repository.GetByKeyAsync(this.sessionKey).ConfigureAwait(false);
+
+            var session =  this.Repository.GetByKeyAsync(this.sessionKey);
+
             Debug.WriteLine("Hey testing GetByKeyAsync");
-            var players = session.Users;
+            Debug.WriteLine(session.Result);
+
+            var players = session.Result.Users;
             foreach (var player in players) {
                 this.Players.Add(player);
             }
-            Debug.WriteLine(session.Users);
         }
 
         private void ExecuteLoadVotesCommand()
@@ -135,7 +139,7 @@ namespace PlanningPoker.App.ViewModels
             Debug.WriteLine("");
         }
 
-        private async Task ExecuteLoadPlayersCommand()
+        private void ExecuteLoadPlayersCommand()
         {
             if (this.IsBusy)
             {
@@ -144,7 +148,7 @@ namespace PlanningPoker.App.ViewModels
 
             this.IsBusy = true;
 
-            await this.GetPlayers();
+            this.GetPlayers();
 
             this.IsBusy = false;
         }

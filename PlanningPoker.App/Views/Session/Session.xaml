@@ -13,7 +13,7 @@
         <!-- List over the players who have played a card -->
         <controls:FlowListView
             FlowColumnCount="6" SeparatorVisibility="None" HasUnevenRows="false"
-            FlowItemsSource="{Binding Players}"
+            FlowItemsSource="{Binding Players, Mode=Default}"
             IsPullToRefreshEnabled="true"
             RefreshCommand="{Binding LoadPlayersCommand}"
             IsRefreshing="{Binding IsBusy, Mode=OneWay}"
