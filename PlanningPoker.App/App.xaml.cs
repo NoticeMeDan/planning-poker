@@ -39,7 +39,7 @@ namespace PlanningPoker.App
             DependencyResolver.ResolveUsing(this.Container.GetService);
 
             // Change Screen for faster development. Standard page is WelcomeScreen()
-            this.MainPage = new NavigationPage(new WelcomeScreen());
+            this.MainPage = new NavigationPage(new Session());
         }
 
         protected override void OnStart()

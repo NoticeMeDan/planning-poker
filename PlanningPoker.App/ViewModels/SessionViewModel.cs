@@ -176,7 +176,7 @@ namespace PlanningPoker.App.ViewModels
          */
         private void GetPlayers()
         {
-            var session =  this.repository.GetByKeyAsync(this.sessionKey);
+            var session = this.repository.GetByKeyAsync(this.sessionKey);
 
             var players = session.Result.Users;
             foreach (var player in players)
@@ -189,11 +189,11 @@ namespace PlanningPoker.App.ViewModels
         {
             Debug.WriteLine("Updating Item Title");
 
-            var title =  this.repository.GetCurrentItem(this.sessionKey).Result.Title;
+            //var title =  this.repository.GetCurrentItem(this.sessionKey).Result.Title;
             // This requires AuthToken
 
-            //this.CurrentItemTitle = "Item One";
-            Debug.WriteLine(title);
+           this.CurrentItemTitle = "Item One";
+           // Debug.WriteLine(title);
         }
 
         private void NextItem()
@@ -221,7 +221,7 @@ namespace PlanningPoker.App.ViewModels
 
         private bool ShouldShowVotes()
         {
-            var currentVotes = this.repository.GetCurrentRound(this.sessionKey).Result.Votes;
+            //var currentVotes = this.repository.GetCurrentRound(this.sessionKey).Result.Votes;
             return true; //(currentVotes.Count == this.Players.Count);
         }
 
