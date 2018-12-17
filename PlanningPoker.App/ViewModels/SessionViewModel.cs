@@ -221,7 +221,7 @@ namespace PlanningPoker.App.ViewModels
 
         private bool ShouldShowVotes()
         {
-            //var currentVotes = this.Repository.GetCurrentRound(this.sessionKey).Result.Votes;
+            var currentVotes = this.repository.GetCurrentRound(this.sessionKey).Result.Votes;
             return true; //(currentVotes.Count == this.Players.Count);
         }
 
