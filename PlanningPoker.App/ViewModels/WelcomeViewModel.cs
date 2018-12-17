@@ -1,12 +1,11 @@
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-
 namespace PlanningPoker.App.ViewModels
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Net.Http;
+    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
     using System.Windows.Input;
     using Microsoft.Identity.Client;
@@ -41,6 +40,10 @@ namespace PlanningPoker.App.ViewModels
         public async Task ExecuteJoinCommand()
         {
             Debug.WriteLine("Joined lobby!");
+            /*empty, currently the join command doesn't do anything.
+            Remove this with correct implementation*/
+            Task task = new Task(() => { });
+            await task;
         }
 
         public async Task<bool> ExecuteLoginCommand()
