@@ -28,7 +28,7 @@ namespace PlanningPoker.App.Views.WelcomeScreen
             this.welcomeViewModel.JoinCommand.Execute(e);
             if (this.welcomeViewModel.Connection == true)
             {
-                await this.Navigation.PushModalAsync(new Lobby(this.welcomeViewModel.Key));
+                await this.Navigation.PushModalAsync(new NavigationPage(new Lobby(this.welcomeViewModel.Key)));
             }
         }
 

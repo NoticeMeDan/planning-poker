@@ -4,9 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:welcomeScreen="clr-namespace:PlanningPoker.App.Views.WelcomeScreen; assembly=PlanningPoker.App"
     x:Class="PlanningPoker.App.Views.WelcomeScreen.WelcomeScreen"
-
+    Title="PlanningPoker"
 >
-    <StackLayout>
+    <StackLayout Margin="20">
         <Entry
             Placeholder="Nickname"
             Text="{Binding Nickname, Mode=TwoWay}"
