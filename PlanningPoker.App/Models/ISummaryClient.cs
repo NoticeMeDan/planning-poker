@@ -4,8 +4,8 @@ namespace PlanningPoker.App.Models
     using System.Threading.Tasks;
     using Shared;
 
-    public interface ISummaryRepository
+    public interface ISummaryClient
     {
-        Task<SummaryDTO> FindAsync(int summaryId);
+        Task<SummaryDTO> FindBySessionIdAsync(int sessionId);
     }
 }
