@@ -27,7 +27,7 @@ namespace PlanningPoker.App.ViewModels
         {
             this.User = this.CreateGuestUserDTO();
             this.repository = repository;
-            this.JoinCommand = new RelayCommand(async _ => await this.ExecuteJoinCommand());
+            this.JoinCommand = new RelayCommand(_ => this.ExecuteJoinCommand());
         }
 
         private UserCreateDTO CreateGuestUserDTO()
@@ -40,7 +40,7 @@ namespace PlanningPoker.App.ViewModels
             };
         }
 
-        private async Task ExecuteJoinCommand()
+        private void ExecuteJoinCommand()
         {
             if (this.loading)
             {
@@ -52,9 +52,8 @@ namespace PlanningPoker.App.ViewModels
 
             this.User.Nickname = this.nickname;
 
-            await this.JoinSession();
+            this.JoinSessionMock();
 
-            this.Key = string.Empty;
             this.loading = false;
         }
 
@@ -64,6 +63,22 @@ namespace PlanningPoker.App.ViewModels
             {
                 var x = await this.repository.Join(this.key, this.User);
                 Debug.Write("User TOKEN: " + x.Token);
+                this.Connection = true;
+            }
+            catch (Exception e)
+            {
+                this.Connection = false;
+                Debug.WriteLine("No session with that key exists.");
+                Debug.WriteLine(e.StackTrace);
+            }
+        }
+
+        private void JoinSessionMock()
+        {
+            try
+            {
+                SessionRepository repoMock = (SessionRepository)this.repository;
+                repoMock.JoinMock(this.key, this.User);
                 this.Connection = true;
             }
             catch (Exception e)

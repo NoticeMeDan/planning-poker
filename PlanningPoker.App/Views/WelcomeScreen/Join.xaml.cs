@@ -29,6 +29,7 @@ namespace PlanningPoker.App.Views.WelcomeScreen
             if (this.viewModel.Connection == true)
             {
                 Debug.WriteLine("Connection!");
+                Debug.WriteLine("Join SessionKey: " + this.viewModel.Key);
                 await this.Navigation.PushModalAsync(new Lobby(this.viewModel.Key));
             }
         }

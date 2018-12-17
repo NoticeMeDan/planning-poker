@@ -43,6 +43,7 @@ namespace PlanningPoker.App.Models
         public async Task<SessionDTO> GetByKeyAsync(string sessionKey)
         {
             var response = await this.httpClient.GetAsync($"api/session/{sessionKey}");
+            Debug.Write("Response: " + response.StatusCode);
 
             var result = JsonConvert.DeserializeObject<SessionDTO>(response.Content.ReadAsStringAsync().Result);
 

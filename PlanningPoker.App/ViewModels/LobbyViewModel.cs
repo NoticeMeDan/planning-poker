@@ -1,10 +1,13 @@
 namespace PlanningPoker.App.ViewModels
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Windows.Input;
+    using OpenJobScheduler;
     using PlanningPoker.App.Models;
     using PlanningPoker.Shared;
 
@@ -12,20 +15,36 @@ namespace PlanningPoker.App.ViewModels
     {
         private readonly ISessionRepository repository;
         private bool loading;
+        private JobScheduler jobScheduler;
         private string key;
+        private string title;
 
         public ObservableCollection<UserDTO> Users { get; set; }
 
         public ICommand GetUsersCommand { get; }
 
+        public ICommand StopFetchingUsers { get; }
+
         public LobbyViewModel(ISessionRepository repository)
         {
             this.repository = repository;
             this.Users = new ObservableCollection<UserDTO>();
-            this.GetUsersCommand = new RelayCommand(async _ => await this.ExecuteGetUsersCommand());
+            this.GetUsersCommand = new RelayCommand(_ => this.ExecuteGetUsersCommand());
+            this.StopFetchingUsers = new RelayCommand(_ => this.ExecuteKillThread());
         }
 
-        private async Task ExecuteGetUsersCommand()
+        private void ExecuteKillThread()
+        {
+            this.jobScheduler.Stop();
+        }
+
+        private void ExecuteGetUsersCommand()
+        {
+            this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(5), new Action(async () => { await this.FetchUsers(); }));
+            this.jobScheduler.Start();
+        }
+
+        private async Task FetchUsers()
         {
             if (this.loading)
             {
@@ -36,7 +55,10 @@ namespace PlanningPoker.App.ViewModels
 
             var session = await this.repository.GetByKeyAsync(this.Key);
 
-            this.UpdateUserCollection(session.Users);
+            if (session != null)
+            {
+                this.UpdateUserCollection(session.Users);
+            }
 
             this.loading = false;
         }
@@ -49,6 +71,12 @@ namespace PlanningPoker.App.ViewModels
             {
                     this.Users.Add(u);
             });
+        }
+
+        public string Title
+        {
+            get => this.title;
+            set => this.SetProperty(ref this.title, "Session-key: " + value);
         }
 
         public string Key

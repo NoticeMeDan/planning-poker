@@ -32,4 +32,3 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:Elements must appear in the correct order", Justification = "<Pending>", Scope = "member", Target = "~P:PlanningPoker.App.ViewModels.LobbyViewModel.Title")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1202:Elements must be ordered by access", Justification = "<Pending>", Scope = "member", Target = "~M:PlanningPoker.App.Views.Session.Lobby.OnAppearing")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:Elements must appear in the correct order", Justification = "<Pending>", Scope = "member", Target = "~P:PlanningPoker.App.ViewModels.LobbyViewModel.Key")]
-
