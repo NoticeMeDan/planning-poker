@@ -70,12 +70,11 @@ namespace PlanningPoker.App
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
             // Adding the ViewModels
-            services.AddScoped<ISessionClient, SessionClient>();
-            services.AddScoped<ISummaryClient, SummaryClient>();
-            services.AddScoped<LoginViewModel>();
+            services.AddScoped<ISessionRepository, SessionRepository>();
+            services.AddScoped<ISummaryRepository, SummaryRepository>();
+            services.AddScoped<WelcomeViewModel>();
             services.AddScoped<ItemsViewModel>();
             services.AddScoped<UsersViewModel>();
-            services.AddScoped<JoinViewModel>();
             services.AddScoped<LobbyViewModel>();
 
             return services.BuildServiceProvider();
