@@ -17,7 +17,6 @@ namespace PlanningPoker.App.Views.Session
                (Application.Current as App)?.Container.GetRequiredService<LobbyViewModel>();
 
             this.viewModel.Key = sessionKey;
-            this.viewModel.Title = sessionKey;
         }
 
         private void BeginSessionClicked(object sender, EventArgs e)
