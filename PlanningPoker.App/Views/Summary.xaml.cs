@@ -17,7 +17,6 @@ namespace PlanningPoker.App.Views
 
         public Summary(int sessionId)
         {
-            // this.summaryViewModel = new SummaryViewModel();
 
             this.BindingContext = this.summaryViewModel =
                 (Application.Current as App)?.Container.GetRequiredService<SummaryViewModel>();

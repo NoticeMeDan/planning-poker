@@ -33,9 +33,6 @@ namespace PlanningPoker.App.ViewModels
             this.LoadSummaryCommand = new RelayCommand(_ => this.ExecuteLoadSummaryCommand());
         }
 
-
-        //public ObservableCollection<SummaryDTO> Summary { get; set; }
-
         public ObservableCollection<ItemEstimateDTO> Items { get; set; }
 
         public ICommand LoadSummaryCommand { get; set; }

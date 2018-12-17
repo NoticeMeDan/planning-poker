@@ -6,6 +6,7 @@ using Microsoft.Identity.Client;
 using PlanningPoker.App.Models;
 using PlanningPoker.App.ViewModels;
 using PlanningPoker.App.Views;
+using PlanningPoker.App.Views.SessionCreation;
 using PlanningPoker.App.Views.WelcomeScreen;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -39,7 +40,7 @@ namespace PlanningPoker.App
             DependencyResolver.ResolveUsing(this.Container.GetService);
 
             // Change Screen for faster development. Standard page is WelcomeScreen()
-            this.MainPage = new NavigationPage(new Summary(12));
+            this.MainPage = new NavigationPage(new WelcomeScreen());
         }
 
         protected override void OnStart()

@@ -22,8 +22,8 @@ namespace PlanningPoker.App.Views.WelcomeScreen
         {
             var result = await this.viewModel.ExecuteLoginCommand();
             if (result)
-            {
-                await this.Navigation.PushModalAsync(new SessionCreation.CreateSession());
+            { //normally CreateSession
+                await this.Navigation.PushModalAsync(new Summary(12));
             }
             else
             {
