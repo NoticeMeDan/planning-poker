@@ -129,20 +129,5 @@ namespace PlanningPoker.App.Models
 
             return response.IsSuccessStatusCode;
         }
-
-        public UserStateResponseDTO JoinMock(string sessionkey, UserCreateDTO user)
-        {
-            if (sessionkey.Equals("42") || sessionkey.Equals("l11d1ck"))
-            {
-                return new UserStateResponseDTO
-                {
-                    Token = "tH1s154m0cKt0k3n"
-                };
-            }
-            else
-            {
-                throw new KeyNotFoundException();
-            }
-        }
     }
 }

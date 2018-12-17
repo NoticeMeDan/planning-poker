@@ -107,20 +107,6 @@ namespace PlanningPoker.App.ViewModels
             }
         }
 
-        private void JoinSessionMock()
-        {
-            try
-            {
-                SessionClient repoMock = (SessionClient)this.client;
-                repoMock.JoinMock(this.key, this.User);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("No session with that key exists.");
-                Debug.WriteLine(e.StackTrace);
-            }
-        }
-
         public string Nickname
         {
             get => this.nickname;
