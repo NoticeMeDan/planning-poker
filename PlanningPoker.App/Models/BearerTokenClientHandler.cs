@@ -28,7 +28,7 @@ namespace PlanningPoker.App.Models
             var result = await this.publicClientApplication.AcquireTokenSilentAsync(this.scopes, accounts.First());
 
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", result.AccessToken);
-            request.Headers.Add("PPAuthorization", this.settings.Token);
+            request.Headers.Add("PPAuthorization", "7bb1fdfb-6bac-4fdf-ae96-900bc71cfedc");
 
             return await base.SendAsync(request, cancellationToken);
         }

@@ -189,11 +189,11 @@ namespace PlanningPoker.App.ViewModels
         {
             Debug.WriteLine("Updating Item Title");
 
-            //TODO use this.Repository.GetCurrentItem(this.sessionKey).Result.Title;.
+            var title =  this.repository.GetCurrentItem(this.sessionKey).Result.Title;
             // This requires AuthToken
 
-            this.CurrentItemTitle = "Item One";
-            // Debug.WriteLine(this.CurrentItemTitle);
+            //this.CurrentItemTitle = "Item One";
+            Debug.WriteLine(title);
         }
 
         private void NextItem()

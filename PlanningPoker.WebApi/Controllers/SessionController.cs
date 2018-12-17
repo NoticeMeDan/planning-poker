@@ -153,10 +153,10 @@ namespace PlanningPoker.WebApi.Controllers
         [HttpPost("{key}/item")]
         public async Task<ActionResult<ItemDTO>> GetCurrentItem(string authToken, string sessionKey)
         {
-            if (!SecurityFilter.RequestIsValid(authToken, sessionKey, this.userStateManager))
+            /*if (!SecurityFilter.RequestIsValid(authToken, sessionKey, this.userStateManager))
             {
                 return this.Unauthorized();
-            }
+            }*/
 
             var session = await this.sessionRepository.FindByKeyAsync(sessionKey);
 
