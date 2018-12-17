@@ -82,7 +82,7 @@ namespace PlanningPoker.WebApi.Controllers
                 return this.BadRequest();
             }
 
-            //var createdUser = await this.userRepository.CreateAsync(user);
+            // var createdUser = await this.userRepository.CreateAsync(user);
             var userDto = new UserDTO
             {
                 Nickname = user.Nickname,
