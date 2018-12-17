@@ -23,9 +23,13 @@ namespace PlanningPoker.App.Models
         {
             var accounts = await this.publicClientApplication.GetAccountsAsync();
 
-            var result = await this.publicClientApplication.AcquireTokenSilentAsync(this.scopes, accounts.First());
+            var firstAccount = accounts.FirstOrDefault();
 
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", result.AccessToken);
+            if (firstAccount != null)
+            {
+                var result = await this.publicClientApplication.AcquireTokenSilentAsync(this.scopes, firstAccount);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", result.AccessToken);
+            }
 
             return await base.SendAsync(request, cancellationToken);
         }
