@@ -1,6 +1,6 @@
 namespace PlanningPoker.App.ViewModels
 {
-    using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Threading.Tasks;
@@ -13,13 +13,8 @@ namespace PlanningPoker.App.ViewModels
         private readonly ISessionRepository repository;
         private bool loading;
         private string key;
-        private string title;
 
         public ObservableCollection<UserDTO> Users { get; set; }
-
-        public UserDTO User { get; set; }
-
-        public SessionDTO Session { get; set; }
 
         public ICommand GetUsersCommand { get; }
 
@@ -39,30 +34,21 @@ namespace PlanningPoker.App.ViewModels
 
             this.loading = true;
 
-            this.Users.Clear();
-            /*
-            this.Session = await this.repository.GetByKeyAsync(this.Key);
+            var session = await this.repository.GetByKeyAsync(this.Key);
 
-            this.Session.Users.ToList().ForEach(u =>
-            {
-                if (!this.Users.Contains(u))
-                {
-                    this.Users.Add(u);
-                }
-            });*/
-
-            // MOCKDATA VILFRED-STYLE
-            this.Users.Add(new UserDTO { Nickname = "mips" });
-            this.Users.Add(new UserDTO { Nickname = "alol" });
-            this.Users.Add(new UserDTO { Nickname = "vidr" });
+            this.UpdateUserCollection(session.Users);
 
             this.loading = false;
         }
 
-        public string Title
+        private void UpdateUserCollection(ICollection<UserDTO> users)
         {
-            get => this.title;
-            set => this.SetProperty(ref this.title, "Session-key: " + value);
+            this.Users.Clear();
+
+            users.ToList().ForEach(u =>
+            {
+                    this.Users.Add(u);
+            });
         }
 
         public string Key
