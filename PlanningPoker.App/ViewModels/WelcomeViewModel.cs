@@ -19,8 +19,6 @@ namespace PlanningPoker.App.ViewModels
 
         public bool Loading { get; set; }
 
-        public bool Connection { get; set; }
-
         private readonly ISessionClient client;
 
         public UserCreateDTO User { get; set; }
@@ -86,7 +84,6 @@ namespace PlanningPoker.App.ViewModels
             }
 
             this.Loading = true;
-            this.Connection = false;
 
             this.User.Nickname = this.nickname;
 
@@ -101,11 +98,9 @@ namespace PlanningPoker.App.ViewModels
             {
                 var x = await this.client.Join(this.key, this.User);
                 Debug.Write("User TOKEN: " + x.Token);
-                this.Connection = true;
             }
             catch (Exception e)
             {
-                this.Connection = false;
                 this.Key = string.Empty;
                 Debug.WriteLine("No session with that key exists.");
                 Debug.WriteLine(e.StackTrace);
@@ -118,11 +113,9 @@ namespace PlanningPoker.App.ViewModels
             {
                 SessionClient repoMock = (SessionClient)this.client;
                 repoMock.JoinMock(this.key, this.User);
-                this.Connection = true;
             }
             catch (Exception e)
             {
-                this.Connection = false;
                 Debug.WriteLine("No session with that key exists.");
                 Debug.WriteLine(e.StackTrace);
             }
