@@ -2,11 +2,11 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:welcomeScreen="clr-namespace:PlanningPoker.App.Views.WelcomeScreen;assembly=PlanningPoker.App"
+    xmlns:welcomeScreen="clr-namespace:PlanningPoker.App.Views.WelcomeScreen; assembly=PlanningPoker.App"
     x:Class="PlanningPoker.App.Views.WelcomeScreen.WelcomeScreen"
-
+    Title="PlanningPoker"
 >
-    <StackLayout>
+    <StackLayout Margin="20">
         <Entry
             Placeholder="Nickname"
             Text="{Binding Nickname, Mode=TwoWay}"
@@ -22,10 +22,10 @@
             MaxLength="7"
             Margin="5"
         />
-        <Button 
-            Text="Join"
-            HorizontalOptions="CenterAndExpand"
-            Clicked="JoinCommand" />
+        <Button Text="Join"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="EndAndExpand"
+                Clicked="HandleClickedAsync" />
         <Button 
             Text="Login"
             HorizontalOptions="CenterAndExpand"

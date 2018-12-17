@@ -29,8 +29,8 @@ namespace PlanningPoker.App.Views.SessionCreation
         private void CreateSessionClicked(object sender, EventArgs e)
         {
             this.itemsViewModel.CreateSessionCommand.Execute(null);
-            this.Navigation.PushModalAsync(
-                new Lobby());
+            this.Navigation.PushModalAsync(new NavigationPage(
+                new Lobby(this.itemsViewModel.Key)));
         }
 
         private void OnAddItem_Clicked(object sender, EventArgs e)

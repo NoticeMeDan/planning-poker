@@ -1,6 +1,8 @@
 namespace PlanningPoker.App.Views.WelcomeScreen
 {
     using System;
+    using System.Diagnostics;
+    using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
     using Session;
     using ViewModels;
@@ -14,27 +16,25 @@ namespace PlanningPoker.App.Views.WelcomeScreen
 
         public WelcomeScreen()
         {
+            this.InitializeComponent();
+
             this.BindingContext = this.welcomeViewModel =
                 (Application.Current as App)?.Container.GetRequiredService<WelcomeViewModel>();
-            this.InitializeComponent();
         }
 
-        public async void JoinCommand(object sender, EventArgs e)
+        private async Task HandleClickedAsync(object sender, EventArgs e)
         {
-            await this.welcomeViewModel.ExecuteJoinCommand();
-            await this.Navigation.PushModalAsync(new Lobby());
+            Debug.WriteLine("try to connection?");
+            this.welcomeViewModel.JoinCommand.Execute(e);
+            await this.Navigation.PushModalAsync(new NavigationPage(new Lobby(this.welcomeViewModel.Key)));
         }
 
-        public async void LoginCommand(object sender, EventArgs e)
+        private async void LoginCommand(object sender, EventArgs e)
         {
             var result = await this.welcomeViewModel.ExecuteLoginCommand();
             if (result)
             {
                 await this.Navigation.PushModalAsync(new SessionCreation.CreateSession());
-            }
-            else
-            {
-                await this.Navigation.PushModalAsync(new WelcomeScreen());
             }
         }
     }

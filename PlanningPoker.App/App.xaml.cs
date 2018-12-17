@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Client;
 using PlanningPoker.App.Models;
 using PlanningPoker.App.ViewModels;
+using PlanningPoker.App.Views.Session;
 using PlanningPoker.App.Views.WelcomeScreen;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
