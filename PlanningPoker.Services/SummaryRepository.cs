@@ -1,5 +1,6 @@
 namespace PlanningPoker.Services
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Entities;
@@ -27,7 +28,7 @@ namespace PlanningPoker.Services
             this.context.Summaries.Add(entity);
             this.context.SaveChanges();
 
-            return await this.FindAsync(entity.Id);
+            return await this.FindBySessionIdAsync(entity.SessionId);
         }
 
         public async Task<bool> DeleteAsync(int summaryId)
@@ -45,11 +46,10 @@ namespace PlanningPoker.Services
             return true;
         }
 
-        public async Task<SummaryDTO> FindAsync(int summaryId)
+        public async Task<SummaryDTO> FindBySessionIdAsync(int sessionId)
         {
             var entities = this.context.Summaries
-                .Where(s => s.Id == summaryId)
-                .Include(ie => ie.ItemEstimates)
+                .Where(s => s.SessionId == sessionId)
                 .Select(s => new SummaryDTO
                 {
                     Id = s.Id,
@@ -60,36 +60,27 @@ namespace PlanningPoker.Services
             return await entities.FirstOrDefaultAsync();
         }
 
-        public IQueryable<SummaryDTO> Read()
+        public async Task<SummaryDTO> BuildSummary(SessionDTO session)
         {
-            var entities = this.context.Summaries
-                .Include(ie => ie.ItemEstimates)
-                .Select(s => new SummaryDTO
-                {
-                    Id = s.Id,
-                    ItemEstimates = EntityMapper.ToItemEstimateDtos(s.ItemEstimates),
-                    SessionId = s.SessionId
-                });
+            var summary = new SummaryCreateUpdateDTO
+            {
+                SessionId = session.Id,
+                ItemEstimates = this.BuildItemEstimates(session).ToList()
+            };
 
-            return entities;
+            return await this.CreateAsync(summary);
         }
 
-        public async Task<bool> UpdateAsync(SummaryCreateUpdateDTO summary)
+        public ICollection<ItemEstimateDTO> BuildItemEstimates(SessionDTO session)
         {
-            var entity = await this.context.Summaries.FindAsync(summary.Id);
-
-            if (entity == null)
-            {
-                return false;
-            }
-
-            entity.Id = summary.Id;
-            entity.ItemEstimates = EntityMapper.ToItemEstimateEntities(summary.ItemEstimates);
-            entity.SessionId = summary.SessionId;
-
-            this.context.SaveChanges();
-
-            return true;
+            var itemEstimates = new HashSet<ItemEstimateDTO>();
+            session.Items.ToList().ForEach(i => itemEstimates.Add(
+                new ItemEstimateDTO
+                {
+                    Estimate = i.Rounds.LastOrDefault().Votes.FirstOrDefault().Estimate,
+                    ItemTitle = i.Title
+                }));
+            return itemEstimates;
         }
     }
 }

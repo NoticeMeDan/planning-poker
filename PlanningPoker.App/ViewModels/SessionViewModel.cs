@@ -9,7 +9,7 @@ namespace PlanningPoker.App.ViewModels
 
     public class SessionViewModel : BaseViewModel
     {
-        private readonly SessionRepository repository;
+        private readonly SessionClient repository;
         private SessionDTO session;
         private readonly string sessionKey;
         private string currentItemTitle;
@@ -36,7 +36,7 @@ namespace PlanningPoker.App.ViewModels
         public SessionViewModel()
         {
             // Create Repository
-            this.repository = new SessionRepository(new HttpClient());
+            this.repository = new SessionClient(new HttpClient());
 
             // TODO: Get sessionkey from constructor argument
             this.sessionKey = "42";

@@ -2,7 +2,7 @@ namespace PlanningPoker.Services
 {
     using System.Linq;
     using System.Threading.Tasks;
-    using PlanningPoker.Shared;
+    using Shared;
 
     public interface ISessionRepository
     {
@@ -15,6 +15,8 @@ namespace PlanningPoker.Services
         IQueryable<SessionDTO> Read();
 
         Task<bool> UpdateAsync(SessionCreateUpdateDTO session);
+
+        Task<UserDTO> AddUserToSession(UserCreateDTO user, int sessionId);
 
         Task<bool> DeleteAsync(int sessionID);
     }

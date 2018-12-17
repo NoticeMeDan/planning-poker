@@ -48,3 +48,4 @@ namespace PlanningPoker.App.Views.Session
         }
     }
 }
+

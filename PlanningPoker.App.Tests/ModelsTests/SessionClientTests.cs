@@ -12,7 +12,7 @@ namespace PlanningPoker.App.Tests.ModelsTests
     using Shared;
     using Xunit;
 
-    public class SessionRepositoryTests
+    public class SessionClientTests
     {
         private readonly Uri baseAddress = new Uri("https://localhost:5001/");
 
@@ -32,19 +32,19 @@ namespace PlanningPoker.App.Tests.ModelsTests
                 })
                 .Verifiable();
 
-            var client = new HttpClient(handler.Object)
+            var httpClient = new HttpClient(handler.Object)
             {
                 BaseAddress = this.baseAddress
             };
 
-            var repository = new SessionRepository(client);
+            var client = new SessionClient(httpClient);
 
             var dto = new SessionCreateUpdateDTO
             {
                 Id = 42,
             };
 
-            await repository.CreateAsync(dto);
+            await client.CreateAsync(dto);
 
             handler.Protected().Verify(
                 "SendAsync",
@@ -70,14 +70,14 @@ namespace PlanningPoker.App.Tests.ModelsTests
                     Content = new StringContent(string.Empty)
                 });
 
-            var client = new HttpClient(handler.Object)
+            var httpClient = new HttpClient(handler.Object)
             {
                 BaseAddress = this.baseAddress
             };
 
-            var repository = new SessionRepository(client);
+            var client = new SessionClient(httpClient);
 
-            await repository.FindAsync(42);
+            await client.FindAsync(42);
 
             handler.Protected().Verify(
                 "SendAsync",
@@ -103,19 +103,19 @@ namespace PlanningPoker.App.Tests.ModelsTests
                     Content = new StringContent(string.Empty)
                 });
 
-            var client = new HttpClient(handler.Object)
+            var httpClient = new HttpClient(handler.Object)
             {
                 BaseAddress = this.baseAddress
             };
 
-            var repository = new SessionRepository(client);
+            var client = new SessionClient(httpClient);
 
             var dto = new SessionCreateUpdateDTO
             {
                 Id = 42,
             };
 
-            await repository.UpdateAsync(dto);
+            await client.UpdateAsync(dto);
 
             handler.Protected().Verify(
                 "SendAsync",
@@ -141,16 +141,16 @@ namespace PlanningPoker.App.Tests.ModelsTests
                     Content = new StringContent(string.Empty)
                 });
 
-            var client = new HttpClient(handler.Object)
+            var httpClient = new HttpClient(handler.Object)
             {
                 BaseAddress = this.baseAddress
             };
 
-            var repository = new SessionRepository(client);
+            var client = new SessionClient(httpClient);
 
             var sessionKey = "42";
 
-            await repository.GetByKeyAsync(sessionKey);
+            await client.GetByKeyAsync(sessionKey);
 
             handler.Protected().Verify(
                 "SendAsync",
@@ -176,12 +176,12 @@ namespace PlanningPoker.App.Tests.ModelsTests
                     Content = new StringContent(string.Empty)
                 });
 
-            var client = new HttpClient(handler.Object)
+            var httpClient = new HttpClient(handler.Object)
             {
                 BaseAddress = this.baseAddress
             };
 
-            var repository = new SessionRepository(client);
+            var client = new SessionClient(httpClient);
 
             var sessionKey = "42";
 
@@ -190,7 +190,7 @@ namespace PlanningPoker.App.Tests.ModelsTests
                 Id = 42
             };
 
-            await repository.Join(sessionKey, user);
+            await client.Join(sessionKey, user);
 
             handler.Protected().Verify(
                 "SendAsync",
@@ -216,16 +216,16 @@ namespace PlanningPoker.App.Tests.ModelsTests
                     Content = new StringContent(string.Empty)
                 });
 
-            var client = new HttpClient(handler.Object)
+            var httpClient = new HttpClient(handler.Object)
             {
                 BaseAddress = this.baseAddress
             };
 
-            var repository = new SessionRepository(client);
+            var client = new SessionClient(httpClient);
 
             var sessionKey = "42";
 
-            await repository.NextRoundAsync(sessionKey);
+            await client.NextRoundAsync(sessionKey);
 
             handler.Protected().Verify(
                 "SendAsync",
@@ -251,16 +251,16 @@ namespace PlanningPoker.App.Tests.ModelsTests
                     Content = new StringContent(string.Empty)
                 });
 
-            var client = new HttpClient(handler.Object)
+            var httpClient = new HttpClient(handler.Object)
             {
                 BaseAddress = this.baseAddress
             };
 
-            var repository = new SessionRepository(client);
+            var client = new SessionClient(httpClient);
 
             var sessionKey = "42";
 
-            await repository.GetCurrentRound(sessionKey);
+            await client.GetCurrentRound(sessionKey);
 
             handler.Protected().Verify(
                 "SendAsync",
@@ -286,16 +286,16 @@ namespace PlanningPoker.App.Tests.ModelsTests
                     Content = new StringContent(string.Empty)
                 });
 
-            var client = new HttpClient(handler.Object)
+            var httpClient = new HttpClient(handler.Object)
             {
                 BaseAddress = this.baseAddress
             };
 
-            var repository = new SessionRepository(client);
+            var client = new SessionClient(httpClient);
 
             var sessionKey = "42";
 
-            await repository.NextItemAsync(sessionKey);
+            await client.NextItemAsync(sessionKey);
 
             handler.Protected().Verify(
                 "SendAsync",
@@ -321,16 +321,16 @@ namespace PlanningPoker.App.Tests.ModelsTests
                     Content = new StringContent(string.Empty)
                 });
 
-            var client = new HttpClient(handler.Object)
+            var httpClient = new HttpClient(handler.Object)
             {
                 BaseAddress = this.baseAddress
             };
 
-            var repository = new SessionRepository(client);
+            var client = new SessionClient(httpClient);
 
             var sessionKey = "42";
 
-            await repository.GetAllItems(sessionKey);
+            await client.GetAllItems(sessionKey);
 
             handler.Protected().Verify(
                 "SendAsync",
@@ -356,16 +356,16 @@ namespace PlanningPoker.App.Tests.ModelsTests
                     Content = new StringContent(string.Empty)
                 });
 
-            var client = new HttpClient(handler.Object)
+            var httpClient = new HttpClient(handler.Object)
             {
                 BaseAddress = this.baseAddress
             };
 
-            var repository = new SessionRepository(client);
+            var client = new SessionClient(httpClient);
 
             var sessionKey = "42";
 
-            await repository.GetCurrentItem(sessionKey);
+            await client.GetCurrentItem(sessionKey);
 
             handler.Protected().Verify(
                 "SendAsync",
@@ -391,12 +391,12 @@ namespace PlanningPoker.App.Tests.ModelsTests
                     Content = new StringContent(string.Empty)
                 });
 
-            var client = new HttpClient(handler.Object)
+            var httpClient = new HttpClient(handler.Object)
             {
                 BaseAddress = this.baseAddress
             };
 
-            var repository = new SessionRepository(client);
+            var client = new SessionClient(httpClient);
 
             var sessionKey = "42";
 
@@ -405,7 +405,7 @@ namespace PlanningPoker.App.Tests.ModelsTests
                 Id = 42
             };
 
-            await repository.Vote(sessionKey, vote);
+            await client.Vote(sessionKey, vote);
 
             handler.Protected().Verify(
                 "SendAsync",
@@ -431,16 +431,16 @@ namespace PlanningPoker.App.Tests.ModelsTests
                     Content = new StringContent(string.Empty)
                 });
 
-            var client = new HttpClient(handler.Object)
+            var httpClient = new HttpClient(handler.Object)
             {
                 BaseAddress = this.baseAddress
             };
 
-            var repository = new SessionRepository(client);
+            var client = new SessionClient(httpClient);
 
             var sessionKey = "42";
 
-            await repository.ThrowNitpickerCard(sessionKey);
+            await client.ThrowNitpickerCard(sessionKey);
 
             handler.Protected().Verify(
                 "SendAsync",
@@ -466,12 +466,12 @@ namespace PlanningPoker.App.Tests.ModelsTests
                     Content = new StringContent(string.Empty)
                 });
 
-            var client = new HttpClient(handler.Object)
+            var httpClient = new HttpClient(handler.Object)
             {
                 BaseAddress = this.baseAddress
             };
 
-            var repository = new SessionRepository(client);
+            var client = new SessionClient(httpClient);
 
             var sessionKey = "42";
 
@@ -480,7 +480,7 @@ namespace PlanningPoker.App.Tests.ModelsTests
                 Id = 42
             };
 
-            await repository.KickUser(sessionKey, user.Id);
+            await client.KickUser(sessionKey, user.Id);
 
             handler.Protected().Verify(
                 "SendAsync",

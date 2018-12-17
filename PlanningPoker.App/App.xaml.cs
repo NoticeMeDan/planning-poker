@@ -39,7 +39,7 @@ namespace PlanningPoker.App
             DependencyResolver.ResolveUsing(this.Container.GetService);
 
             // Change Screen for faster development. Standard page is WelcomeScreen()
-            this.MainPage = new NavigationPage(new Session());
+            this.MainPage = new NavigationPage(new WelcomeScreen());
         }
 
         protected override void OnStart()
@@ -70,11 +70,12 @@ namespace PlanningPoker.App
             services.AddSingleton<IPublicClientApplication>(publicClientApplication);
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-            services.AddScoped<ISessionRepository, SessionRepository>();
-            services.AddScoped<ISummaryRepository, SummaryRepository>();
-            services.AddScoped<LoginViewModel>();
+            // Adding the ViewModels
+            services.AddScoped<ISessionClient, SessionClient>();
+            services.AddScoped<ISummaryClient, SummaryClient>();
+            services.AddScoped<WelcomeViewModel>();
             services.AddScoped<ItemsViewModel>();
-            services.AddScoped<JoinViewModel>();
+            services.AddScoped<UsersViewModel>();
             services.AddScoped<LobbyViewModel>();
             services.AddScoped<SummaryViewModel>();
             services.AddScoped<SessionViewModel>();
