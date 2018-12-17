@@ -1,34 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data.SqlTypes;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using PlanningPoker.Shared;
-
 namespace PlanningPoker.App.ViewModels
 {
+    using System.Collections.ObjectModel;
+    using System.Diagnostics;
     using System.Net.Http;
+    using System.Windows.Input;
     using Models;
+    using Shared;
 
     public class SessionViewModel : BaseViewModel
     {
-        private SessionRepository Repository;
-        private SessionDTO Session;
+        private readonly SessionRepository repository;
+        private SessionDTO session;
         private readonly string sessionKey;
         private string currentItemTitle;
         private string token;
 
         public ObservableCollection<UserDTO> Players { get; set; }
 
-        public ObservableCollection<UserDTO> PlayersToVote { get; set; }
+        public ObservableCollection<Card> VoteCards { get; set; }
 
         public ObservableCollection<VoteDTO> Votes { get; set; }
-
-        public ICommand SetupCommand { get; }
 
         public ICommand RevoteCommand { get; }
 
@@ -42,19 +33,20 @@ namespace PlanningPoker.App.ViewModels
 
         public ICommand SendNitpickerCommand { get; }
 
-
         public SessionViewModel()
         {
             // Create Repository
-            this.Repository = new SessionRepository(new HttpClient());
+            this.repository = new SessionRepository(new HttpClient());
+
             // TODO: Get sessionkey from constructor argument
             this.sessionKey = "42";
-
             this.BaseTitle = "Session: " + this.sessionKey;
+            this.CurrentItemTitle = string.Empty;
 
+            // Lists
             this.Players = new ObservableCollection<UserDTO>();
             this.Votes = new ObservableCollection<VoteDTO>();
-            this.CurrentItemTitle = string.Empty;
+            this.VoteCards = new ObservableCollection<Card>();
 
             // Setup
             this.LoadSessionCommand = new RelayCommand(_ => this.ExecuteLoadSessionCommand());
@@ -160,6 +152,7 @@ namespace PlanningPoker.App.ViewModels
 
             Debug.WriteLine("Load votes clicked");
             this.GetVotes();
+            this.VoteToCard(this.Votes);
 
             this.IsBusy = false;
         }
@@ -181,10 +174,9 @@ namespace PlanningPoker.App.ViewModels
         /*
          * Following are the methods called by the ExecuteCommands
          */
-
         private void GetPlayers()
         {
-            var session =  this.Repository.GetByKeyAsync(this.sessionKey);
+            var session =  this.repository.GetByKeyAsync(this.sessionKey);
 
             var players = session.Result.Users;
             foreach (var player in players)
@@ -206,7 +198,7 @@ namespace PlanningPoker.App.ViewModels
 
         private void NextItem()
         {
-            this.Repository.NextItemAsync(this.sessionKey).Wait();
+            this.repository.NextItemAsync(this.sessionKey).Wait();
             this.SetCurrentTitle();
 
             // Maybe this is needed.
@@ -229,20 +221,36 @@ namespace PlanningPoker.App.ViewModels
 
         private bool ShouldShowVotes()
         {
-            var currentVotes = this.Repository.GetCurrentRound(this.sessionKey).Result.Votes;
+            //var currentVotes = this.Repository.GetCurrentRound(this.sessionKey).Result.Votes;
             return true; //(currentVotes.Count == this.Players.Count);
+        }
+
+        private void VoteToCard(ObservableCollection<VoteDTO> votes)
+        {
+            foreach (var vote in votes)
+            {
+                foreach (var user in this.Players)
+                {
+                    if (vote.UserId == user.Id)
+                    {
+                        this.VoteCards.Add(new Card {Name = user.Nickname, Estimate = vote.Estimate});
+                    }
+                }
+            }
         }
 
         // Mock data to test view bindings.
         private static ObservableCollection<UserDTO> PlayersMockData()
         {
             var data = new ObservableCollection<UserDTO>();
-            var userOne = new UserDTO {Nickname = "Vidr"};
-            var userTwo = new UserDTO {Nickname = "alol"};
-            var userThree = new UserDTO {Nickname = "olju"};
+            var userOne = new UserDTO {Nickname = "Vidr", Id = 1};
+            var userTwo = new UserDTO {Nickname = "alol", Id = 2};
+            var userThree = new UserDTO {Nickname = "olju", Id = 3};
 
             data.Add(userOne);
+
             data.Add(userTwo);
+
             data.Add(userThree);
 
             return data;
@@ -262,5 +270,12 @@ namespace PlanningPoker.App.ViewModels
 
             return data;
         }
+    }
+
+    public class Card
+    {
+        public string Name { get; set; }
+
+        public int Estimate { get; set; }
     }
 }

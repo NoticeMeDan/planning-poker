@@ -11,6 +11,7 @@
         <Label Text="{Binding CurrentItemTitle}" HorizontalTextAlignment="Center" FontSize="20" />
 
         <!-- List over the participating players -->
+        <Label Text="Players:" Margin="10" />
         <controls:FlowListView
             FlowColumnCount="6" SeparatorVisibility="None" HasUnevenRows="false"
             FlowItemsSource="{Binding Players, Mode=Default}"
@@ -30,9 +31,10 @@
         </controls:FlowListView>
 
         <!-- List over the chosen estimate by players -->
+        <Label Text="Votes:" Margin="10"/>
         <controls:FlowListView
             FlowColumnCount="6" SeparatorVisibility="None" HasUnevenRows="false"
-            FlowItemsSource="{Binding Votes}"
+            FlowItemsSource="{Binding VoteCards}"
             IsPullToRefreshEnabled="true"
             RefreshCommand="{Binding LoadVotesCommand}"
             IsRefreshing="{Binding IsBusy, Mode=OneWay}"
@@ -42,7 +44,7 @@
                 <DataTemplate>
                     <StackLayout>
                         <Label HorizontalOptions="Fill" VerticalOptions="Fill"
-                               XAlign="Center" YAlign="Center" Text="{Binding UserId, Mode=TwoWay}"/>
+                               XAlign="Center" YAlign="Center" Text="{Binding Name, Mode=TwoWay}"/>
                         <Label HorizontalOptions="Fill" VerticalOptions="Fill"
                                XAlign="Center" YAlign="Center" Text="{Binding Estimate, Mode=TwoWay}"/>
                     </StackLayout>

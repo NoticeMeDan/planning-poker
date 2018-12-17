@@ -9,7 +9,7 @@ namespace PlanningPoker.App.Models
     public class SessionRepository : ISessionRepository
     {
         private readonly HttpClient httpClient;
-        private readonly string Url = $"http://planningpoker-webapi.azurewebsites.net/";
+        private readonly string url = $"http://planningpoker-webapi.azurewebsites.net/";
 
         public SessionRepository(HttpClient httpClient)
         {
@@ -18,7 +18,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<SessionDTO> CreateAsync(SessionCreateUpdateDTO session)
         {
-            var response = await this.httpClient.PostAsJsonAsync($"{this.Url}api/session", session);
+            var response = await this.httpClient.PostAsJsonAsync($"{this.url}api/session", session);
 
             var result = JsonConvert.DeserializeObject<SessionDTO>(response.Content.ReadAsStringAsync().Result);
 
@@ -27,21 +27,21 @@ namespace PlanningPoker.App.Models
 
         public async Task<SessionDTO> FindAsync(int sessionId)
         {
-            var response = await this.httpClient.GetAsync($"{this.Url}api/session/{sessionId}");
+            var response = await this.httpClient.GetAsync($"{this.url}api/session/{sessionId}");
 
             return await response.Content.ReadAsAsync<SessionDTO>();
         }
 
         public async Task<bool> UpdateAsync(SessionCreateUpdateDTO session)
         {
-            var response = await this.httpClient.PutAsJsonAsync($"{this.Url}api/session/{session.Id}", session);
+            var response = await this.httpClient.PutAsJsonAsync($"{this.url}api/session/{session.Id}", session);
 
             return response.IsSuccessStatusCode;
         }
 
         public async Task<SessionDTO> GetByKeyAsync(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"{this.Url}api/session/{sessionKey}", HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
+            var response = await this.httpClient.GetAsync($"{this.url}api/session/{sessionKey}", HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
 
             var result = JsonConvert.DeserializeObject<SessionDTO>(response.Content.ReadAsStringAsync().Result);
 
@@ -50,7 +50,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<UserStateResponseDTO> Join(string sessionKey, UserCreateDTO user)
         {
-            var response = await this.httpClient.PostAsJsonAsync($"{this.Url}api/session/{sessionKey}/join", user);
+            var response = await this.httpClient.PostAsJsonAsync($"{this.url}api/session/{sessionKey}/join", user);
 
             var result = JsonConvert.DeserializeObject<UserStateResponseDTO>(response.Content.ReadAsStringAsync().Result);
 
@@ -59,7 +59,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<RoundDTO> NextRoundAsync(string sessionKey, string authToken)
         {
-            var response = await this.httpClient.GetAsync($"{this.Url}api/session/{sessionKey}/item/round/next", HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
+            var response = await this.httpClient.GetAsync($"{this.url}api/session/{sessionKey}/item/round/next", HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
 
             var result = JsonConvert.DeserializeObject<RoundDTO>(response.Content.ReadAsStringAsync().Result);
 
@@ -68,7 +68,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<RoundDTO> GetCurrentRound(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"{this.Url}api/session/{sessionKey}/item/round");
+            var response = await this.httpClient.GetAsync($"{this.url}api/session/{sessionKey}/item/round");
 
             var result = JsonConvert.DeserializeObject<RoundDTO>(response.Content.ReadAsStringAsync().Result);
 
@@ -77,7 +77,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<ItemDTO> NextItemAsync(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"{this.Url}api/session/{sessionKey}/item/next", HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
+            var response = await this.httpClient.GetAsync($"{this.url}api/session/{sessionKey}/item/next", HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
 
             var result = JsonConvert.DeserializeObject<ItemDTO>(response.Content.ReadAsStringAsync().Result);
 
@@ -86,7 +86,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<ICollection<ItemDTO>> GetAllItems(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"{this.Url}api/session/{sessionKey}/item");
+            var response = await this.httpClient.GetAsync($"{this.url}api/session/{sessionKey}/item");
 
             var result = JsonConvert.DeserializeObject<ICollection<ItemDTO>>(response.Content.ReadAsStringAsync().Result);
 
@@ -95,7 +95,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<ItemDTO> GetCurrentItem(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"{this.Url}api/session/{sessionKey}/item/current", HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
+            var response = await this.httpClient.GetAsync($"{this.url}api/session/{sessionKey}/item/current", HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
 
             var result = JsonConvert.DeserializeObject<ItemDTO>(response.Content.ReadAsStringAsync().Result);
 
@@ -104,21 +104,21 @@ namespace PlanningPoker.App.Models
 
         public async Task<bool> Vote(string sessionKey, VoteDTO vote)
         {
-            var response = await this.httpClient.PostAsJsonAsync($"{this.Url}api/session/{sessionKey}/vote", vote);
+            var response = await this.httpClient.PostAsJsonAsync($"{this.url}api/session/{sessionKey}/vote", vote);
 
             return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> ThrowNitpickerCard(string sessionKey)
         {
-            var response = await this.httpClient.PostAsync($"{this.Url}api/session/{sessionKey}/nitpicker", default(HttpContent));
+            var response = await this.httpClient.PostAsync($"{this.url}api/session/{sessionKey}/nitpicker", default(HttpContent));
 
             return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> KickUser(string sessionKey, int userId)
         {
-            var response = await this.httpClient.PostAsJsonAsync($"{this.Url}api/session/{sessionKey}/user/kick", userId);
+            var response = await this.httpClient.PostAsJsonAsync($"{this.url}api/session/{sessionKey}/user/kick", userId);
 
             return response.IsSuccessStatusCode;
         }

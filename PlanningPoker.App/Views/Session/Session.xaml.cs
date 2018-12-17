@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 namespace PlanningPoker.App.Views.Session
 {
     using System;
@@ -9,19 +7,19 @@ namespace PlanningPoker.App.Views.Session
 
     public partial class Session : ContentPage
     {
-        private readonly SessionViewModel ViewModel;
+        private readonly SessionViewModel viewModel;
 
         public Session()
         {
-            this.ViewModel = new SessionViewModel();
-            this.BindingContext = this.ViewModel =
+            this.viewModel = new SessionViewModel();
+            this.BindingContext = this.viewModel =
                 (Application.Current as App)?.Container.GetRequiredService<SessionViewModel>();
             this.InitializeComponent();
         }
 
         protected override void OnAppearing()
         {
-            this.ViewModel.LoadSessionCommand.Execute(null);
+            this.viewModel.LoadSessionCommand.Execute(null);
         }
 
         private void OnNitpicker_Clicked(object sender, EventArgs e)
@@ -41,8 +39,7 @@ namespace PlanningPoker.App.Views.Session
 
         private void OnVoteCard_Clicked(object sender, EventArgs e)
         {
-            this.ViewModel.SendVoteCommand.Execute(null);
-
+            this.viewModel.SendVoteCommand.Execute(null);
         }
 
         private void OnVote_Clicked(object sender, EventArgs e)

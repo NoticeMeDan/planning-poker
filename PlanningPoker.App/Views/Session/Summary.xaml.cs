@@ -1,8 +1,8 @@
 namespace PlanningPoker.App.Views.Session
 {
+    using System;
     using Microsoft.Extensions.DependencyInjection;
     using ViewModels;
-    using System;
     using Xamarin.Forms;
 
     public partial class Summary : ContentPage

@@ -29,6 +29,7 @@ namespace PlanningPoker.App.Views.SessionCreation
         private void CreateSessionClicked(object sender, EventArgs e)
         {
             //TODO: Hook up with API when ready
+
             this.itemsViewModel.CreateSessionCommand.Execute(null);
             this.Navigation.PushModalAsync(
                 new Lobby());

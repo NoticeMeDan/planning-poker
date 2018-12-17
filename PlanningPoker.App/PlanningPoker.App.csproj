@@ -29,23 +29,12 @@
     <Compile Remove="Views\Components\Items.xaml.cs" />
     <Compile Remove="Models\IItemRepository.cs" />
     <Compile Remove="Models\ItemRepository.cs" />
-    <Compile Update="Views\Components\VotingNumbers.cs">
-      <DependentUpon>VotingNumbers.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Page Include="Views\Components\Cards.xaml">
-      <SubType>Designer</SubType>
-      <Generator></Generator>
-    </Page>
-    <Page Include="Views\Session\ItemEstimation.xaml">
-      <SubType>Designer</SubType>
-      <Generator></Generator>
-    </Page>
     <Page Include="Views\Session\Lobby.xaml">
       <SubType>Designer</SubType>
       <Generator></Generator>
