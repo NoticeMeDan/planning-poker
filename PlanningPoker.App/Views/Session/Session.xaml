@@ -4,18 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
     x:Class="PlanningPoker.App.Views.Session.Session"
-    Title="Title"
+    Title="{Binding BaseTitle}"
 >
     <StackLayout>
         <!-- Item of the current item -->
-        <Label Text="Item title"/>
+        <Label Text="{Binding CurrentItemTitle}"/>
 
-        <!-- List over the players who have played a card -->
+        <!-- List over the participating players -->
         <controls:FlowListView
             FlowColumnCount="6" SeparatorVisibility="None" HasUnevenRows="false"
             FlowItemsSource="{Binding Players, Mode=Default}"
             IsPullToRefreshEnabled="true"
-            RefreshCommand="{Binding LoadPlayersCommand}"
+            RefreshCommand="{Binding LoadSessionCommand}"
             IsRefreshing="{Binding IsBusy, Mode=OneWay}"
             SelectionMode="None"
             >
@@ -89,9 +89,9 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Button Text="Play Nitpicker" Grid.Row="0" Grid.Column="0" Clicked="OnNitpicker_Clicked" />
-            <Button Text="Re-vote" Grid.Row="0" Grid.Column="1" Clicked="OnReVote_Clicked" />
-            <Button Text="Next Item" Grid.Row="0" Grid.Column="2" Clicked="OnNextItem_Clicked" />
+            <Button Text="Play Nitpicker" Grid.Row="0" Grid.Column="0" Command="{Binding SendNitpickerCommand}" />
+            <Button Text="Re-vote" Grid.Row="0" Grid.Column="1" Command="{Binding RevoteCommand}" />
+            <Button Text="Next Item" Grid.Row="0" Grid.Column="2" Command="{Binding NextItemCommand}" />
         </Grid>
 
     </StackLayout>

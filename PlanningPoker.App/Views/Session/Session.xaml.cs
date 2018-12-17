@@ -21,7 +21,7 @@ namespace PlanningPoker.App.Views.Session
 
         protected override void OnAppearing()
         {
-            this.ViewModel.LoadPlayersCommand.Execute(null);
+            this.ViewModel.LoadSessionCommand.Execute(null);
         }
 
         private void OnNitpicker_Clicked(object sender, EventArgs e)

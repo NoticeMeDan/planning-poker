@@ -57,9 +57,9 @@ namespace PlanningPoker.App.Models
             return result;
         }
 
-        public async Task<RoundDTO> NextRoundAsync(string sessionKey)
+        public async Task<RoundDTO> NextRoundAsync(string sessionKey, string authToken)
         {
-            var response = await this.httpClient.GetAsync($"{this.Url}api/session/{sessionKey}/item/round/next");
+            var response = await this.httpClient.GetAsync($"{this.Url}api/session/{sessionKey}/item/round/next", HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
 
             var result = JsonConvert.DeserializeObject<RoundDTO>(response.Content.ReadAsStringAsync().Result);
 
@@ -77,7 +77,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<ItemDTO> NextItemAsync(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"{this.Url}api/session/{sessionKey}/item/next");
+            var response = await this.httpClient.GetAsync($"{this.Url}api/session/{sessionKey}/item/next", HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
 
             var result = JsonConvert.DeserializeObject<ItemDTO>(response.Content.ReadAsStringAsync().Result);
 
@@ -95,7 +95,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<ItemDTO> GetCurrentItem(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"{this.Url}api/session/{sessionKey}/item/current");
+            var response = await this.httpClient.GetAsync($"{this.Url}api/session/{sessionKey}/item/current", HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
 
             var result = JsonConvert.DeserializeObject<ItemDTO>(response.Content.ReadAsStringAsync().Result);
 
