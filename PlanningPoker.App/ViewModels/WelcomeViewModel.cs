@@ -41,7 +41,7 @@ namespace PlanningPoker.App.ViewModels
             this.BaseTitle = "Login";
             this.LoginCommand = new Command(async () => await this.ExecuteLoginCommand());
             this.User = this.CreateGuestUserDTO();
-            this.JoinCommand = new RelayCommand(_ => this.ExecuteJoinCommand());
+            this.JoinCommand = new RelayCommand(async _ => await this.ExecuteJoinCommand());
         }
 
         public async Task<bool> ExecuteLoginCommand()
@@ -79,7 +79,7 @@ namespace PlanningPoker.App.ViewModels
             };
         }
 
-        private void ExecuteJoinCommand()
+        private async Task ExecuteJoinCommand()
         {
             if (this.loading)
             {
@@ -91,7 +91,7 @@ namespace PlanningPoker.App.ViewModels
 
             this.User.Nickname = this.nickname;
 
-            this.JoinSessionMock();
+            await this.JoinSession();
 
             this.loading = false;
         }
@@ -107,6 +107,7 @@ namespace PlanningPoker.App.ViewModels
             catch (Exception e)
             {
                 this.Connection = false;
+                this.Key = string.Empty;
                 Debug.WriteLine("No session with that key exists.");
                 Debug.WriteLine(e.StackTrace);
             }
