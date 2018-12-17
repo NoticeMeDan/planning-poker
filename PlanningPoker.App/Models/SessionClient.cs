@@ -8,11 +8,11 @@ namespace PlanningPoker.App.Models
     using Newtonsoft.Json;
     using Shared;
 
-    public class SessionRepository : ISessionRepository
+    public class SessionClient : ISessionClient
     {
         private readonly HttpClient httpClient;
 
-        public SessionRepository(HttpClient httpClient)
+        public SessionClient(HttpClient httpClient)
         {
             this.httpClient = httpClient;
         }

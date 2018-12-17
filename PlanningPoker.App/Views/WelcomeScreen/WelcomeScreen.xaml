@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TabbedPage
+<ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:welcomeScreen="clr-namespace:PlanningPoker.App.Views.WelcomeScreen;assembly=PlanningPoker.App"
+    xmlns:welcomeScreen="clr-namespace:PlanningPoker.App.Views.WelcomeScreen; assembly=PlanningPoker.App"
     x:Class="PlanningPoker.App.Views.WelcomeScreen.WelcomeScreen"
 
 >
-    <welcomeScreen:Join />
-    <welcomeScreen:Login />
+    <StackLayout>
+        <Entry
+            Placeholder="Nickname"
+            Text="{Binding Nickname, Mode=TwoWay}"
+            HorizontalTextAlignment="Center"
+            HorizontalOptions="FillAndExpand"
+            Margin="5"
+        />
+        <Entry
+            Placeholder="Session-key"
+            Text="{Binding Key, Mode=TwoWay}"
+            HorizontalTextAlignment="Center"
+            HorizontalOptions="FillAndExpand"
+            MaxLength="7"
+            Margin="5"
+        />
+        <Button Text="Join"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="EndAndExpand"
+                Clicked="HandleClickedAsync" />
+        <Button 
+            Text="Login"
+            HorizontalOptions="CenterAndExpand"
+            Clicked="LoginCommand">
+        </Button>
+    </StackLayout>
 
-</TabbedPage>
+</ContentPage>

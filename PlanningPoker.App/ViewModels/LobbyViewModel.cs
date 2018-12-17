@@ -13,7 +13,7 @@ namespace PlanningPoker.App.ViewModels
 
     public class LobbyViewModel : BaseViewModel
     {
-        private readonly ISessionRepository repository;
+        private readonly ISessionClient repository;
         private bool loading;
         private JobScheduler jobScheduler;
         private string key;
@@ -25,9 +25,9 @@ namespace PlanningPoker.App.ViewModels
 
         public ICommand StopFetchingUsers { get; }
 
-        public LobbyViewModel(ISessionRepository repository)
+        public LobbyViewModel(ISessionClient client)
         {
-            this.repository = repository;
+            this.repository = client;
             this.Users = new ObservableCollection<UserDTO>();
             this.GetUsersCommand = new RelayCommand(_ => this.ExecuteGetUsersCommand());
             this.StopFetchingUsers = new RelayCommand(_ => this.ExecuteKillThread());
