@@ -49,7 +49,6 @@ namespace PlanningPoker.App.ViewModels
             set => this.SetProperty(ref this.estimate, value);
         }
 
-        /*
 
         private static ObservableCollection<ItemEstimateDTO> MockData()
         {
@@ -64,7 +63,7 @@ namespace PlanningPoker.App.ViewModels
             data.Add(item3);
 
             return data;
-        } */
+        }
 
         private async Task ExecuteLoadSummaryCommand()
         {
@@ -77,11 +76,11 @@ namespace PlanningPoker.App.ViewModels
 
             this.Items.Clear();
             //give input this.sessionId
-            var summary = await this.summaryClient.FindBySessionIdAsync(12);
+            //var summary = await this.summaryClient.FindBySessionIdAsync(12);
 
-            //var items = this.Items;
+            var summary = MockData();
 
-            foreach (var s in summary.ItemEstimates)
+            foreach (var s in summary)
             {
                 this.Items.Add(s);
             }

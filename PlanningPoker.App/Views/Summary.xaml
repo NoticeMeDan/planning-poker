@@ -7,7 +7,17 @@
 
 
     <StackLayout>
-        <Label Text="SESSION OVERVIEW"></Label>
+        <Label Text="Session Overview"></Label>
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Text="Item Title"
+                                    LineBreakMode="NoWrap" Grid.Column="0" />
+            <Label Text="Estimation"
+                                    LineBreakMode="NoWrap" Grid.Column="1" />
+        </Grid>
         <ListView
             ItemsSource="{Binding Items}"
             VerticalOptions="FillAndExpand"
@@ -15,15 +25,21 @@
             IsPullToRefreshEnabled="true"
             CachingStrategy="RecycleElement"
             SelectionMode="None">
+            
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout>
-                            <Label Text="{Binding ItemTitle}"
-                                    LineBreakMode="NoWrap" />
-                            <Label Text="{Binding Estimate}"
-                                    LineBreakMode="NoWrap" />
-                        </StackLayout>
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label TextColor="#3F6AA5" FontSize = "20" Text="{Binding ItemTitle}"
+                                    LineBreakMode="NoWrap" Grid.Column="0" />
+                            <Label TextColor="#3F6AA5" FontSize = "20" Text="{Binding Estimate}"
+                                    LineBreakMode="NoWrap" Grid.Column="1" />
+                        </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -32,3 +48,5 @@
     </StackLayout>
 
 </ContentPage>
+
+
