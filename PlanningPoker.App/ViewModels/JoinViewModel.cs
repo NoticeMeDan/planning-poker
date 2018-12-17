@@ -5,7 +5,6 @@ namespace PlanningPoker.App.ViewModels
     using System.Threading.Tasks;
     using System.Windows.Input;
     using PlanningPoker.App.Models;
-    using PlanningPoker.App.Views.Session;
     using PlanningPoker.Shared;
 
     public class JoinViewModel : BaseViewModel
@@ -26,15 +25,19 @@ namespace PlanningPoker.App.ViewModels
 
         public JoinViewModel(ISessionRepository repository)
         {
-            this.User = new UserCreateDTO
+            this.User = this.CreateGuestUserDTO();
+            this.repository = repository;
+            this.JoinCommand = new RelayCommand(async _ => await this.ExecuteJoinCommand());
+        }
+
+        private UserCreateDTO CreateGuestUserDTO()
+        {
+            return new UserCreateDTO
             {
                 IsHost = false,
                 Email = string.Empty,
                 Nickname = "Guest"
             };
-
-            this.repository = repository;
-            this.JoinCommand = new RelayCommand(async _ => await this.ExecuteJoinCommand());
         }
 
         private async Task ExecuteJoinCommand()
@@ -46,8 +49,17 @@ namespace PlanningPoker.App.ViewModels
 
             this.loading = true;
             this.Connection = false;
+
             this.User.Nickname = this.nickname;
 
+            await this.JoinSession();
+
+            this.Key = string.Empty;
+            this.loading = false;
+        }
+
+        private async Task JoinSession()
+        {
             try
             {
                 var x = await this.repository.Join(this.key, this.User);
@@ -60,9 +72,6 @@ namespace PlanningPoker.App.ViewModels
                 Debug.WriteLine("No session with that key exists.");
                 Debug.WriteLine(e.StackTrace);
             }
-
-            this.Key = string.Empty;
-            this.loading = false;
         }
 
         public string Nickname

@@ -3,7 +3,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="PlanningPoker.App.Views.WelcomeScreen.Join"
-    Title="Join"
+    Title="PlanningPoker"
     Padding="10,0,10,0"
 >
     <StackLayout>
