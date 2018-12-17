@@ -23,7 +23,7 @@ namespace PlanningPoker.WebApi.Controllers
 
         Task<ActionResult<ItemDTO>> GetCurrentItem(string authToken, string sessionKey);
 
-        Task<ActionResult> Vote(string authToken, string sessionKey, VoteDTO vote);
+        Task<ActionResult> Vote(string authToken, string sessionKey, VoteCreateUpdateDTO vote);
 
         Task<ActionResult> ThrowNitpickerCard(string authToken, string sessionKey);
 
