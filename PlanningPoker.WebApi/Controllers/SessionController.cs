@@ -79,12 +79,9 @@ namespace PlanningPoker.WebApi.Controllers
                 return this.BadRequest();
             }
 
-            var createdUser = await this.userRepository.CreateAsync(user);
+            var newUser = this.sessionRepository.AddUserToSession(user, session.Id);
 
-            session.Users.Add(createdUser);
-            await this.sessionRepository.UpdateAsync(EntityMapper.ToSessionCreateUpdateDto(session));
-
-            return new UserStateResponseDTO { Token = this.userStateManager.CreateState(createdUser.Id, sessionKey) };
+            return new UserStateResponseDTO { Token = this.userStateManager.CreateState(newUser.Id, sessionKey) };
         }
 
         [HttpPost("{sessionKey}/item/round/next")]

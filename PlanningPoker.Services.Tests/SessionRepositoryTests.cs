@@ -137,7 +137,7 @@ namespace PlanningPoker.Services.Tests
                 var repository = new SessionRepository(context);
                 var dto = this.CreateDummySessionDTO();
                 dto.Id = 1;
-                dto.SessionKey = "ABCD123";
+                dto.SessionKey = "A1B2C3D";
 
                 var updated = await repository.UpdateAsync(dto);
 
@@ -145,7 +145,7 @@ namespace PlanningPoker.Services.Tests
 
                 var entity = await context.Sessions.FindAsync(1);
 
-                Assert.Equal("ABCD123", entity.SessionKey);
+                Assert.Equal("A1B2C3D", entity.SessionKey);
             }
         }
 

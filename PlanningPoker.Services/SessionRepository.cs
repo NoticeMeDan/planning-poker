@@ -83,6 +83,21 @@ namespace PlanningPoker.Services
             return entities;
         }
 
+        public async Task<UserDTO> AddUserToSession(UserCreateDTO user, int sessionId)
+        {
+            var newUser = new User {Email = user.Email, IsHost = user.IsHost, SessionId = sessionId, Nickname = user.Nickname};
+            this.context.Users.Add(newUser);
+            this.context.SaveChanges();
+
+            return new UserDTO
+            {
+                Id = newUser.Id,
+                Email = newUser.Email,
+                IsHost = newUser.IsHost,
+                Nickname = newUser.Nickname
+            };
+        }
+
         public async Task<bool> UpdateAsync(SessionCreateUpdateDTO session)
         {
             var entity = await this.context.Sessions.FindAsync(session.Id);
@@ -94,7 +109,6 @@ namespace PlanningPoker.Services
 
             entity.Items = EntityMapper.ToItemEntities(session.Items);
             entity.Users = EntityMapper.ToUserEntities(session.Users);
-            entity.SessionKey = session.SessionKey;
 
             this.context.SaveChanges();
 
