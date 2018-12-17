@@ -139,7 +139,7 @@ namespace PlanningPoker.WebApi.Controllers
 
             if (!currentItem.HasValue)
             {
-                return this.StatusCode(404, "lol");
+                return this.BadRequest();
             }
 
             return currentItem.ValueOrDefault().Rounds.Last();
@@ -223,7 +223,7 @@ namespace PlanningPoker.WebApi.Controllers
         }
 
         [HttpPost("{sessionKey}/vote")]
-        public async Task<ActionResult> Vote([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey, [FromBody] VoteDTO vote)
+        public async Task<ActionResult> Vote([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey, [FromBody] VoteCreateUpdateDTO vote)
         {
             if (!SecurityFilter.RequestIsValid(authToken, sessionKey, this.userStateManager))
             {
@@ -234,8 +234,32 @@ namespace PlanningPoker.WebApi.Controllers
 
             if (session == null)
             {
-                return this.NotFound();
+                return this.StatusCode(404, "Session not found");
             }
+
+            var currentItem = SessionUtils.GetCurrentActiveItem(session.Items, session.Users.Count);
+
+            if (!currentItem.HasValue)
+            {
+                return this.StatusCode(404, "Active Item not found");
+            }
+
+            var currentRound = SessionUtils.GetCurrentActiveRound(currentItem.ValueOrDefault().Rounds.ToList(), session.Users.Count);
+
+            if (!currentRound.HasValue)
+            {
+                return this.StatusCode(404, "Active Round not found");
+            }
+
+            var updatedItem = currentItem.ValueOrDefault();
+            var updatedRound = currentRound.ValueOrDefault();
+            var userState = this.userStateManager.GetState(authToken).ValueOrDefault();
+
+            updatedRound.Votes.Add(new VoteDTO { Estimate = vote.Estimate, UserId = userState.Id });
+            updatedItem.Rounds.ToList()[updatedItem.Rounds.ToList().FindIndex(round => round.Id == updatedRound.Id)] = updatedRound;
+            session.Items[session.Items.FindIndex(item => item.Id == updatedItem.Id)] = updatedItem;
+
+            await this.sessionRepository.UpdateAsync(EntityMapper.ToSessionCreateUpdateDto(session));
 
             return this.Ok();
         }

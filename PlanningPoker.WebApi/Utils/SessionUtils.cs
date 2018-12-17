@@ -34,8 +34,8 @@ namespace PlanningPoker.WebApi.Utils
         /// <summary>
         /// The definition of "current active" is that the round has less votes than the amount of users in the session.
         /// </summary>
-        /// <param name="rounds"></param>
-        /// <param name="userCount"></param>
+        /// <param name="rounds">list of RoundDTOs</param>
+        /// <param name="userCount">number of users in session</param>
         /// <returns>Option.Some if a current round is found, Option.None otherwise</returns>
         public static Option<RoundDTO> GetCurrentActiveRound(List<RoundDTO> rounds, int userCount)
         {
