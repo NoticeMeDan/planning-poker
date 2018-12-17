@@ -13,5 +13,7 @@ namespace PlanningPoker.Entities
         [Required]
         [StringLength(50)]
         public string Nickname { get; set; }
+
+        public int SessionId { get; set; }
     }
 }
