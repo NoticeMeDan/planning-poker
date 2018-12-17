@@ -26,10 +26,7 @@ namespace PlanningPoker.App.Views.WelcomeScreen
         {
             Debug.WriteLine("try to connection?");
             this.welcomeViewModel.JoinCommand.Execute(e);
-            if (this.welcomeViewModel.Connection == true)
-            {
-                await this.Navigation.PushModalAsync(new NavigationPage(new Lobby(this.welcomeViewModel.Key)));
-            }
+            this.Navigation.PushModalAsync(new NavigationPage(new Lobby(this.welcomeViewModel.Key)));
         }
 
         private async void LoginCommand(object sender, EventArgs e)

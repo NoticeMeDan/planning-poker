@@ -17,7 +17,7 @@ namespace PlanningPoker.App.ViewModels
 
         private readonly ISettings settings;
 
-        private bool loading;
+        public bool Loading { get; set; }
 
         public bool Connection { get; set; }
 
@@ -74,26 +74,25 @@ namespace PlanningPoker.App.ViewModels
             return new UserCreateDTO
             {
                 IsHost = false,
-                Email = string.Empty,
                 Nickname = "Guest"
             };
         }
 
         private async Task ExecuteJoinCommand()
         {
-            if (this.loading)
+            if (this.Loading)
             {
                 return;
             }
 
-            this.loading = true;
+            this.Loading = true;
             this.Connection = false;
 
             this.User.Nickname = this.nickname;
 
             await this.JoinSession();
 
-            this.loading = false;
+            this.Loading = false;
         }
 
         private async Task JoinSession()

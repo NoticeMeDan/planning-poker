@@ -59,6 +59,12 @@ namespace PlanningPoker.App.ViewModels
             {
                 this.UpdateUserCollection(session.Users);
             }
+            else
+            {
+                this.Users.Clear();
+                this.Title = "No session found...";
+                this.jobScheduler.Stop();
+            }
 
             this.loading = false;
         }
