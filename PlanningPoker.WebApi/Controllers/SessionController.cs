@@ -63,7 +63,6 @@ namespace PlanningPoker.WebApi.Controllers
         }
 
         // POST api/session/{key}/join
-
         [HttpPost("{sessionKey}/join")]
         public async Task<ActionResult<UserStateResponseDTO>> Join(string sessionKey, [FromBody] UserCreateDTO user)
         {
