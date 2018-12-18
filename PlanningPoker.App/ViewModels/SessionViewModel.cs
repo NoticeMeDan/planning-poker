@@ -1,10 +1,13 @@
 namespace PlanningPoker.App.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
     using System.Net.Http;
     using System.Windows.Input;
     using Models;
+    using OpenJobScheduler;
     using Shared;
 
     public class SessionViewModel : BaseViewModel
@@ -14,6 +17,8 @@ namespace PlanningPoker.App.ViewModels
         private readonly string sessionKey;
         private string currentItemTitle;
         private string token;
+        private JobScheduler jobScheduler;
+        private RoundDTO currentRound;
 
         public ObservableCollection<UserDTO> Players { get; set; }
 
@@ -33,15 +38,24 @@ namespace PlanningPoker.App.ViewModels
 
         public ICommand SendNitpickerCommand { get; }
 
+        // Threads
+        public ICommand StartVotesPull { get; }
+
+        public ICommand StartRoundsPull { get; }
+
+        public ICommand StopThreadsCommand { get; }
+
         public SessionViewModel()
         {
             // Create Repository
             this.repository = new SessionClient(new HttpClient());
 
             // TODO: Get sessionkey from constructor argument
-            this.sessionKey = "42";
+            this.sessionKey = "5NTXHKA";
             this.BaseTitle = "Session: " + this.sessionKey;
             this.CurrentItemTitle = string.Empty;
+            this.currentRound = null;
+
 
             // Lists
             this.Players = new ObservableCollection<UserDTO>();
@@ -56,8 +70,38 @@ namespace PlanningPoker.App.ViewModels
             this.SendVoteCommand = new RelayCommand(this.ExecuteSendVoteCommand);
             this.SendNitpickerCommand = new RelayCommand(_ => this.ExecuteNitpickerCommand());
 
+            // Threads
+            this.StopThreadsCommand = new RelayCommand(_ => this.ExecuteStopThreadsCommand());
+            this.StartVotesPull = new RelayCommand(_ => this.ExecuteStartVotesPull());
+            this.StartRoundsPull = new RelayCommand(_ => this.ExecuteStartRoundsPull());
+
             // Initialize Session
-            // this.ExecuteSetupCommand();
+            // this.NextItemCommand;
+        }
+
+        private void ExecuteStartRoundsPull()
+        {
+            this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(5), this.FetchRounds);
+            this.jobScheduler.Start();
+        }
+
+        private void FetchRounds()
+        {
+            var round = this.repository.GetCurrentRound(this.sessionKey).Result;
+
+            if (round != this.currentRound)
+            {
+                this.ExecuteStopThreadsCommand();
+                this.SetCurrentTitle();
+                this.ExecuteStartVotesPull();
+            }
+        }
+
+        private void ExecuteStartVotesPull()
+        {
+            this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(5), this.ShouldShowVotes);
+
+            this.jobScheduler.Start();
         }
 
         public string CurrentItemTitle
@@ -79,7 +123,9 @@ namespace PlanningPoker.App.ViewModels
             this.IsBusy = true;
 
             Debug.WriteLine("Next Item clicked");
-            this.NextItem();
+            this.repository.NextItemAsync(this.sessionKey).Wait();
+            this.SetCurrentTitle();
+            Debug.WriteLine(this.currentItemTitle);
 
             this.IsBusy = false;
         }
@@ -95,7 +141,9 @@ namespace PlanningPoker.App.ViewModels
 
             Debug.WriteLine("Revote clicked");
 
-            //this.Repository.NextRoundAsync(this.sessionKey, "something").Wait();
+            this.repository.NextRoundAsync(this.sessionKey).Wait();
+
+            // Resets votes because there are none in a new round
             this.LoadVotesCommand.Execute(null);
 
             this.IsBusy = false;
@@ -116,14 +164,9 @@ namespace PlanningPoker.App.ViewModels
             Debug.WriteLine(voteEstimate);
 
             // Call repository.Vote with new VoteDTO
-            // this.Repository?.Vote(this.sessionKey, new VoteDTO {Estimate = voteEstimate});
+            this.repository?.Vote(this.sessionKey, new VoteDTO {Estimate = voteEstimate});
 
             this.IsBusy = false;
-
-            if (this.ShouldShowVotes())
-            {
-                this.LoadVotesCommand.Execute(null);
-            }
         }
 
         private void ExecuteLoadSessionCommand()
@@ -136,7 +179,14 @@ namespace PlanningPoker.App.ViewModels
             this.IsBusy = true;
             Debug.WriteLine("LoadSession clicked");
             this.SetCurrentTitle();
-            this.GetPlayers();
+
+            var session = this.repository.GetByKeyAsync(this.sessionKey);
+
+            var players = session.Result.Users;
+            foreach (var player in players)
+            {
+                this.Players.Add(player);
+            }
 
             this.IsBusy = false;
         }
@@ -151,10 +201,15 @@ namespace PlanningPoker.App.ViewModels
             this.IsBusy = true;
 
             Debug.WriteLine("Load votes clicked");
-            this.GetVotes();
-            this.VoteToCard(this.Votes);
+
+            this.currentRound = this.repository.GetCurrentRound(this.sessionKey).Result;
+            var votes = this.currentRound.Votes;
+
+            this.VotesToCards(votes);
 
             this.IsBusy = false;
+
+            this.ExecuteStartRoundsPull();
         }
 
         private void ExecuteNitpickerCommand()
@@ -171,61 +226,40 @@ namespace PlanningPoker.App.ViewModels
             this.IsBusy = false;
         }
 
+        private void ExecuteStopThreadsCommand()
+        {
+            this.jobScheduler.Stop();
+        }
+
         /*
          * Following are the methods called by the ExecuteCommands
          */
-        private void GetPlayers()
-        {
-            var session = this.repository.GetByKeyAsync(this.sessionKey);
-
-            var players = session.Result.Users;
-            foreach (var player in players)
-            {
-                this.Players.Add(player);
-            }
-        }
 
         private void SetCurrentTitle()
         {
             Debug.WriteLine("Updating Item Title");
 
-            //var title =  this.repository.GetCurrentItem(this.sessionKey).Result.Title;
+            var title = this.repository.GetCurrentItem(this.sessionKey).Result.Title;
             // This requires AuthToken
 
-           this.CurrentItemTitle = "Item One";
-           // Debug.WriteLine(title);
+            // Correct = title;
+            this.CurrentItemTitle = "Current Item";
+            // Debug.WriteLine(title);
         }
 
-        private void NextItem()
+        private void ShouldShowVotes()
         {
-            this.repository.NextItemAsync(this.sessionKey).Wait();
-            this.SetCurrentTitle();
+            var currentVotes = this.repository.GetCurrentRound(this.sessionKey).Result.Votes;
+            var result = (currentVotes.Count == this.Players.Count);
 
-            // Maybe this is needed.
-            //this.GetPlayers();
-        }
-
-        private void GetVotes()
-        {
-            // Using mockdata untill Token is given.
-            var votes = VotesMockData();
-
-            // Correct:
-            //var votes = this.Repository.GetCurrentRound(this.sessionKey).Result.Votes;
-
-            foreach (var vote in votes)
+            if (result)
             {
-                this.Votes.Add(vote);
+                this.ExecuteStopThreadsCommand();
+                this.ExecuteLoadVotesCommand();
             }
         }
 
-        private bool ShouldShowVotes()
-        {
-            //var currentVotes = this.repository.GetCurrentRound(this.sessionKey).Result.Votes;
-            return true; //(currentVotes.Count == this.Players.Count);
-        }
-
-        private void VoteToCard(ObservableCollection<VoteDTO> votes)
+        private void VotesToCards(ICollection<VoteDTO> votes)
         {
             foreach (var vote in votes)
             {

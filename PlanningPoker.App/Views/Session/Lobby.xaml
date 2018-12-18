@@ -3,30 +3,31 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="PlanningPoker.App.Views.Session.Lobby"
-    Title="{Binding BaseTitle}"
+    Title="Lobby"
 >
-
-    <StackLayout>
+    <StackLayout Margin="10">
+        <Label Text="{Binding Title}" Font="25" Margin="20"/>
+        <Label Text="Users:" Font="20" />
         <ListView
             ItemsSource="{Binding Users}"
-            VerticalOptions="FillAndExpand"
-            HasUnevenRows="true"
-            IsPullToRefreshEnabled="true"
-            CachingStrategy="RecycleElement"
-            SelectionMode="None">
-
+            SelectionMode="Single"
+            >
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout>
-                            <Label Text="{Binding Nickname}"
-                                   LineBreakMode="NoWrap" />
-
+                        <StackLayout Margin="20,10,20,10">
+                            <Label Text="{Binding Nickname}"/>
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button Text="START SESSION" Clicked="OnStartSession_Clicked" />
+
+        <Button Text="Begin Session"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="EndAndExpand"
+                Clicked="BeginSessionClicked"
+                />
     </StackLayout>
+
 </ContentPage>

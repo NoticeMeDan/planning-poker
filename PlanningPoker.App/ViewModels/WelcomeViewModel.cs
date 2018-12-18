@@ -4,46 +4,42 @@ namespace PlanningPoker.App.ViewModels
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
-    using System.Net.Http;
-    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
     using System.Windows.Input;
     using Microsoft.Identity.Client;
     using Models;
+    using PlanningPoker.Shared;
     using Xamarin.Forms;
 
     public class WelcomeViewModel : BaseViewModel
     {
         private readonly IPublicClientApplication publicClientApplication;
+
         private readonly ISettings settings;
-        private string username;
 
-        public WelcomeViewModel(IPublicClientApplication publicClientApplication, ISettings settings)
-        {
-            this.publicClientApplication = publicClientApplication;
-            this.settings = settings;
-            this.BaseTitle = "Login";
-            this.LoginCommand = new Command(async () => await this.ExecuteLoginCommand());
-            this.JoinCommand = new Command(async () => await this.ExecuteJoinCommand());
-        }
+        public bool Loading { get; set; }
 
-        public ICommand LoginCommand { get; }
+        private readonly ISessionClient client;
+
+        public UserCreateDTO User { get; set; }
+
+        private string nickname;
+
+        private string key;
 
         public ICommand JoinCommand { get; }
 
-        public string Username
-        {
-            get => this.username;
-            set => this.SetProperty(ref this.username, value);
-        }
+        public ICommand LoginCommand { get; }
 
-        public async Task ExecuteJoinCommand()
+        public WelcomeViewModel(IPublicClientApplication publicClientApplication, ISettings settings, ISessionClient client)
         {
-            Debug.WriteLine("Joined lobby!");
-            /*empty, currently the join command doesn't do anything.
-            Remove this with correct implementation*/
-            Task task = new Task(() => { });
-            await task;
+            this.publicClientApplication = publicClientApplication;
+            this.client = client;
+            this.settings = settings;
+            this.BaseTitle = "Login";
+            this.LoginCommand = new Command(async () => await this.ExecuteLoginCommand());
+            this.User = this.CreateGuestUserDTO();
+            this.JoinCommand = new RelayCommand(async _ => await this.ExecuteJoinCommand());
         }
 
         public async Task<bool> ExecuteLoginCommand()
@@ -55,6 +51,7 @@ namespace PlanningPoker.App.ViewModels
                 IAccount account = accounts.FirstOrDefault();
                 authenticationResult =
                     await this.publicClientApplication.AcquireTokenSilentAsync(this.settings.Scopes, account);
+                //TODO: Save token in this.settings.token
                 return true;
             }
             catch (MsalUiRequiredException e)
@@ -69,6 +66,59 @@ namespace PlanningPoker.App.ViewModels
                 var message = e.Message;
                 return false;
             }
+        }
+
+        private UserCreateDTO CreateGuestUserDTO()
+        {
+            return new UserCreateDTO
+            {
+                IsHost = false,
+                Nickname = "Guest"
+            };
+        }
+
+        private async Task ExecuteJoinCommand()
+        {
+            if (this.Loading)
+            {
+                return;
+            }
+
+            this.Loading = true;
+
+            this.User.Nickname = this.nickname;
+
+            await this.JoinSession();
+
+            this.Loading = false;
+        }
+
+        private async Task JoinSession()
+        {
+            try
+            {
+                var x = await this.client.Join(this.key, this.User);
+                //TODO: Save token in this.settings.token = x.Token ?
+                Debug.Write("User TOKEN: " + x.Token);
+            }
+            catch (Exception e)
+            {
+                this.Key = string.Empty;
+                Debug.WriteLine("No session with that key exists.");
+                Debug.WriteLine(e.StackTrace);
+            }
+        }
+
+        public string Nickname
+        {
+            get => this.nickname;
+            set => this.SetProperty(ref this.nickname, value);
+        }
+
+        public string Key
+        {
+            get => this.key;
+            set => this.SetProperty(ref this.key, value);
         }
     }
 }

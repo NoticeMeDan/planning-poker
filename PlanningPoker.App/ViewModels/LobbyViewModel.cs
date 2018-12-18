@@ -1,60 +1,94 @@
 namespace PlanningPoker.App.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Windows.Input;
-    using Shared;
+    using OpenJobScheduler;
+    using PlanningPoker.App.Models;
+    using PlanningPoker.Shared;
 
-    // This class contains testdata until repositories is setup
     public class LobbyViewModel : BaseViewModel
     {
-        public LobbyViewModel()
-        {
-            this.BaseTitle = "Lobby";
+        private readonly ISessionClient repository;
+        private bool loading;
+        private JobScheduler jobScheduler;
+        private string key;
+        private string title;
 
+        public ObservableCollection<UserDTO> Users { get; set; }
+
+        public ICommand GetUsersCommand { get; }
+
+        public ICommand StopFetchingUsers { get; }
+
+        public LobbyViewModel(ISessionClient client)
+        {
+            this.repository = client;
             this.Users = new ObservableCollection<UserDTO>();
-
-            this.LoadCommand = new RelayCommand(_ => this.ExecuteLoadCommand());
+            this.GetUsersCommand = new RelayCommand(_ => this.ExecuteGetUsersCommand());
+            this.StopFetchingUsers = new RelayCommand(_ => this.ExecuteKillThread());
         }
 
-        public ICommand LoadCommand { get; }
-
-        // Only for testing until repositories are ready
-        public ObservableCollection<UserDTO> Users { get; }
-
-        private static ObservableCollection<UserDTO> MockDataUsers()
+        private void ExecuteKillThread()
         {
-            var data = new ObservableCollection<UserDTO>();
-
-            var item1 = new UserDTO { Nickname = "Franz" };
-            var item2 = new UserDTO { Nickname = "Isabel" };
-            var item3 = new UserDTO { Nickname = "Magnus" };
-
-            data.Add(item1);
-            data.Add(item2);
-            data.Add(item3);
-
-            return data;
+            this.jobScheduler.Stop();
         }
 
-        private void ExecuteLoadCommand()
+        private void ExecuteGetUsersCommand()
         {
-            if (this.IsBusy)
+            this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(5), new Action(async () => { await this.FetchUsers(); }));
+            this.jobScheduler.Start();
+        }
+
+        private async Task FetchUsers()
+        {
+            if (this.loading)
             {
                 return;
             }
 
-            this.IsBusy = true;
+            this.loading = true;
 
-            this.Users.Clear();
+            var session = await this.repository.GetByKeyAsync(this.Key);
 
-            var users = MockDataUsers();
-
-            foreach (var user in users)
+            if (session != null)
             {
-                this.Users.Add(user);
+                this.UpdateUserCollection(session.Users);
+            }
+            else
+            {
+                this.Users.Clear();
+                this.Title = "No session found...";
+                this.jobScheduler.Stop();
             }
 
-            this.IsBusy = false;
+            this.loading = false;
+        }
+
+        private void UpdateUserCollection(ICollection<UserDTO> users)
+        {
+            this.Users.Clear();
+
+            users.ToList().ForEach(u =>
+            {
+                    this.Users.Add(u);
+            });
+        }
+
+        public string Title
+        {
+            get => this.title;
+            set => this.SetProperty(ref this.title, "Session-key: " + value);
+        }
+
+        public string Key
+        {
+            get => this.key;
+            set => this.SetProperty(ref this.key, value);
         }
     }
 }

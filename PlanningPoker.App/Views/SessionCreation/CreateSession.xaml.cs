@@ -31,8 +31,8 @@ namespace PlanningPoker.App.Views.SessionCreation
             //TODO: Hook up with API when ready
 
             this.itemsViewModel.CreateSessionCommand.Execute(null);
-            this.Navigation.PushModalAsync(
-                new Lobby());
+            this.Navigation.PushModalAsync(new NavigationPage(
+                new Lobby(this.itemsViewModel.Key)));
         }
 
         private void OnAddItem_Clicked(object sender, EventArgs e)
