@@ -30,6 +30,7 @@ namespace PlanningPoker.App.Views.Session
 
         protected override void OnAppearing()
         {
+            this.viewModel.Users.Clear();
             this.viewModel.GetUsersCommand.Execute(null);
             base.OnAppearing();
         }
