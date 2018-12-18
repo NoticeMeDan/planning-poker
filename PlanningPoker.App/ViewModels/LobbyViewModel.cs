@@ -3,6 +3,7 @@ namespace PlanningPoker.App.ViewModels
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Diagnostics;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -15,7 +16,9 @@ namespace PlanningPoker.App.ViewModels
     {
         private readonly ISessionClient repository;
         private bool loading;
-        private JobScheduler jobScheduler;
+
+        public JobScheduler JobScheduler { get; set; }
+
         private string key;
         private string title;
 
@@ -35,13 +38,13 @@ namespace PlanningPoker.App.ViewModels
 
         private void ExecuteKillThread()
         {
-            this.jobScheduler.Stop();
+            this.JobScheduler.Stop();
         }
 
         private void ExecuteGetUsersCommand()
         {
-            this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(5), new Action(async () => { await this.FetchUsers(); }));
-            this.jobScheduler.Start();
+            this.JobScheduler = new JobScheduler(TimeSpan.FromSeconds(5), new Action(async () => { await this.FetchUsers(); }));
+            this.JobScheduler.Start();
         }
 
         private async Task FetchUsers()
@@ -63,7 +66,7 @@ namespace PlanningPoker.App.ViewModels
             {
                 this.Users.Clear();
                 this.Title = "No session found...";
-                this.jobScheduler.Stop();
+                this.JobScheduler.Stop();
             }
 
             this.loading = false;

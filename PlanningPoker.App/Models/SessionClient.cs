@@ -1,7 +1,6 @@
 namespace PlanningPoker.App.Models
 {
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -19,11 +18,11 @@ namespace PlanningPoker.App.Models
 
         public async Task<SessionDTO> CreateAsync(SessionCreateUpdateDTO session)
         {
-            var response = await this.httpClient.PostAsJsonAsync("api/session", session);
+                var response = await this.httpClient.PostAsJsonAsync("api/session", session);
 
-            var result = JsonConvert.DeserializeObject<SessionDTO>(response.Content.ReadAsStringAsync().Result);
+                var result = JsonConvert.DeserializeObject<SessionDTO>(response.Content.ReadAsStringAsync().Result);
 
-            return result;
+                return result;
         }
 
         public async Task<bool> UpdateAsync(SessionCreateUpdateDTO session)

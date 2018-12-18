@@ -31,6 +31,9 @@ namespace PlanningPoker.App.Models
             {
                 var result = await this.publicClientApplication.AcquireTokenSilentAsync(this.scopes, firstAccount);
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", result.AccessToken);
+            }
+            else
+            {
                 request.Headers.Add("PPAuthorization", this.settings.Token);
             }
 
