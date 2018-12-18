@@ -28,12 +28,15 @@ namespace PlanningPoker.App.Views.Session
         protected override void OnAppearing()
         {
             this.lobbyViewModel.Users.Clear();
+            this.lobbyViewModel.Items.Clear();
             this.lobbyViewModel.GetUsersCommand.Execute(null);
             base.OnAppearing();
         }
 
         protected override void OnDisappearing()
         {
+            this.lobbyViewModel.Users.Clear();
+            this.lobbyViewModel.Items.Clear();
             this.lobbyViewModel.JobScheduler.Stop();
             base.OnDisappearing();
         }
