@@ -7,6 +7,7 @@ namespace PlanningPoker.App.Models
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Identity.Client;
+    using Xamarin.Forms;
 
     public class BearerTokenClientHandler : HttpClientHandler
     {
@@ -32,8 +33,11 @@ namespace PlanningPoker.App.Models
                 var result = await this.publicClientApplication.AcquireTokenSilentAsync(this.scopes, firstAccount);
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", result.AccessToken);
             }
-
-            request.Headers.Add("PPAuthorization", this.settings.Token);
+            if (Application.Current.Properties.ContainsKey("token"))
+            {
+                request.Headers.Add("PPAuthorization", Application.Current.Properties["token"] as string);
+            }
+            
 
             return await base.SendAsync(request, cancellationToken);
         }

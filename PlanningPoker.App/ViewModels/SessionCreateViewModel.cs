@@ -59,7 +59,7 @@ namespace PlanningPoker.App.ViewModels
 
             await this.joinHelper.Join();
 
-            this.settings.Token = this.joinHelper.Token;
+            Application.Current.Properties["token"] = this.joinHelper.Token;
         }
 
         public string Title

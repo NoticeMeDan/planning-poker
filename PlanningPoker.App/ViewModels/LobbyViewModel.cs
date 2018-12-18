@@ -27,8 +27,6 @@ namespace PlanningPoker.App.ViewModels
 
         public ObservableCollection<ItemDTO> Items { get; set; }
 
-        public bool IsSessionStarted { get; private set; }
-
         public ICommand GetUsersCommand { get; }
 
         public ICommand StopFetchingUsers { get; }
@@ -73,16 +71,9 @@ namespace PlanningPoker.App.ViewModels
             this.loading = false;
         }
 
-        private async Task CheckSessionStatus()
+        public async Task<ItemDTO> CheckSessionStatus()
         {
-            if (!this.IsSessionStarted)
-            {
-                var currentItem = await this.repository.GetCurrentItem(this.Key);
-                if (currentItem != null)
-                {
-                    this.IsSessionStarted = true;
-                }
-            }
+            return await this.repository.GetCurrentItem(this.Key);
         }
 
         private void UpdateItemCollection(List<ItemDTO> items)
