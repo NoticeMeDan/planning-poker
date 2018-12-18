@@ -49,6 +49,8 @@ namespace PlanningPoker.App.ViewModels
             set => this.SetProperty(ref this.description, value);
         }
 
+        public string Key { get; private set; }
+
         public async Task ExecuteCreateSessionCommand()
         {
             if (this.IsBusy)
@@ -64,6 +66,7 @@ namespace PlanningPoker.App.ViewModels
             };
 
             var result = await this.sessionRepo.CreateAsync(toCreate);
+            this.Key = result.SessionKey;
             this.IsBusy = false;
         }
 
