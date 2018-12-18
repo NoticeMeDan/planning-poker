@@ -84,6 +84,8 @@ namespace PlanningPoker.App.ViewModels
             this.joinCommander.Join.Execute(null);
 
             this.Key = this.joinCommander.Key;
+
+            this.settings.Token = this.joinCommander.Token;
         }
 
         public string Nickname
