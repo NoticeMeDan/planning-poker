@@ -20,21 +20,11 @@ namespace PlanningPoker.App.Models
 
         public async Task<SessionDTO> CreateAsync(SessionCreateUpdateDTO session)
         {
-            try
-            {
                 var response = await this.httpClient.PostAsJsonAsync("api/session", session);
 
                 var result = JsonConvert.DeserializeObject<SessionDTO>(response.Content.ReadAsStringAsync().Result);
 
                 return result;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("exception type: " + e.GetType());
-                Debug.WriteLine("exception trace: " + e.StackTrace);
-            }
-
-            return null;
         }
 
         public async Task<bool> UpdateAsync(SessionCreateUpdateDTO session)

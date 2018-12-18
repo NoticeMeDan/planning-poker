@@ -18,7 +18,7 @@ namespace PlanningPoker.App.ViewModels
         private readonly ISettings settings;
         private string title;
         private string description;
-        private JoinCommand joinCommander;
+        private JoinHelper joinHelper;
 
         public ObservableCollection<ItemCreateUpdateDTO> Items { get; set; }
 
@@ -58,11 +58,11 @@ namespace PlanningPoker.App.ViewModels
 
             var user = this.CreateScrumMaster();
 
-            this.joinCommander = new JoinCommand(this.client, this.Key, user);
+            this.joinHelper = new JoinHelper(this.client, this.Key, user);
 
-            this.joinCommander.Join.Execute(null);
+            this.joinHelper.Join.Execute(null);
 
-            this.settings.Token = this.joinCommander.Token;
+            this.settings.Token = this.joinHelper.Token;
         }
 
         public string Title

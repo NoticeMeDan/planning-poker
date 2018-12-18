@@ -24,7 +24,7 @@ namespace PlanningPoker.App.ViewModels
 
         private string key;
 
-        private JoinCommand joinCommander;
+        private JoinHelper joinCommander;
 
         public ICommand Join { get; }
 
@@ -79,7 +79,7 @@ namespace PlanningPoker.App.ViewModels
         {
             this.User.Nickname = this.nickname;
 
-            this.joinCommander = new JoinCommand(this.client, this.key, this.User);
+            this.joinCommander = new JoinHelper(this.client, this.key, this.User);
 
             this.joinCommander.Join.Execute(null);
 

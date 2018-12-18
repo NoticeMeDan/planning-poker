@@ -7,7 +7,7 @@ namespace PlanningPoker.App.ViewModels
     using PlanningPoker.App.Models;
     using PlanningPoker.Shared;
 
-    public class JoinCommand
+    public class JoinHelper
     {
         private readonly UserCreateDTO user;
 
@@ -19,7 +19,7 @@ namespace PlanningPoker.App.ViewModels
 
         public string Token { get; set; }
 
-        public JoinCommand(ISessionClient client, string key, UserCreateDTO user)
+        public JoinHelper(ISessionClient client, string key, UserCreateDTO user)
         {
             this.Key = key;
             this.user = user;
