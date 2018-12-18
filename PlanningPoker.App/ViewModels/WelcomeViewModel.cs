@@ -2,7 +2,6 @@ namespace PlanningPoker.App.ViewModels
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows.Input;
@@ -17,8 +16,6 @@ namespace PlanningPoker.App.ViewModels
 
         private readonly ISettings settings;
 
-        public bool Loading { get; set; }
-
         private readonly ISessionClient client;
 
         public UserCreateDTO User { get; set; }
@@ -27,7 +24,9 @@ namespace PlanningPoker.App.ViewModels
 
         private string key;
 
-        public ICommand JoinCommand { get; }
+        private JoinHelper joinCommander;
+
+        public ICommand Join { get; }
 
         public ICommand LoginCommand { get; }
 
@@ -39,7 +38,7 @@ namespace PlanningPoker.App.ViewModels
             this.BaseTitle = "Login";
             this.LoginCommand = new Command(async () => await this.ExecuteLoginCommand());
             this.User = this.CreateGuestUserDTO();
-            this.JoinCommand = new RelayCommand(async _ => await this.ExecuteJoinCommand());
+            this.Join = new RelayCommand(_ => this.ExecuteJoinCommand());
         }
 
         public async Task<bool> ExecuteLoginCommand()
@@ -51,8 +50,6 @@ namespace PlanningPoker.App.ViewModels
                 IAccount account = accounts.FirstOrDefault();
                 authenticationResult =
                     await this.publicClientApplication.AcquireTokenSilentAsync(this.settings.Scopes, account);
-
-                // TODO: Save token in this.settings.token
                 return true;
             }
             catch (MsalUiRequiredException e)
@@ -78,37 +75,17 @@ namespace PlanningPoker.App.ViewModels
             };
         }
 
-        private async Task ExecuteJoinCommand()
+        private void ExecuteJoinCommand()
         {
-            if (this.Loading)
-            {
-                return;
-            }
-
-            this.Loading = true;
-
             this.User.Nickname = this.nickname;
 
-            await this.JoinSession();
+            this.joinCommander = new JoinHelper(this.client, this.key, this.User);
 
-            this.Loading = false;
-        }
+            this.joinCommander.Join.Execute(null);
 
-        private async Task JoinSession()
-        {
-            try
-            {
-                var x = await this.client.Join(this.key, this.User);
+            this.Key = this.joinCommander.Key;
 
-                // TODO: Save token in this.settings.token = x.Token ?
-                Debug.Write("User TOKEN: " + x.Token);
-            }
-            catch (Exception e)
-            {
-                this.Key = string.Empty;
-                Debug.WriteLine("No session with that key exists.");
-                Debug.WriteLine(e.StackTrace);
-            }
+            this.settings.Token = this.joinCommander.Token;
         }
 
         public string Nickname

@@ -1,6 +1,3 @@
-using System.Linq;
-using Xamarin.Forms;
-
 namespace PlanningPoker.App.ViewModels
 {
     using System;
@@ -12,6 +9,7 @@ namespace PlanningPoker.App.ViewModels
     using Models;
     using OpenJobScheduler;
     using Shared;
+    using Xamarin.Forms;
 
     public class SessionViewModel : BaseViewModel
     {
@@ -62,7 +60,7 @@ namespace PlanningPoker.App.ViewModels
             // Lists
             this.Players = new ObservableCollection<UserDTO>();
             this.Votes = new ObservableCollection<VoteDTO>();
-            this.VoteCards = new ObservableCollection<Card> {new Card {Name = "TestBoiiii", Estimate = 42}};
+            this.VoteCards = new ObservableCollection<Card>();
 
             // Setup
             this.LoadSessionCommand = new RelayCommand(async _ => await this.ExecuteLoadSessionCommand());
@@ -131,6 +129,7 @@ namespace PlanningPoker.App.ViewModels
             Debug.WriteLine(this.currentItemTitle);
 
             this.IsBusy = false;
+            await this.ExecuteLoadSessionCommand();
         }
 
         private async Task ExecuteRevoteCommand()

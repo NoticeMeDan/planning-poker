@@ -1,7 +1,7 @@
 namespace PlanningPoker.App.Views.SessionCreation
 {
     using System;
-    using Components;
+    using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
     using Session;
     using ViewModels;
@@ -11,33 +11,31 @@ namespace PlanningPoker.App.Views.SessionCreation
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CreateSession : ContentPage
     {
-        private readonly ItemsViewModel itemsViewModel;
+        private readonly SessionCreateViewModel sessionViewModel;
 
         public CreateSession()
         {
-            this.BindingContext = this.itemsViewModel =
-                (Application.Current as App)?.Container.GetRequiredService<ItemsViewModel>();
+            this.BindingContext = this.sessionViewModel =
+                (Application.Current as App)?.Container.GetRequiredService<SessionCreateViewModel>();
 
             this.InitializeComponent();
         }
 
         protected override void OnAppearing()
         {
-            this.itemsViewModel.LoadCommand.Execute(null);
+            this.sessionViewModel.LoadCommand.Execute(null);
         }
 
-        private void CreateSessionClicked(object sender, EventArgs e)
+        private async Task CreateSessionClicked(object sender, EventArgs e)
         {
-            //TODO: Hook up with API when ready
-
-            this.itemsViewModel.CreateSessionCommand.Execute(null);
-            this.Navigation.PushModalAsync(new NavigationPage(
-                new Lobby(this.itemsViewModel.Key)));
+            await this.sessionViewModel.CreateSession();
+            await this.Navigation.PushModalAsync(new NavigationPage(
+                    new Lobby(this.sessionViewModel.Key)));
         }
 
         private void OnAddItem_Clicked(object sender, EventArgs e)
         {
-            this.itemsViewModel.AddItemCommand.Execute(null);
+            this.sessionViewModel.AddItemCommand.Execute(null);
         }
     }
 }

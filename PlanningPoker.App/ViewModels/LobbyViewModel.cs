@@ -3,6 +3,7 @@ namespace PlanningPoker.App.ViewModels
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Diagnostics;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -15,11 +16,15 @@ namespace PlanningPoker.App.ViewModels
     {
         private readonly ISessionClient repository;
         private bool loading;
-        private JobScheduler jobScheduler;
+
+        public JobScheduler JobScheduler { get; set; }
+
         private string key;
         private string title;
 
         public ObservableCollection<UserDTO> Users { get; set; }
+
+        public ObservableCollection<ItemDTO> Items { get; set; }
 
         public ICommand GetUsersCommand { get; }
 
@@ -29,19 +34,20 @@ namespace PlanningPoker.App.ViewModels
         {
             this.repository = client;
             this.Users = new ObservableCollection<UserDTO>();
+            this.Items = new ObservableCollection<ItemDTO>();
             this.GetUsersCommand = new RelayCommand(_ => this.ExecuteGetUsersCommand());
             this.StopFetchingUsers = new RelayCommand(_ => this.ExecuteKillThread());
         }
 
         private void ExecuteKillThread()
         {
-            this.jobScheduler.Stop();
+            this.JobScheduler.Stop();
         }
 
         private void ExecuteGetUsersCommand()
         {
-            this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(5), new Action(async () => { await this.FetchUsers(); }));
-            this.jobScheduler.Start();
+            this.JobScheduler = new JobScheduler(TimeSpan.FromSeconds(2), new Action(async () => { await this.FetchUsers(); }));
+            this.JobScheduler.Start();
         }
 
         private async Task FetchUsers()
@@ -55,6 +61,11 @@ namespace PlanningPoker.App.ViewModels
 
             var session = await this.repository.GetByKeyAsync(this.Key);
 
+            if (this.Users.Count < 1)
+            {
+                this.UpdateItemCollection(session.Items);
+            }
+
             if (session != null)
             {
                 this.UpdateUserCollection(session.Users);
@@ -63,10 +74,18 @@ namespace PlanningPoker.App.ViewModels
             {
                 this.Users.Clear();
                 this.Title = "No session found...";
-                this.jobScheduler.Stop();
+                this.JobScheduler.Stop();
             }
 
             this.loading = false;
+        }
+
+        private void UpdateItemCollection(List<ItemDTO> items)
+        {
+            items.ForEach(i =>
+            {
+                this.Items.Add(i);
+            });
         }
 
         private void UpdateUserCollection(ICollection<UserDTO> users)

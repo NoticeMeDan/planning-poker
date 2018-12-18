@@ -33,7 +33,7 @@
         <!-- List over the chosen estimate by players -->
         <Label Text="Votes:" Margin="10"/>
         <controls:FlowListView
-            FlowColumnCount="4" SeparatorVisibility="None" HasUnevenRows="true"
+            FlowColumnCount="4" SeparatorVisibility="Default" HasUnevenRows="true"
             FlowItemsSource="{Binding VoteCards, Mode=Default}"
             IsPullToRefreshEnabled="true"
             RefreshCommand="{Binding LoadVotesCommand}"
@@ -42,12 +42,12 @@
         >
             <controls:FlowListView.FlowColumnTemplate>
                 <DataTemplate>
-                    <StackLayout BackgroundColor="Chocolate"
+                    <StackLayout  Spacing="10"
                                  >
-                        <Label TextColor="White" HorizontalOptions="Fill" VerticalOptions="Fill"
+                        <Label HorizontalOptions="Fill" VerticalOptions="Fill"
                                XAlign="Center" YAlign="Center" Text="{Binding Name, Mode=TwoWay}"/>
-                        
-                        <Label TextColor="White" HorizontalOptions="Fill" VerticalOptions="Fill"
+
+                        <Label HorizontalOptions="Fill" VerticalOptions="Fill"
                                XAlign="Center" YAlign="Center" Text="{Binding Estimate, Mode=TwoWay}"/>
                     </StackLayout>
                 </DataTemplate>
@@ -92,7 +92,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Button Text="Play Nitpicker" Grid.Row="0" Grid.Column="0" Command="{Binding SendNitpickerCommand}" />
+            <Button Text="Nitpicker" Grid.Row="0" Grid.Column="0" Command="{Binding SendNitpickerCommand}" />
             <Button Text="Re-vote" Grid.Row="0" Grid.Column="1" Command="{Binding RevoteCommand}" />
             <Button Text="Next Item" Grid.Row="0" Grid.Column="2" Command="{Binding NextItemCommand}" />
         </Grid>

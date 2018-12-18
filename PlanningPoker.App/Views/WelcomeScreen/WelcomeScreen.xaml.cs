@@ -1,7 +1,6 @@
 namespace PlanningPoker.App.Views.WelcomeScreen
 {
     using System;
-    using System.Diagnostics;
     using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
     using Session;
@@ -24,8 +23,7 @@ namespace PlanningPoker.App.Views.WelcomeScreen
 
         private async Task HandleClickedAsync(object sender, EventArgs e)
         {
-            Debug.WriteLine("try to connection?");
-            this.welcomeViewModel.JoinCommand.Execute(e);
+            this.welcomeViewModel.Join.Execute(e);
             await this.Navigation.PushModalAsync(new NavigationPage(new Lobby(this.welcomeViewModel.Key)));
         }
 
