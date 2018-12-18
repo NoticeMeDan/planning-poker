@@ -40,7 +40,7 @@ namespace PlanningPoker.App.ViewModels
             this.Loading = false;
         }
 
-        private async Task JoinSession()
+        public async Task JoinSession()
         {
             try
             {

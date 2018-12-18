@@ -183,6 +183,138 @@ namespace PlanningPoker.Services.Tests
             }
         }
 
+        [Fact]
+        public async Task AddRoundToSessionItem_given_itemId_creates_new_round()
+        {
+            using (var connection = await this.CreateConnectionAsync())
+            using (var context = await this.CreateContextAsync(connection))
+            {
+                var entity = this.CreateDummySessionEntity();
+                context.Sessions.Add(entity);
+                context.SaveChanges();
+
+                Assert.Equal(0, entity.Items[0].Rounds.Count);
+
+                var id = entity.Items[0].Id;
+                var repository = new SessionRepository(context);
+
+                repository.AddRoundToSessionItem(id);
+
+                Assert.Equal(1, entity.Items[0].Rounds.Count);
+            }
+        }
+
+        [Fact]
+        public async Task AddRoundToSessionItem_given_itemId_returns_new_roundDto()
+        {
+            using (var connection = await this.CreateConnectionAsync())
+            using (var context = await this.CreateContextAsync(connection))
+            {
+                var entity = this.CreateDummySessionEntity();
+                context.Sessions.Add(entity);
+                context.SaveChanges();
+
+                var id = entity.Items[0].Id;
+                var repository = new SessionRepository(context);
+
+                var round = repository.AddRoundToSessionItem(id);
+
+                Assert.Equal(1, round.Id);
+            }
+        }
+
+        [Fact]
+        public async Task AddVoteToRound_given_vote_and_itemId_inserts_vote()
+        {
+            using (var connection = await this.CreateConnectionAsync())
+            using (var context = await this.CreateContextAsync(connection))
+            {
+                var entity = this.CreateDummySessionEntity();
+                context.Sessions.Add(entity);
+                context.SaveChanges();
+
+                var id = entity.Items[0].Id;
+                var repository = new SessionRepository(context);
+
+                var round = repository.AddRoundToSessionItem(id);
+
+                Assert.Equal(0, entity.Items[0].Rounds.ToList()[0].Votes.Count);
+
+                var vote = new VoteCreateUpdateDTO { Estimate = 13, UserId = 42 };
+
+                repository.AddVoteToRound(vote, round.Id);
+                Assert.Equal(1, entity.Items[0].Rounds.ToList()[0].Votes.Count);
+            }
+        }
+
+        [Fact]
+        public async Task AddVoteToRound_given_vote_and_itemId_returns_new_voteDto()
+        {
+            using (var connection = await this.CreateConnectionAsync())
+            using (var context = await this.CreateContextAsync(connection))
+            {
+                var entity = this.CreateDummySessionEntity();
+                context.Sessions.Add(entity);
+                context.SaveChanges();
+
+                var id = entity.Items[0].Id;
+                var repository = new SessionRepository(context);
+
+                var round = repository.AddRoundToSessionItem(id);
+
+                var vote = new VoteCreateUpdateDTO { Estimate = 13, UserId = 42 };
+
+                var dto = repository.AddVoteToRound(vote, round.Id);
+                Assert.Equal(1, dto.Id);
+                Assert.Equal(13, dto.Estimate);
+                Assert.Equal(42, dto.UserId);
+            }
+        }
+
+        [Fact]
+        public async Task AddUserToSession_given_user_and_sessionId_inserts_user()
+        {
+            using (var connection = await this.CreateConnectionAsync())
+            using (var context = await this.CreateContextAsync(connection))
+            {
+                var entity = this.CreateDummySessionEntity();
+                context.Sessions.Add(entity);
+                context.SaveChanges();
+
+                var repository = new SessionRepository(context);
+
+                var user = new UserCreateDTO { Nickname = "John Snow", IsHost = true };
+
+                Assert.Equal(1, entity.Users.Count);
+
+                repository.AddUserToSession(user, entity.Id);
+
+                Assert.Equal(2, entity.Users.Count);
+            }
+        }
+
+        [Fact]
+        public async Task AddUserToSession_given_user_and_sessionId_returns_userDto()
+        {
+            using (var connection = await this.CreateConnectionAsync())
+            using (var context = await this.CreateContextAsync(connection))
+            {
+                var entity = this.CreateDummySessionEntity();
+                context.Sessions.Add(entity);
+                context.SaveChanges();
+
+                var repository = new SessionRepository(context);
+
+                var user = new UserCreateDTO { Nickname = "John Snow", IsHost = true };
+
+                var newUser = repository.AddUserToSession(user, entity.Id);
+
+                Assert.Equal(2, newUser.Id);
+                Assert.Equal("John Snow", newUser.Nickname);
+                Assert.True(newUser.IsHost);
+            }
+        }
+
         private async Task<SqliteConnection> CreateConnectionAsync()
         {
             var connection = new SqliteConnection("DataSource=:memory:");

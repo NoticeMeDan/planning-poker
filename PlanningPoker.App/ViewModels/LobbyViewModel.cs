@@ -54,7 +54,7 @@ namespace PlanningPoker.App.ViewModels
             this.JobScheduler.Start();
         }
 
-        private async Task FetchUsers()
+        public async Task FetchUsers()
         {
             if (this.loading)
             {
@@ -72,7 +72,7 @@ namespace PlanningPoker.App.ViewModels
             this.loading = false;
         }
 
-        private void UpdateItemCollection(List<ItemDTO> items)
+        public void UpdateItemCollection(List<ItemDTO> items)
         {
             if (this.Items.Count < 1)
             {
@@ -83,7 +83,7 @@ namespace PlanningPoker.App.ViewModels
             }
         }
 
-        private void UpdateUserCollection(ICollection<UserDTO> users)
+        public void UpdateUserCollection(ICollection<UserDTO> users)
         {
             if (this.session != null)
             {
