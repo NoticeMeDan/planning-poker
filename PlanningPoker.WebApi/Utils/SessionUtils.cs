@@ -23,6 +23,11 @@ namespace PlanningPoker.WebApi.Utils
                 {
                     var isOngoing = item.Rounds.Any(round =>
                     {
+                        if (round.Votes.Count == 0)
+                        {
+                            return true;
+                        }
+
                         var firstEstimate = round.Votes.First().Estimate;
                         return round.Votes.Any(v => v.Estimate != firstEstimate) || round.Votes.Count != userCount;
                     });
