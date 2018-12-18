@@ -1,5 +1,7 @@
 namespace PlanningPoker.App.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
     using System.Linq;
@@ -12,13 +14,20 @@ namespace PlanningPoker.App.ViewModels
     // This class contains data until repositories is setup
     public class SessionCreateViewModel : BaseViewModel
     {
-        private readonly ISessionClient sessionRepo;
+        private readonly ISessionClient client;
         private string title;
         private string description;
+        private JoinCommand joinCommander;
 
-        public SessionCreateViewModel(ISessionClient sessionRepo)
+        public ObservableCollection<ItemCreateUpdateDTO> Items { get; set; }
+
+        public ICommand AddItemCommand { get; }
+
+        public ICommand LoadCommand { get; }
+
+        public SessionCreateViewModel(ISessionClient client)
         {
-            this.sessionRepo = sessionRepo;
+            this.client = client;
 
             this.BaseTitle = "Items";
 
@@ -26,16 +35,30 @@ namespace PlanningPoker.App.ViewModels
 
             this.AddItemCommand = new RelayCommand(_ => this.ExecuteAddItemCommand());
             this.LoadCommand = new Command(() => this.ExecuteLoadCommand());
-            this.CreateSessionCommand = new RelayCommand(async _ => await this.ExecuteCreateSessionCommand());
         }
 
-        public ObservableCollection<ItemCreateUpdateDTO> Items { get; set; }
+        private UserCreateDTO CreateScrumMaster()
+        {
+            return new UserCreateDTO
+            {
+                IsHost = true,
+                Nickname = "ScrumMaster"
+            };
+        }
 
-        public ICommand AddItemCommand { get; }
+        private void JoinSession()
+        {
+            if (this.Key == null)
+            {
+                return;
+            }
 
-        public ICommand CreateSessionCommand { get; }
+            var user = this.CreateScrumMaster();
 
-        public ICommand LoadCommand { get; }
+            this.joinCommander = new JoinCommand(this.client, this.Key, user);
+
+            this.joinCommander.Join.Execute(null);
+        }
 
         public string Title
         {
@@ -51,7 +74,7 @@ namespace PlanningPoker.App.ViewModels
 
         public string Key { get; private set; }
 
-        public async Task ExecuteCreateSessionCommand()
+        public async Task CreateSession()
         {
             if (this.IsBusy)
             {
@@ -65,8 +88,14 @@ namespace PlanningPoker.App.ViewModels
                 Items = this.Items.ToList()
             };
 
-            var result = await this.sessionRepo.CreateAsync(toCreate);
-            this.Key = result.SessionKey;
+            var result = await this.client.CreateAsync(toCreate);
+
+            if (result != null)
+            {
+                this.Key = result.SessionKey;
+                this.JoinSession();
+            }
+
             this.IsBusy = false;
         }
 

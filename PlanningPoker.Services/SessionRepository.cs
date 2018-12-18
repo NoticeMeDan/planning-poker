@@ -85,7 +85,7 @@ namespace PlanningPoker.Services
 
         public async Task<UserDTO> AddUserToSession(UserCreateDTO user, int sessionId)
         {
-            var newUser = new User {Email = user.Email, IsHost = user.IsHost, SessionId = sessionId, Nickname = user.Nickname};
+            var newUser = new User { Email = user.Email, IsHost = user.IsHost, SessionId = sessionId, Nickname = user.Nickname };
             this.context.Users.Add(newUser);
             this.context.SaveChanges();
 

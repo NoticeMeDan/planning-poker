@@ -16,8 +16,6 @@ namespace PlanningPoker.App.ViewModels
 
         private readonly ISettings settings;
 
-        public bool Loading { get; set; }
-
         private readonly ISessionClient client;
 
         public UserCreateDTO User { get; set; }
@@ -31,7 +29,6 @@ namespace PlanningPoker.App.ViewModels
         public ICommand Join { get; }
 
         public ICommand LoginCommand { get; }
-
 
         public WelcomeViewModel(IPublicClientApplication publicClientApplication, ISettings settings, ISessionClient client)
         {
@@ -80,13 +77,6 @@ namespace PlanningPoker.App.ViewModels
 
         private void ExecuteJoinCommand()
         {
-            if (this.Loading)
-            {
-                return;
-            }
-
-            this.Loading = true;
-
             this.User.Nickname = this.nickname;
 
             this.joinCommander = new JoinCommand(this.client, this.key, this.User);
@@ -94,8 +84,6 @@ namespace PlanningPoker.App.ViewModels
             this.joinCommander.Join.Execute(null);
 
             this.Key = this.joinCommander.Key;
-
-            this.Loading = false;
         }
 
         public string Nickname

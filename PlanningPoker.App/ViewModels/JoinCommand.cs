@@ -9,7 +9,6 @@ namespace PlanningPoker.App.ViewModels
 
     public class JoinCommand
     {
-
         private readonly UserCreateDTO user;
 
         private readonly ISessionClient client;
@@ -46,6 +45,7 @@ namespace PlanningPoker.App.ViewModels
         {
             try
             {
+                Debug.WriteLine("Key in join: " + this.Key);
                 await this.client.Join(this.Key, this.user);
             }
             catch (Exception e)
