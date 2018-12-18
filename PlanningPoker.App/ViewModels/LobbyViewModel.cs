@@ -39,17 +39,6 @@ namespace PlanningPoker.App.ViewModels
             this.StopFetchingUsers = new RelayCommand(_ => this.ExecuteKillThread());
         }
 
-        private void ExecuteKillThread()
-        {
-            this.JobScheduler.Stop();
-        }
-
-        private void ExecuteGetUsersCommand()
-        {
-            this.JobScheduler = new JobScheduler(TimeSpan.FromSeconds(2), new Action(async () => { await this.FetchUsers(); }));
-            this.JobScheduler.Start();
-        }
-
         public async Task FetchUsers()
         {
             if (this.loading)
@@ -108,6 +97,17 @@ namespace PlanningPoker.App.ViewModels
         {
             get => this.key;
             set => this.SetProperty(ref this.key, value);
+        }
+
+        private void ExecuteKillThread()
+        {
+            this.JobScheduler.Stop();
+        }
+
+        private void ExecuteGetUsersCommand()
+        {
+            this.JobScheduler = new JobScheduler(TimeSpan.FromSeconds(2), new Action(async () => { await this.FetchUsers(); }));
+            this.JobScheduler.Start();
         }
     }
 }
