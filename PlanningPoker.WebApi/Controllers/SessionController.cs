@@ -43,7 +43,7 @@ namespace PlanningPoker.WebApi.Controllers
 
         // POST api/session
         [HttpPost]
-        // [Authorize]
+        [Authorize]
         public async Task<ActionResult<SessionDTO>> Create([FromBody] SessionCreateUpdateDTO session)
         {
             var key = string.Empty;
@@ -138,7 +138,7 @@ namespace PlanningPoker.WebApi.Controllers
             return currentItem.ValueOrDefault().Rounds.Last();
         }
 
-        // [Authorize]
+        [Authorize]
         [HttpPost("{sessionKey}/item/next")]
         public async Task<ActionResult<ItemDTO>> NextItem([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey)
         {
