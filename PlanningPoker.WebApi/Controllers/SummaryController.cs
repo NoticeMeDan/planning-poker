@@ -22,13 +22,12 @@ namespace PlanningPoker.WebApi.Controllers
         public async Task<ActionResult<SummaryDTO>> FindBySessionIdAsync(int sessionId)
         {
             var summary = await this.repository.FindBySessionIdAsync(sessionId);
-            
 
             if (summary == null)
             {
                 return this.NotFound();
             }
-            
+
             return summary;
         }
     }
