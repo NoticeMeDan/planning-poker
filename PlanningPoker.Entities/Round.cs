@@ -8,6 +8,9 @@ namespace PlanningPoker.Entities
         [Required]
         public ICollection<Vote> Votes { get; set; }
 
+        [Required]
+        public int ItemId { get; set; }
+
         public Round()
         {
             this.Votes = new HashSet<Vote>();

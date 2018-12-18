@@ -43,7 +43,7 @@ namespace PlanningPoker.WebApi.Controllers
 
         // POST api/session
         [HttpPost]
-        [Authorize]
+        // [Authorize]
         public async Task<ActionResult<SessionDTO>> Create([FromBody] SessionCreateUpdateDTO session)
         {
             var key = string.Empty;
@@ -63,6 +63,7 @@ namespace PlanningPoker.WebApi.Controllers
         }
 
         // POST api/session/{key}/join
+
         [HttpPost("{sessionKey}/join")]
         public async Task<ActionResult<UserStateResponseDTO>> Join(string sessionKey, [FromBody] UserCreateDTO user)
         {
@@ -84,6 +85,7 @@ namespace PlanningPoker.WebApi.Controllers
             return new UserStateResponseDTO { Token = this.userStateManager.CreateState(newUser.Id, sessionKey) };
         }
 
+        // [Authorize]
         [HttpPost("{sessionKey}/item/round/next")]
         public async Task<ActionResult<RoundDTO>> NextRound([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey)
         {
@@ -106,13 +108,7 @@ namespace PlanningPoker.WebApi.Controllers
                 return this.BadRequest();
             }
 
-            var updatedItem = currentItem.ValueOrDefault();
-            var newRound = new RoundDTO { Votes = new List<VoteDTO>() };
-
-            updatedItem.Rounds.Add(newRound);
-            session.Items[session.Items.FindIndex(item => item.Id == updatedItem.Id)] = updatedItem;
-
-            await this.sessionRepository.UpdateAsync(EntityMapper.ToSessionCreateUpdateDto(session));
+            var newRound = this.sessionRepository.AddRoundToSession(currentItem.ValueOrDefault().Id);
 
             return newRound;
         }
@@ -142,7 +138,7 @@ namespace PlanningPoker.WebApi.Controllers
             return currentItem.ValueOrDefault().Rounds.Last();
         }
 
-        [Authorize]
+        // [Authorize]
         [HttpPost("{sessionKey}/item/next")]
         public async Task<ActionResult<ItemDTO>> NextItem([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey)
         {
@@ -167,11 +163,9 @@ namespace PlanningPoker.WebApi.Controllers
                 return this.BadRequest();
             }
 
-            nextItem.Rounds.Add(new RoundDTO { Votes = new List<VoteDTO>() });
-            session.Items[session.Items.FindIndex(item => item.Id == nextItem.Id)] = nextItem;
+            var newRound = this.sessionRepository.AddRoundToSession(nextItem.Id);
 
-            await this.sessionRepository.UpdateAsync(EntityMapper.ToSessionCreateUpdateDto(session));
-
+            nextItem.Rounds.Add(newRound);
             return nextItem;
         }
 
