@@ -20,6 +20,7 @@ namespace PlanningPoker.WebApi.Controllers
         private readonly ISessionRepository sessionRepository;
         private readonly IUserRepository userRepository;
         private readonly UserStateManager userStateManager;
+        private readonly ISummaryRepository summaryRepository;
 
         public SessionController(ISessionRepository sessionRepo, IUserRepository userRepo, IMemoryCache cache)
         {
@@ -159,7 +160,8 @@ namespace PlanningPoker.WebApi.Controllers
             // TODO: Generate summary when this happens
             if (nextItem == default(ItemDTO))
             {
-                return this.BadRequest();
+                var summary = await this.summaryRepository.BuildSummary(session);
+
             }
 
             var newRound = this.sessionRepository.AddRoundToSessionItem(nextItem.Id);
