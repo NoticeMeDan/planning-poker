@@ -38,12 +38,6 @@ namespace PlanningPoker.App.Views.Session
             base.OnAppearing();
         }
 
-        protected override void OnDisappearing()
-        {
-
-            base.OnDisappearing();
-        }
-
         private void StartCheckSessionThread()
         {
             this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(2), new Action(async () => { await this.CheckSessionStatus(); }));
