@@ -91,19 +91,19 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         public async Task Join_given_existant_sessionkey_and_user_joins_guest()
         {
             var sessionRepo = new Mock<ISessionRepository>();
-            var userRepo = new Mock<IUserRepository>();
             var cache = new MemoryCache(new MemoryCacheOptions());
 
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(new SessionDTO
                     { SessionKey = "ABC1234", Users = new HashSet<UserDTO> { new UserDTO { IsHost = true } } });
 
-            userRepo.Setup(s => s.CreateAsync(It.IsAny<UserCreateDTO>()))
-                .ReturnsAsync(new UserDTO { Id = 42, Nickname = "Marty McTestface" });
+            sessionRepo.Setup(s => s.AddUserToSession(It.IsAny<UserCreateDTO>(), It.IsAny<int>()))
+                .Returns(new UserDTO { Id = 42 });
 
-            var controller = new SessionController(sessionRepo.Object, userRepo.Object, cache);
+            var controller = new SessionController(sessionRepo.Object, null, cache);
             var input = new UserCreateDTO { Nickname = "Marty McTestface" };
             var post = await controller.Join("ABC1234", input);
+
             Assert.IsType<UserStateResponseDTO>(post.Value);
             Assert.IsType<string>(post.Value.Token);
             Assert.True(post.Value.Token != string.Empty);
@@ -113,17 +113,16 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         public async Task Join_given_existant_sessionkey_and_user_joins_scrummaster()
         {
             var sessionRepo = new Mock<ISessionRepository>();
-            var userRepo = new Mock<IUserRepository>();
             var cache = new MemoryCache(new MemoryCacheOptions());
 
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(new SessionDTO
                     { SessionKey = "ABC1234", Users = new HashSet<UserDTO> { new UserDTO { IsHost = false } } });
 
-            userRepo.Setup(s => s.CreateAsync(It.IsAny<UserCreateDTO>()))
-                .ReturnsAsync(new UserDTO { Id = 42, Nickname = "Marty McTestface", IsHost = true });
+            sessionRepo.Setup(s => s.AddUserToSession(It.IsAny<UserCreateDTO>(), It.IsAny<int>()))
+                .Returns(new UserDTO { Id = 42 });
 
-            var controller = new SessionController(sessionRepo.Object, userRepo.Object, cache);
+            var controller = new SessionController(sessionRepo.Object, null, cache);
             var input = new UserCreateDTO { Nickname = "Marty McTestface", IsHost = true };
             var post = await controller.Join("ABC1234", input);
             Assert.IsType<UserStateResponseDTO>(post.Value);
@@ -565,6 +564,9 @@ namespace PlanningPoker.WebApi.Tests.Controllers
 
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(mockSession);
+
+            sessionRepo.Setup(s => s.AddRoundToSessionItem(It.IsAny<int>()))
+                .Returns(new RoundDTO { Votes = new List<VoteDTO>() });
 
             var controller = new SessionController(sessionRepo.Object, null, cache);
 
