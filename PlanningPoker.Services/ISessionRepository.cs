@@ -18,7 +18,9 @@ namespace PlanningPoker.Services
 
         UserDTO AddUserToSession(UserCreateDTO user, int sessionId);
 
-        RoundDTO AddRoundToSession(int itemId);
+        RoundDTO AddRoundToSessionItem(int itemId);
+
+        VoteDTO AddVoteToRound(VoteCreateUpdateDTO vote, int roundId);
 
         Task<bool> DeleteAsync(int sessionID);
     }

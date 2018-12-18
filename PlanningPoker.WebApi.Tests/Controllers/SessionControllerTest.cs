@@ -565,7 +565,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(mockSession);
 
-            sessionRepo.Setup(s => s.AddRoundToSession(It.IsAny<int>()))
+            sessionRepo.Setup(s => s.AddRoundToSessionItem(It.IsAny<int>()))
                 .Returns(new RoundDTO { Votes = new List<VoteDTO>() });
 
             var controller = new SessionController(sessionRepo.Object, null, cache);

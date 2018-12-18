@@ -32,7 +32,7 @@ namespace PlanningPoker.Services
             return await this.FindAsync(entity.Id);
         }
 
-        public RoundDTO AddRoundToSession(int itemId)
+        public RoundDTO AddRoundToSessionItem(int itemId)
         {
             var newRound = new Round { ItemId = itemId };
             this.context.Rounds.Add(newRound);
@@ -42,6 +42,20 @@ namespace PlanningPoker.Services
             {
                 Id = newRound.Id,
                 Votes = new List<VoteDTO>()
+            };
+        }
+
+        public VoteDTO AddVoteToRound(VoteCreateUpdateDTO vote, int roundId)
+        {
+            var newVote = new Vote { Estimate = vote.Estimate, UserId = vote.UserId, RoundId = roundId};
+            this.context.Votes.Add(newVote);
+            this.context.SaveChanges();
+
+            return new VoteDTO
+            {
+                Estimate = newVote.Estimate,
+                Id = newVote.Id,
+                UserId = newVote.UserId
             };
         }
 
