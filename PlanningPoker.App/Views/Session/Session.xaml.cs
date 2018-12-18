@@ -20,7 +20,6 @@ namespace PlanningPoker.App.Views.Session
         protected override void OnAppearing()
         {
             this.viewModel.NextItemCommand.Execute(null);
-            this.viewModel.StartVotesPull.Execute(null);
         }
 
         private void OnNitpicker_Clicked(object sender, EventArgs e)

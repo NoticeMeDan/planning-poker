@@ -25,7 +25,7 @@ namespace PlanningPoker.App.ViewModels
             this.client = client;
 
             // TODO: Get sessionkey from constructor argument
-            this.sessionKey = "YV94EIR";
+            this.sessionKey = "D0LEGK7";
             this.BaseTitle = "Session: " + this.sessionKey;
             this.CurrentItemTitle = string.Empty;
             this.currentRound = null;
@@ -44,16 +44,9 @@ namespace PlanningPoker.App.ViewModels
             this.SendNitpickerCommand = new RelayCommand(_ => this.ExecuteNitpickerCommand());
 
             // Threads
-
-            this.StartVotesPull = new RelayCommand(_ => this.ExecuteStartVotesPull());
-            this.StartRoundsPull = new RelayCommand(_ => this.ExecuteStartRoundsPull());
-
-            this.StopVoteThreadsCommand = new RelayCommand(_ => this.ExecuteStopVoteThreadsCommand());
-            this.StopRoundsThreadsCommand = new RelayCommand(_ => this.ExecuteStopRoundsThreadsCommand());
-
             this.jobSchedulerRounds = new JobScheduler(
                 TimeSpan.FromSeconds(5),
-                new Action(async () => await this.FetchRounds()));
+                new Action(async () => await this.ShouldFetchRounds()));
 
             this.jobSchedulerVotes = new JobScheduler(
                 TimeSpan.FromSeconds(5),
@@ -78,54 +71,70 @@ namespace PlanningPoker.App.ViewModels
 
         public ICommand SendNitpickerCommand { get; }
 
-        // Threads
-        public ICommand StartVotesPull { get; }
-
-        public ICommand StartRoundsPull { get; }
-
-        public ICommand StopVoteThreadsCommand { get; }
-
-        public ICommand StopRoundsThreadsCommand { get; }
-
         public string CurrentItemTitle
         {
             get => this.currentItemTitle;
             set => this.SetProperty(ref this.currentItemTitle, value);
         }
 
-        private void ExecuteStartRoundsPull()
+        private async Task ShouldFetchRounds()
         {
-            this.jobSchedulerRounds.Start();
-        }
+            while (this.jobSchedulerVotes != null) {
+                try {
+                    this.jobSchedulerVotes.Stop();
+                    this.jobSchedulerVotes = null;
+                }
+                catch (Exception e) {
+                    //No handling
+                }
+            }
 
-        private async Task FetchRounds()
-        {
             // New Round. Stop the thread and setup new Item estimation
-            this.ExecuteStopVoteThreadsCommand();
-            this.ExecuteStopRoundsThreadsCommand();
             Debug.WriteLine("Pulling rounds");
             var round = this.client.GetCurrentRound(this.sessionKey).Result;
 
             // New Round?
             if (round.Id != this.currentRound.Id)
             {
+                while (this.jobSchedulerRounds != null) {
+                    try {
+                        this.jobSchedulerRounds.Stop();
+                        this.jobSchedulerRounds = null;
+                    }
+                    catch (Exception e) {
+                        //No handling
+                    }
+                }
+                this.jobSchedulerRounds = null;
+
                 this.currentRound = round;
                 await this.SetCurrentTitle();
 
                 // Listen for incoming votes
-                this.ExecuteStartVotesPull();
-            }
-            // Same round?
-            else
-            {
-                this.ExecuteStopVoteThreadsCommand();
-                this.ExecuteStartRoundsPull();
+                Debug.WriteLine("ShouldFetchRounds");
+                this.startJobSchedulerVotes();
             }
         }
 
-        private void ExecuteStartVotesPull()
+        private async Task ShouldShowVotes()
         {
-            this.jobSchedulerVotes.Start();
+            Debug.WriteLine("Pulling Votes");
+            var currentVotes = await this.client.GetCurrentRound(this.sessionKey);
+            var result = currentVotes.Votes.Count == this.Players.Count;
+
+            if (result)
+            {
+                while (this.jobSchedulerVotes != null) {
+                    try {
+                        this.jobSchedulerVotes.Stop();
+                        this.jobSchedulerVotes = null;
+                    }
+                    catch (Exception e) {
+                        //No handling
+                    }
+                }
+                await this.ExecuteLoadVotesCommand();
+            }
         }
 
         /*
@@ -151,6 +160,16 @@ namespace PlanningPoker.App.ViewModels
 
         private async Task ExecuteRevoteCommand()
         {
+            while (this.jobSchedulerRounds != null) {
+                try {
+                    this.jobSchedulerRounds.Stop();
+                    this.jobSchedulerRounds = null;
+                }
+                catch (Exception e) {
+                    //No handling
+                }
+            }
+
             if (this.IsBusy)
             {
                 return;
@@ -165,7 +184,8 @@ namespace PlanningPoker.App.ViewModels
 
             this.IsBusy = false;
 
-            this.ExecuteStartVotesPull();
+            Debug.WriteLine("ExecuteRevote Method");
+            this.startJobSchedulerVotes();
         }
 
         private async Task ExecuteSendVoteCommand(object number)
@@ -219,17 +239,25 @@ namespace PlanningPoker.App.ViewModels
             });
 
             this.IsBusy = false;
+            Debug.WriteLine("ExecuteLoadSession");
+            this.startJobSchedulerVotes();
         }
 
         private async Task ExecuteLoadVotesCommand()
         {
+            try
+            {
+                this.jobSchedulerVotes = null;
+            }
+            catch (Exception e)
+            {
+                e.ToString();
+            }
+
             if (this.IsBusy)
             {
                 return;
             }
-
-            this.ExecuteStopRoundsThreadsCommand();
-            this.ExecuteStopVoteThreadsCommand();
 
             this.IsBusy = true;
             this.VoteCards.Clear();
@@ -258,7 +286,21 @@ namespace PlanningPoker.App.ViewModels
 
             this.IsBusy = false;
 
-            this.ExecuteStartRoundsPull();
+            this.startJobSchedulerRounds();
+        }
+
+        private void startJobSchedulerRounds() {
+            this.jobSchedulerRounds = new JobScheduler(
+                TimeSpan.FromSeconds(5),
+                new Action(async () => await this.ShouldFetchRounds()));
+            this.jobSchedulerRounds.Start();
+        }
+
+        private void startJobSchedulerVotes() {
+            this.jobSchedulerVotes = new JobScheduler(
+                TimeSpan.FromSeconds(5),
+                new Action(async () => await this.ShouldShowVotes()));
+            this.jobSchedulerVotes.Start();
         }
 
         private void ExecuteNitpickerCommand()
@@ -275,39 +317,6 @@ namespace PlanningPoker.App.ViewModels
             this.IsBusy = false;
         }
 
-        private void ExecuteStopVoteThreadsCommand()
-        {
-            try
-            {
-                if (this.jobSchedulerVotes != null)
-                {
-                    this.jobSchedulerVotes?.Stop();
-                }
-            }
-            catch (Exception e)
-            {
-                e.ToString();
-            }
-
-        }
-
-        private void ExecuteStopRoundsThreadsCommand()
-        {
-            try
-            {
-                if (this.jobSchedulerRounds!= null)
-                {
-                    this.jobSchedulerRounds.Stop();
-                }
-            }
-            catch (Exception e)
-            {
-                e.ToString();
-            }
-
-        }
-
-
         /*
          * Following are the methods called by the ExecuteCommands
          */
@@ -319,23 +328,6 @@ namespace PlanningPoker.App.ViewModels
             var title = await this.client.GetCurrentItem(this.sessionKey);
 
             this.CurrentItemTitle = title.Title;
-        }
-
-        private async Task ShouldShowVotes()
-        {
-            this.ExecuteStopVoteThreadsCommand();
-            Debug.WriteLine("Pulling Votes");
-            var currentVotes = await this.client.GetCurrentRound(this.sessionKey);
-            var result = currentVotes.Votes.Count == this.Players.Count;
-
-            if (result)
-            {
-                await this.ExecuteLoadVotesCommand();
-            }
-            else
-            {
-                this.ExecuteStartVotesPull();
-            }
         }
 
         private ObservableCollection<Card> VotesToCards(ICollection<VoteDTO> votes)
