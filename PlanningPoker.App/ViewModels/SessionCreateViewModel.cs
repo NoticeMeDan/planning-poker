@@ -46,7 +46,7 @@ namespace PlanningPoker.App.ViewModels
             };
         }
 
-        private void JoinSession()
+        private async Task JoinSession()
         {
             if (this.Key == null)
             {
@@ -57,7 +57,7 @@ namespace PlanningPoker.App.ViewModels
 
             this.joinHelper = new JoinHelper(this.client, this.Key, user);
 
-            this.joinHelper.Join.Execute(null);
+            await this.joinHelper.Join();
 
             this.settings.Token = this.joinHelper.Token;
         }

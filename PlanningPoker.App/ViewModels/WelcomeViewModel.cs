@@ -24,7 +24,7 @@ namespace PlanningPoker.App.ViewModels
 
         private string key;
 
-        private JoinHelper joinCommander;
+        private JoinHelper joinHelper;
 
         public ICommand Join { get; }
 
@@ -75,17 +75,17 @@ namespace PlanningPoker.App.ViewModels
             };
         }
 
-        private void ExecuteJoinCommand()
+        private async Task ExecuteJoinCommand()
         {
             this.User.Nickname = this.nickname;
 
-            this.joinCommander = new JoinHelper(this.client, this.key, this.User);
+            this.joinHelper = new JoinHelper(this.client, this.key, this.User);
 
-            this.joinCommander.Join.Execute(null);
+            await this.joinHelper.Join();
 
-            this.Key = this.joinCommander.Key;
+            this.Key = this.joinHelper.Key;
 
-            this.settings.Token = this.joinCommander.Token;
+            this.settings.Token = this.joinHelper.Token;
         }
 
         public string Nickname

@@ -13,8 +13,6 @@ namespace PlanningPoker.App.ViewModels
 
         private readonly ISessionClient client;
 
-        public ICommand Join { get; }
-
         public string Key { get; set; }
 
         public string Token { get; set; }
@@ -24,12 +22,11 @@ namespace PlanningPoker.App.ViewModels
             this.Key = key;
             this.user = user;
             this.client = client;
-            this.Join = new RelayCommand(async _ => await this.ExecuteJoinCommand());
         }
 
         public bool Loading { get; private set; }
 
-        private async Task ExecuteJoinCommand()
+        public async Task Join()
         {
             if (this.Loading)
             {
