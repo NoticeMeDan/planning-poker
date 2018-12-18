@@ -1,3 +1,5 @@
+using PlanningPoker.WebApi.Security;
+
 namespace PlanningPoker.WebApi.Controllers
 {
     using System.Collections.Generic;
@@ -28,5 +30,7 @@ namespace PlanningPoker.WebApi.Controllers
         Task<ActionResult> ThrowNitpickerCard(string authToken, string sessionKey);
 
         Task<ActionResult> KickUser(string authToken, string sessionKey, int userId);
+
+        ActionResult<UserState> WhoAmI(string authToken, string sessionKey);
     }
 }
