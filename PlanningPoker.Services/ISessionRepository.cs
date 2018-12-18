@@ -16,7 +16,9 @@ namespace PlanningPoker.Services
 
         Task<bool> UpdateAsync(SessionCreateUpdateDTO session);
 
-        Task<UserDTO> AddUserToSession(UserCreateDTO user, int sessionId);
+        UserDTO AddUserToSession(UserCreateDTO user, int sessionId);
+
+        RoundDTO AddRoundToSession(int itemId);
 
         Task<bool> DeleteAsync(int sessionID);
     }

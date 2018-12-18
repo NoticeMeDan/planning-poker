@@ -32,6 +32,19 @@ namespace PlanningPoker.Services
             return await this.FindAsync(entity.Id);
         }
 
+        public RoundDTO AddRoundToSession(int itemId)
+        {
+            var newRound = new Round { ItemId = itemId };
+            this.context.Rounds.Add(newRound);
+            this.context.SaveChanges();
+
+            return new RoundDTO
+            {
+                Id = newRound.Id,
+                Votes = new List<VoteDTO>()
+            };
+        }
+
         public async Task<bool> DeleteAsync(int sessionID)
         {
             var entity = await this.context.Sessions.FindAsync(sessionID);
@@ -83,9 +96,9 @@ namespace PlanningPoker.Services
             return entities;
         }
 
-        public async Task<UserDTO> AddUserToSession(UserCreateDTO user, int sessionId)
+        public UserDTO AddUserToSession(UserCreateDTO user, int sessionId)
         {
-            var newUser = new User {Email = user.Email, IsHost = user.IsHost, SessionId = sessionId, Nickname = user.Nickname};
+            var newUser = new User { Email = user.Email, IsHost = user.IsHost, SessionId = sessionId, Nickname = user.Nickname };
             this.context.Users.Add(newUser);
             this.context.SaveChanges();
 
