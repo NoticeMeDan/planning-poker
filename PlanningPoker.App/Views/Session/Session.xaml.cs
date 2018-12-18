@@ -12,7 +12,6 @@ namespace PlanningPoker.App.Views.Session
         public Session()
         {
             //TODO change argument to input from Session(string key)
-            this.viewModel = new SessionViewModel();
             this.BindingContext = this.viewModel =
                 (Application.Current as App)?.Container.GetRequiredService<SessionViewModel>();
 
@@ -23,7 +22,7 @@ namespace PlanningPoker.App.Views.Session
         {
             this.viewModel.LoadSessionCommand.Execute(null);
             this.viewModel.StartVotesPull.Execute(null);
-            //this.viewModel.NextItemCommand.Execute(null);
+            this.viewModel.NextItemCommand.Execute(null);
         }
 
         private void OnNitpicker_Clicked(object sender, EventArgs e)

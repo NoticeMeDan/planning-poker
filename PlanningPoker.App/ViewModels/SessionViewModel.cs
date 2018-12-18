@@ -14,7 +14,7 @@ namespace PlanningPoker.App.ViewModels
 
     public class SessionViewModel : BaseViewModel
     {
-        private readonly SessionClient repository;
+        private readonly ISessionClient client;
         private SessionDTO session;
         private readonly string sessionKey;
         private string currentItemTitle;
@@ -47,10 +47,9 @@ namespace PlanningPoker.App.ViewModels
 
         public ICommand StopThreadsCommand { get; }
 
-        public SessionViewModel()
+        public SessionViewModel(ISessionClient client)
         {
-            // Create Repository
-            this.repository = new SessionClient(new HttpClient());
+            this.client = client;
 
             // TODO: Get sessionkey from constructor argument
             this.sessionKey = "N99HL5Y";
@@ -89,7 +88,7 @@ namespace PlanningPoker.App.ViewModels
 
         private void FetchRounds()
         {
-            var round = this.repository.GetCurrentRound(this.sessionKey).Result;
+            var round = this.client.GetCurrentRound(this.sessionKey).Result;
 
             if (round != this.currentRound)
             {
@@ -125,7 +124,7 @@ namespace PlanningPoker.App.ViewModels
             this.IsBusy = true;
 
             Debug.WriteLine("Next Item clicked");
-            await this.repository.NextItemAsync(this.sessionKey);
+            await this.client.NextItemAsync(this.sessionKey);
             this.SetCurrentTitle();
             Debug.WriteLine(this.currentItemTitle);
 
@@ -143,7 +142,7 @@ namespace PlanningPoker.App.ViewModels
 
             Debug.WriteLine("Revote clicked");
 
-            this.repository.NextRoundAsync(this.sessionKey).Wait();
+            this.client.NextRoundAsync(this.sessionKey).Wait();
 
             // Resets votes because there are none in a new round
             this.LoadVotesCommand.Execute(null);
@@ -166,7 +165,7 @@ namespace PlanningPoker.App.ViewModels
             Debug.WriteLine(voteEstimate);
 
             // Call repository.Vote with new VoteDTO
-            this.repository?.Vote(this.sessionKey, new VoteDTO {Estimate = voteEstimate});
+            this.client?.Vote(this.sessionKey, new VoteDTO {Estimate = voteEstimate});
 
             this.IsBusy = false;
         }
@@ -181,7 +180,7 @@ namespace PlanningPoker.App.ViewModels
             this.IsBusy = true;
             Debug.WriteLine("LoadSession clicked");
 
-            var session = this.repository.GetByKeyAsync(this.sessionKey);
+            var session = this.client.GetByKeyAsync(this.sessionKey);
 
             var players = session.Result.Users;
             foreach (var player in players)
@@ -203,7 +202,7 @@ namespace PlanningPoker.App.ViewModels
 
             Debug.WriteLine("Load votes clicked");
 
-            this.currentRound = this.repository.GetCurrentRound(this.sessionKey).Result;
+            this.currentRound = this.client.GetCurrentRound(this.sessionKey).Result;
             var votes = this.currentRound.Votes;
 
             this.VotesToCards(votes);
@@ -240,7 +239,7 @@ namespace PlanningPoker.App.ViewModels
         {
             Debug.WriteLine("Updating Item Title");
 
-            var title = this.repository.GetCurrentItem(this.sessionKey).Result.Title;
+            var title = this.client.GetCurrentItem(this.sessionKey).Result.Title;
             // This requires AuthToken
 
             // Correct = title;
@@ -251,7 +250,7 @@ namespace PlanningPoker.App.ViewModels
         private void ShouldShowVotes()
         {
             Debug.WriteLine("Pulling");
-            var currentVotes = this.repository.GetCurrentRound(this.sessionKey).Result.Votes;
+            var currentVotes = this.client.GetCurrentRound(this.sessionKey).Result.Votes;
             var result = (currentVotes.Count == this.Players.Count);
 
             if (result)

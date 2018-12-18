@@ -77,8 +77,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<ItemDTO> NextItemAsync(string sessionKey)
         {
-            var response = await this.httpClient
-                .PostAsJsonAsync($"{this.url}api/session/{sessionKey}/item/next", "").ConfigureAwait(false);
+            var response = await this.httpClient.PostAsJsonAsync($"{this.url}api/session/{sessionKey}/item/next", string.Empty).ConfigureAwait(false);
 
             var result = JsonConvert.DeserializeObject<ItemDTO>(response.Content.ReadAsStringAsync().Result);
 
