@@ -41,7 +41,6 @@ namespace PlanningPoker.WebApi
             services.AddScoped<IPlanningPokerContext, PlanningPokerContext>();
             services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddScoped<ISummaryRepository, SummaryRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPlanningPokerContext, PlanningPokerContext>();
 
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "PlanningPoker API", Version = "v1" }));

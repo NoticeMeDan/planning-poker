@@ -24,7 +24,7 @@ namespace PlanningPoker.App.ViewModels
 
         private string key;
 
-        private JoinHelper joinCommander;
+        private JoinHelper joinHelper;
 
         public ICommand Join { get; }
 
@@ -38,7 +38,7 @@ namespace PlanningPoker.App.ViewModels
             this.BaseTitle = "Login";
             this.LoginCommand = new Command(async () => await this.ExecuteLoginCommand());
             this.User = this.CreateGuestUserDTO();
-            this.Join = new RelayCommand(_ => this.ExecuteJoinCommand());
+            this.Join = new RelayCommand(async _ => await this.ExecuteJoinCommand());
         }
 
         public async Task<bool> ExecuteLoginCommand()
@@ -75,17 +75,17 @@ namespace PlanningPoker.App.ViewModels
             };
         }
 
-        private void ExecuteJoinCommand()
+        private async Task ExecuteJoinCommand()
         {
             this.User.Nickname = this.nickname;
 
-            this.joinCommander = new JoinHelper(this.client, this.key, this.User);
+            this.joinHelper = new JoinHelper(this.client, this.key, this.User);
 
-            this.joinCommander.Join.Execute(null);
+            await this.joinHelper.Join();
 
-            this.Key = this.joinCommander.Key;
+            this.Key = this.joinHelper.Key;
 
-            this.settings.Token = this.joinCommander.Token;
+            Application.Current.Properties["token"] = this.joinHelper.Token;
         }
 
         public string Nickname

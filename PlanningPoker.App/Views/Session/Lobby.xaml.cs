@@ -1,13 +1,16 @@
 namespace PlanningPoker.App.Views.Session
 {
     using System;
+    using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
+    using OpenJobScheduler;
     using PlanningPoker.App.ViewModels;
     using Xamarin.Forms;
 
     public partial class Lobby : ContentPage
     {
         private LobbyViewModel lobbyViewModel;
+        private JobScheduler jobScheduler;
 
         public Lobby(string sessionKey)
         {
@@ -19,10 +22,11 @@ namespace PlanningPoker.App.Views.Session
             this.lobbyViewModel.Title = sessionKey;
         }
 
-        private void BeginSessionClicked(object sender, EventArgs e)
+        private async Task BeginSessionClicked()
         {
+            this.jobScheduler.Stop();
             this.lobbyViewModel.StopFetchingUsers.Execute(null);
-            this.Navigation.PushModalAsync(new Session());
+            await this.Navigation.PushModalAsync(new NavigationPage(new Session()));
         }
 
         protected override void OnAppearing()
@@ -30,15 +34,22 @@ namespace PlanningPoker.App.Views.Session
             this.lobbyViewModel.Users.Clear();
             this.lobbyViewModel.Items.Clear();
             this.lobbyViewModel.GetUsersCommand.Execute(null);
+            this.StartCheckSessionThread();
             base.OnAppearing();
         }
 
-        protected override void OnDisappearing()
+        private void StartCheckSessionThread()
         {
-            this.lobbyViewModel.Users.Clear();
-            this.lobbyViewModel.Items.Clear();
-            this.lobbyViewModel.JobScheduler.Stop();
-            base.OnDisappearing();
+            this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(2), new Action(async () => { await this.CheckSessionStatus(); }));
+            this.jobScheduler.Start();
+        }
+
+        private async Task CheckSessionStatus()
+        {
+            if (await this.lobbyViewModel.CheckSessionStatus() != null)
+            {
+                await this.BeginSessionClicked();
+            }
         }
     }
 }
