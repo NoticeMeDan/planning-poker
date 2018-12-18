@@ -84,6 +84,7 @@ namespace PlanningPoker.WebApi.Controllers
             return new UserStateResponseDTO { Token = this.userStateManager.CreateState(newUser.Id, sessionKey) };
         }
 
+        [Authorize]
         [HttpPost("{sessionKey}/item/round/next")]
         public async Task<ActionResult<RoundDTO>> NextRound([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey)
         {
@@ -106,13 +107,7 @@ namespace PlanningPoker.WebApi.Controllers
                 return this.BadRequest();
             }
 
-            var updatedItem = currentItem.ValueOrDefault();
-            var newRound = new RoundDTO { Votes = new List<VoteDTO>() };
-
-            updatedItem.Rounds.Add(newRound);
-            session.Items[session.Items.FindIndex(item => item.Id == updatedItem.Id)] = updatedItem;
-
-            await this.sessionRepository.UpdateAsync(EntityMapper.ToSessionCreateUpdateDto(session));
+            var newRound = this.sessionRepository.AddRoundToSessionItem(currentItem.ValueOrDefault().Id);
 
             return newRound;
         }
@@ -167,11 +162,9 @@ namespace PlanningPoker.WebApi.Controllers
                 return this.BadRequest();
             }
 
-            nextItem.Rounds.Add(new RoundDTO { Votes = new List<VoteDTO>() });
-            session.Items[session.Items.FindIndex(item => item.Id == nextItem.Id)] = nextItem;
+            var newRound = this.sessionRepository.AddRoundToSessionItem(nextItem.Id);
 
-            await this.sessionRepository.UpdateAsync(EntityMapper.ToSessionCreateUpdateDto(session));
-
+            nextItem.Rounds.Add(newRound);
             return nextItem;
         }
 
@@ -248,15 +241,11 @@ namespace PlanningPoker.WebApi.Controllers
                 return this.StatusCode(404, "Active Round not found");
             }
 
-            var updatedItem = currentItem.ValueOrDefault();
-            var updatedRound = currentRound.ValueOrDefault();
-            var userState = this.userStateManager.GetState(authToken).ValueOrDefault();
+            var userState = this.userStateManager.GetState(authToken.Replace("Bearer ", string.Empty)).ValueOrDefault();
 
-            updatedRound.Votes.Add(new VoteDTO { Estimate = vote.Estimate, UserId = userState.Id });
-            updatedItem.Rounds.ToList()[updatedItem.Rounds.ToList().FindIndex(round => round.Id == updatedRound.Id)] = updatedRound;
-            session.Items[session.Items.FindIndex(item => item.Id == updatedItem.Id)] = updatedItem;
-
-            await this.sessionRepository.UpdateAsync(EntityMapper.ToSessionCreateUpdateDto(session));
+            this.sessionRepository.AddVoteToRound(
+                    new VoteCreateUpdateDTO { Estimate = vote.Estimate, UserId = userState.Id },
+                    currentRound.ValueOrDefault().Id);
 
             return this.Ok();
         }
