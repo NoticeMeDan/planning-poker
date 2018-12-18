@@ -7,11 +7,11 @@ namespace PlanningPoker.App.Views.Session
 
     public partial class Summary : ContentPage
     {
-        private readonly SummaryViewModel ViewModel;
+        private readonly SummaryViewModel viewModel;
 
         public Summary()
         {
-            this.BindingContext = this.ViewModel =
+            this.BindingContext = this.viewModel =
                (Application.Current as App)?.Container.GetRequiredService<SummaryViewModel>();
 
             this.InitializeComponent();
@@ -19,9 +19,6 @@ namespace PlanningPoker.App.Views.Session
 
         private void EstimateItem_Clicked(object sender, EventArgs e)
         {
-            //ViewModel.Estimate(Votes.GetEstimate());
-
-            //This should get the current vote
             this.Navigation.PushAsync(new Summary());
         }
     }

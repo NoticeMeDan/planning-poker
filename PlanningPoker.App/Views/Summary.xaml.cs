@@ -1,15 +1,8 @@
 namespace PlanningPoker.App.Views
 {
     using Microsoft.Extensions.DependencyInjection;
-    using PlanningPoker.App.ViewModels;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
+    using ViewModels;
     using Xamarin.Forms;
-    using Xamarin.Forms.Xaml;
 
     public partial class Summary : ContentPage
     {
@@ -17,11 +10,10 @@ namespace PlanningPoker.App.Views
 
         public Summary(int sessionId)
         {
-
             this.BindingContext = this.summaryViewModel =
                 (Application.Current as App)?.Container.GetRequiredService<SummaryViewModel>();
 
-            this.summaryViewModel.sessionId = sessionId;
+            this.summaryViewModel.SessionId = sessionId;
 
             this.InitializeComponent();
         }

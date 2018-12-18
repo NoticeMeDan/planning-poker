@@ -11,7 +11,6 @@ namespace PlanningPoker.App.Views.Session
 
         public Session()
         {
-            //TODO change argument to input from Session(string key)
             this.BindingContext = this.viewModel =
                 (Application.Current as App)?.Container.GetRequiredService<SessionViewModel>();
 
@@ -50,4 +49,3 @@ namespace PlanningPoker.App.Views.Session
         }
     }
 }
-

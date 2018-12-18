@@ -14,12 +14,39 @@ namespace PlanningPoker.App.ViewModels
     public class SessionViewModel : BaseViewModel
     {
         private readonly ISessionClient client;
-        private SessionDTO session;
         private readonly string sessionKey;
         private string currentItemTitle;
-        private string token;
         private JobScheduler jobScheduler;
         private RoundDTO currentRound;
+
+        public SessionViewModel(ISessionClient client)
+        {
+            this.client = client;
+
+            // TODO: Get sessionkey from constructor argument
+            this.sessionKey = "B2NH14M";
+            this.BaseTitle = "Session: " + this.sessionKey;
+            this.CurrentItemTitle = string.Empty;
+            this.currentRound = null;
+
+            // Lists
+            this.Players = new ObservableCollection<UserDTO>();
+            this.Votes = new ObservableCollection<VoteDTO>();
+            this.VoteCards = new ObservableCollection<Card>();
+
+            // Setup
+            this.LoadSessionCommand = new RelayCommand(async _ => await this.ExecuteLoadSessionCommand());
+            this.LoadVotesCommand = new RelayCommand(async _ => await this.ExecuteLoadVotesCommand());
+            this.RevoteCommand = new RelayCommand(async _ => await this.ExecuteRevoteCommand());
+            this.NextItemCommand = new RelayCommand(async _ => await this.ExecuteNextItemCommand());
+            this.SendVoteCommand = new RelayCommand(async number => await this.ExecuteSendVoteCommand(number));
+            this.SendNitpickerCommand = new RelayCommand(_ => this.ExecuteNitpickerCommand());
+
+            // Threads
+            this.StopThreadsCommand = new RelayCommand(_ => this.ExecuteStopThreadsCommand());
+            this.StartVotesPull = new RelayCommand(_ => this.ExecuteStartVotesPull());
+            this.StartRoundsPull = new RelayCommand(_ => this.ExecuteStartRoundsPull());
+        }
 
         public ObservableCollection<UserDTO> Players { get; set; }
 
@@ -29,7 +56,7 @@ namespace PlanningPoker.App.ViewModels
 
         public ICommand RevoteCommand { get; }
 
-        public ICommand NextItemCommand { get;  }
+        public ICommand NextItemCommand { get; }
 
         public ICommand LoadSessionCommand { get; }
 
@@ -46,42 +73,16 @@ namespace PlanningPoker.App.ViewModels
 
         public ICommand StopThreadsCommand { get; }
 
-        public SessionViewModel(ISessionClient client)
+        public string CurrentItemTitle
         {
-            this.client = client;
-
-            // TODO: Get sessionkey from constructor argument
-            this.sessionKey = "FEPNMVN";
-            this.BaseTitle = "Session: " + this.sessionKey;
-            this.CurrentItemTitle = string.Empty;
-            this.currentRound = null;
-
-
-            // Lists
-            this.Players = new ObservableCollection<UserDTO>();
-            this.Votes = new ObservableCollection<VoteDTO>();
-            this.VoteCards = new ObservableCollection<Card>();
-
-            // Setup
-            this.LoadSessionCommand = new RelayCommand(async _ => await this.ExecuteLoadSessionCommand());
-            this.LoadVotesCommand = new RelayCommand(async _ => await this.ExecuteLoadVotesCommand());
-            this.RevoteCommand = new RelayCommand(async _ => await this.ExecuteRevoteCommand());
-            this.NextItemCommand = new RelayCommand(async _ =>  await this.ExecuteNextItemCommand());
-            this.SendVoteCommand = new RelayCommand(async number => await this.ExecuteSendVoteCommand(number));
-            this.SendNitpickerCommand = new RelayCommand(async _ => await this.ExecuteNitpickerCommand());
-
-            // Threads
-            this.StopThreadsCommand = new RelayCommand(_ => this.ExecuteStopThreadsCommand());
-            this.StartVotesPull = new RelayCommand(async _ => await this.ExecuteStartVotesPull());
-            this.StartRoundsPull = new RelayCommand(_ => this.ExecuteStartRoundsPull());
-
-            // Initialize Session
-
+            get => this.currentItemTitle;
+            set => this.SetProperty(ref this.currentItemTitle, value);
         }
 
         private void ExecuteStartRoundsPull()
         {
-            this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(5), new Action(async () => await this.FetchRounds()));
+            this.jobScheduler =
+                new JobScheduler(TimeSpan.FromSeconds(5), new Action(async () => await this.FetchRounds()));
             this.jobScheduler.Start();
         }
 
@@ -94,21 +95,17 @@ namespace PlanningPoker.App.ViewModels
                 this.currentRound = round;
                 this.ExecuteStopThreadsCommand();
                 await this.SetCurrentTitle();
-                await this.ExecuteStartVotesPull();
+                this.ExecuteStartVotesPull();
             }
         }
 
-        private async Task ExecuteStartVotesPull()
+        private void ExecuteStartVotesPull()
         {
-            this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(5), new Action(async () => await this.ShouldShowVotes()));
+            this.jobScheduler = new JobScheduler(
+                TimeSpan.FromSeconds(5),
+                new Action(async () => await this.ShouldShowVotes()));
 
             this.jobScheduler.Start();
-        }
-
-        public string CurrentItemTitle
-        {
-            get => this.currentItemTitle;
-            set => this.SetProperty(ref this.currentItemTitle, value);
         }
 
         /*
@@ -162,12 +159,13 @@ namespace PlanningPoker.App.ViewModels
             this.IsBusy = true;
 
             Debug.WriteLine("SendVote clicked");
+
             // cast to int.
             var voteEstimate = int.Parse(number.ToString());
             Debug.WriteLine(voteEstimate);
 
             // Call repository.Vote with new VoteDTO
-            await this.client?.Vote(this.sessionKey, new VoteDTO {Estimate = voteEstimate});
+            await this.client?.Vote(this.sessionKey, new VoteDTO { Estimate = voteEstimate });
 
             this.IsBusy = false;
         }
@@ -210,6 +208,7 @@ namespace PlanningPoker.App.ViewModels
             {
                 return;
             }
+
             this.ExecuteStopThreadsCommand();
 
             this.IsBusy = true;
@@ -237,13 +236,12 @@ namespace PlanningPoker.App.ViewModels
                 }
             });
 
-
             this.IsBusy = false;
 
             this.ExecuteStartRoundsPull();
         }
 
-        private async Task ExecuteNitpickerCommand()
+        private void ExecuteNitpickerCommand()
         {
             if (this.IsBusy)
             {
@@ -271,11 +269,8 @@ namespace PlanningPoker.App.ViewModels
             Debug.WriteLine("Updating Item Title");
 
             var title = await this.client.GetCurrentItem(this.sessionKey);
-            // This requires AuthToken
 
-            // Correct = title;
             this.CurrentItemTitle = title.Title;
-            // Debug.WriteLine(title);
         }
 
         private async Task ShouldShowVotes()
@@ -283,7 +278,7 @@ namespace PlanningPoker.App.ViewModels
             this.ExecuteStopThreadsCommand();
             Debug.WriteLine("Pulling");
             var currentVotes = await this.client.GetCurrentRound(this.sessionKey);
-            var result = (currentVotes.Votes.Count == this.Players.Count);
+            var result = currentVotes.Votes.Count == this.Players.Count;
 
             if (result)
             {
@@ -291,7 +286,7 @@ namespace PlanningPoker.App.ViewModels
             }
             else
             {
-                await this.ExecuteStartVotesPull();
+                this.ExecuteStartVotesPull();
             }
         }
 
@@ -304,52 +299,20 @@ namespace PlanningPoker.App.ViewModels
                 {
                     if (vote.UserId == user.Id)
                     {
-                        var card = (new Card {Name = user.Nickname, Estimate = vote.Estimate});
+                        var card = new Card { Name = user.Nickname, Estimate = vote.Estimate };
                         cards.Add(card);
-                        //this.VoteCards.Add(card);
                     }
                 }
             }
+
             return cards;
         }
 
-        // Mock data to test view bindings.
-        private static ObservableCollection<UserDTO> PlayersMockData()
+        public class Card
         {
-            var data = new ObservableCollection<UserDTO>();
-            var userOne = new UserDTO {Nickname = "Vidr", Id = 1};
-            var userTwo = new UserDTO {Nickname = "alol", Id = 2};
-            var userThree = new UserDTO {Nickname = "olju", Id = 3};
+            public string Name { get; set; }
 
-            data.Add(userOne);
-
-            data.Add(userTwo);
-
-            data.Add(userThree);
-
-            return data;
+            public int Estimate { get; set; }
         }
-
-        private static ObservableCollection<VoteDTO> VotesMockData()
-        {
-            var data = new ObservableCollection<VoteDTO>();
-
-            var voteOne = new VoteDTO {Estimate = 1, UserId = 1};
-            var voteTwo = new VoteDTO {Estimate = 3, UserId = 2};
-            var voteThree = new VoteDTO {Estimate = 2, UserId = 3};
-
-            data.Add(voteOne);
-            data.Add(voteTwo);
-            data.Add(voteThree);
-
-            return data;
-        }
-    }
-
-    public class Card
-    {
-        public string Name { get; set; }
-
-        public int Estimate { get; set; }
     }
 }

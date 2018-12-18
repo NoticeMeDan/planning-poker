@@ -13,12 +13,6 @@ namespace PlanningPoker.App.ViewModels
 
         private readonly ISessionClient client;
 
-        public ICommand Join { get; }
-
-        public string Key { get; set; }
-
-        public string Token { get; set; }
-
         public JoinHelper(ISessionClient client, string key, UserCreateDTO user)
         {
             this.Key = key;
@@ -26,6 +20,12 @@ namespace PlanningPoker.App.ViewModels
             this.client = client;
             this.Join = new RelayCommand(async _ => await this.ExecuteJoinCommand());
         }
+
+        public ICommand Join { get; }
+
+        public string Key { get; set; }
+
+        public string Token { get; set; }
 
         public bool Loading { get; private set; }
 
