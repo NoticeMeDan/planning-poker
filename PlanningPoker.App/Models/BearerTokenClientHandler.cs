@@ -33,7 +33,7 @@ namespace PlanningPoker.App.Models
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", result.AccessToken);
             }
 
-            request.Headers.Add("PPAuthorization", "Bearer 4a83c928-5c40-4dc9-9567-c45df78514ea");
+            request.Headers.Add("PPAuthorization", "Bearer fd578a16-0fcd-4143-9a00-08d1ec0c47fb");
             /*request.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", "Your Oauth token");*/
 

@@ -33,7 +33,7 @@
         <!-- List over the chosen estimate by players -->
         <Label Text="Votes:" Margin="10"/>
         <controls:FlowListView
-            FlowColumnCount="6" SeparatorVisibility="None" HasUnevenRows="false"
+            FlowColumnCount="4" SeparatorVisibility="None" HasUnevenRows="true"
             FlowItemsSource="{Binding VoteCards, Mode=Default}"
             IsPullToRefreshEnabled="true"
             RefreshCommand="{Binding LoadVotesCommand}"
@@ -45,10 +45,10 @@
                     <StackLayout BackgroundColor="Chocolate"
                                  >
                         <Label TextColor="White" HorizontalOptions="Fill" VerticalOptions="Fill"
-                               XAlign="Center" YAlign="Start" Text="{Binding Name, Mode=TwoWay}"/>
-                        <Label />
+                               XAlign="Center" YAlign="Center" Text="{Binding Name, Mode=TwoWay}"/>
+                        
                         <Label TextColor="White" HorizontalOptions="Fill" VerticalOptions="Fill"
-                               XAlign="Center" YAlign="End" Text="{Binding Estimate, Mode=TwoWay}"/>
+                               XAlign="Center" YAlign="Center" Text="{Binding Estimate, Mode=TwoWay}"/>
                     </StackLayout>
                 </DataTemplate>
             </controls:FlowListView.FlowColumnTemplate>

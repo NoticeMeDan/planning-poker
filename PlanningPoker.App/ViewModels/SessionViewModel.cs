@@ -53,7 +53,7 @@ namespace PlanningPoker.App.ViewModels
             this.client = client;
 
             // TODO: Get sessionkey from constructor argument
-            this.sessionKey = "YV2V7B0";
+            this.sessionKey = "FEPNMVN";
             this.BaseTitle = "Session: " + this.sessionKey;
             this.CurrentItemTitle = string.Empty;
             this.currentRound = null;
