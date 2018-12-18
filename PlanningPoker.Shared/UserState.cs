@@ -1,4 +1,4 @@
-namespace PlanningPoker.WebApi.Security
+namespace PlanningPoker.Shared
 {
     public class UserState
     {
