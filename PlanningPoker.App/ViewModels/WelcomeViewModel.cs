@@ -24,8 +24,6 @@ namespace PlanningPoker.App.ViewModels
 
         private string key;
 
-        public string token;
-
         private JoinHelper joinHelper;
 
         public ICommand Join { get; }

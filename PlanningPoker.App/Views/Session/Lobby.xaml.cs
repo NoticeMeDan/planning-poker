@@ -11,7 +11,7 @@ namespace PlanningPoker.App.Views.Session
     public partial class Lobby : ContentPage
     {
         private LobbyViewModel lobbyViewModel;
-        private JobScheduler JobScheduler;
+        private JobScheduler jobScheduler;
 
         public Lobby(string sessionKey)
         {
@@ -25,7 +25,7 @@ namespace PlanningPoker.App.Views.Session
 
         private void BeginSessionClicked(object sender, EventArgs e)
         {
-            this.JobScheduler.Stop();
+            this.jobScheduler.Stop();
             this.lobbyViewModel.StopFetchingUsers.Execute(null);
             this.Navigation.PushModalAsync(new NavigationPage(new Session()));
         }
@@ -41,7 +41,7 @@ namespace PlanningPoker.App.Views.Session
 
         protected override void OnDisappearing()
         {
-            this.JobScheduler.Stop();
+            this.jobScheduler.Stop();
             this.lobbyViewModel.Users.Clear();
             this.lobbyViewModel.Items.Clear();
             this.lobbyViewModel.JobScheduler.Stop();
@@ -50,15 +50,14 @@ namespace PlanningPoker.App.Views.Session
 
         private void StartCheckSessionThread()
         {
-            this.JobScheduler = new JobScheduler(TimeSpan.FromSeconds(2), new Action(async () => { await this.CheckSessionStatus(); }));
-            this.JobScheduler.Start();
+            this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(2), new Action(async () => { await this.CheckSessionStatus(); }));
+            this.jobScheduler.Start();
         }
 
         private async Task CheckSessionStatus()
         {
             if (await this.lobbyViewModel.CheckSessionStatus() != null)
             {
-                Debug.WriteLine("HALLLOOO!!!!!");
                 this.BeginSessionClicked(null, null);
             }
         }

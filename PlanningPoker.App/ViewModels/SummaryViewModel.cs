@@ -1,26 +1,16 @@
 namespace PlanningPoker.App.ViewModels
 {
-    using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Diagnostics;
-    using System.Text;
     using System.Threading.Tasks;
     using System.Windows.Input;
     using PlanningPoker.App.Models;
-    using PlanningPoker.App.Views;
     using PlanningPoker.Shared;
-    using Xamarin.Forms;
 
     public class SummaryViewModel : BaseViewModel
     {
-
         private readonly ISummaryClient summaryClient;
 
-        private string title;
-        private int estimate;
-
-        public int sessionId { get; set; }
+        public int SessionId { get; set; }
 
         public SummaryViewModel(ISummaryClient summaryClient)
         {
@@ -48,7 +38,7 @@ namespace PlanningPoker.App.ViewModels
 
             this.Items.Clear();
 
-            var summary = await this.summaryClient.FindBySessionIdAsync(this.sessionId);
+            var summary = await this.summaryClient.FindBySessionIdAsync(this.SessionId);
 
             foreach (var s in summary.ItemEstimates)
             {

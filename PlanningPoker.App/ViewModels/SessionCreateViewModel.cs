@@ -95,7 +95,7 @@ namespace PlanningPoker.App.ViewModels
             if (result != null)
             {
                 this.Key = result.SessionKey;
-                this.JoinSession();
+                await this.JoinSession();
             }
 
             this.IsBusy = false;

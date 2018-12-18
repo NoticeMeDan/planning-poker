@@ -13,7 +13,7 @@ namespace PlanningPoker.App.Models
     {
         private readonly IPublicClientApplication publicClientApplication;
         private readonly IReadOnlyCollection<string> scopes;
-        private ISettings settings;
+        private readonly ISettings settings;
 
         public BearerTokenClientHandler(IPublicClientApplication publicClientApplication, ISettings settings)
         {
@@ -33,11 +33,11 @@ namespace PlanningPoker.App.Models
                 var result = await this.publicClientApplication.AcquireTokenSilentAsync(this.scopes, firstAccount);
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", result.AccessToken);
             }
+
             if (Application.Current.Properties.ContainsKey("token"))
             {
                 request.Headers.Add("PPAuthorization", Application.Current.Properties["token"] as string);
             }
-            
 
             return await base.SendAsync(request, cancellationToken);
         }

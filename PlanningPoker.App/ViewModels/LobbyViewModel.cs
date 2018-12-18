@@ -3,9 +3,7 @@ namespace PlanningPoker.App.ViewModels
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Diagnostics;
     using System.Linq;
-    using System.Threading;
     using System.Threading.Tasks;
     using System.Windows.Input;
     using OpenJobScheduler;
@@ -40,6 +38,11 @@ namespace PlanningPoker.App.ViewModels
             this.StopFetchingUsers = new RelayCommand(_ => this.ExecuteKillThread());
         }
 
+        public async Task<ItemDTO> CheckSessionStatus()
+        {
+            return await this.repository.GetCurrentItem(this.Key);
+        }
+
         private void ExecuteKillThread()
         {
             this.JobScheduler.Stop();
@@ -64,16 +67,9 @@ namespace PlanningPoker.App.ViewModels
 
             this.UpdateItemCollection(this.session.Items);
 
-            await this.CheckSessionStatus();
-
             this.UpdateUserCollection(this.session.Users);
 
             this.loading = false;
-        }
-
-        public async Task<ItemDTO> CheckSessionStatus()
-        {
-            return await this.repository.GetCurrentItem(this.Key);
         }
 
         private void UpdateItemCollection(List<ItemDTO> items)
