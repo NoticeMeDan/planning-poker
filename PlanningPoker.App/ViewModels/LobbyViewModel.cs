@@ -3,6 +3,7 @@ namespace PlanningPoker.App.ViewModels
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.ComponentModel;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -19,9 +20,13 @@ namespace PlanningPoker.App.ViewModels
         private string key;
         private string title;
 
+        public bool Started;
+
         public ObservableCollection<UserDTO> Users { get; set; }
 
         public ICommand GetUsersCommand { get; }
+
+        public ICommand IsStartedCommand { get; }
 
         public ICommand StopFetchingUsers { get; }
 
@@ -30,7 +35,9 @@ namespace PlanningPoker.App.ViewModels
             this.repository = client;
             this.Users = new ObservableCollection<UserDTO>();
             this.GetUsersCommand = new RelayCommand(_ => this.ExecuteGetUsersCommand());
+            this.IsStartedCommand = new RelayCommand(_ => this.ExecuteIsStartedCommand());
             this.StopFetchingUsers = new RelayCommand(_ => this.ExecuteKillThread());
+            this.Started = false;
         }
 
         private void ExecuteKillThread()
@@ -41,6 +48,12 @@ namespace PlanningPoker.App.ViewModels
         private void ExecuteGetUsersCommand()
         {
             this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(5), new Action(async () => { await this.FetchUsers(); }));
+            this.jobScheduler.Start();
+        }
+
+        private void ExecuteIsStartedCommand()
+        {
+            this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(5), new Action(async () => { await this.IsStarted(); }));
             this.jobScheduler.Start();
         }
 
@@ -63,6 +76,26 @@ namespace PlanningPoker.App.ViewModels
             {
                 this.Users.Clear();
                 this.Title = "No session found...";
+                this.jobScheduler.Stop();
+            }
+
+            this.loading = false;
+        }
+
+        private async Task IsStarted()
+        {
+            if (this.loading)
+            {
+                return;
+            }
+
+            this.loading = true;
+
+            var item = await this.repository.GetCurrentItem(this.Key);
+
+            if (item != null)
+            {
+                this.Started = true;
                 this.jobScheduler.Stop();
             }
 
