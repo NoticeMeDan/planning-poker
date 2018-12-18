@@ -9,6 +9,7 @@ namespace PlanningPoker.App.ViewModels
     using OpenJobScheduler;
     using PlanningPoker.App.Models;
     using PlanningPoker.Shared;
+    using Xamarin.Forms;
 
     public class LobbyViewModel : BaseViewModel
     {
@@ -40,7 +41,13 @@ namespace PlanningPoker.App.ViewModels
 
         public async Task<ItemDTO> CheckSessionStatus()
         {
-            return await this.repository.GetCurrentItem(this.Key);
+            var currentItem = await this.repository.GetCurrentItem(this.Key);
+            if (currentItem != null)
+            {
+                this.loading = true;
+            }
+
+            return currentItem;
         }
 
         public async Task FetchUsers()
@@ -54,9 +61,19 @@ namespace PlanningPoker.App.ViewModels
 
             this.session = await this.repository.GetByKeyAsync(this.Key);
 
-            this.UpdateItemCollection(this.session.Items);
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                try
+                {
+                    this.UpdateItemCollection(this.session.Items);
 
-            this.UpdateUserCollection(this.session.Users);
+                    this.UpdateUserCollection(this.session.Users);
+                }
+                catch (Exception e)
+                {
+                    e.ToString();
+                }
+            });
 
             this.loading = false;
         }
@@ -86,7 +103,10 @@ namespace PlanningPoker.App.ViewModels
 
         private void ExecuteKillThread()
         {
-            this.JobScheduler.Stop();
+            if (this.JobScheduler != null)
+            {
+                this.JobScheduler.Stop();
+            }
         }
 
         private void ExecuteGetUsersCommand()

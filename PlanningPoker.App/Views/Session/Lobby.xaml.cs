@@ -1,7 +1,6 @@
 namespace PlanningPoker.App.Views.Session
 {
     using System;
-    using System.Diagnostics;
     using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
     using OpenJobScheduler;
@@ -23,28 +22,25 @@ namespace PlanningPoker.App.Views.Session
             this.lobbyViewModel.Title = sessionKey;
         }
 
-        private void BeginSessionClicked(object sender, EventArgs e)
+        private async Task BeginSessionClicked()
         {
             this.jobScheduler.Stop();
             this.lobbyViewModel.StopFetchingUsers.Execute(null);
-            this.Navigation.PushModalAsync(new NavigationPage(new Session()));
+            await this.Navigation.PushModalAsync(new NavigationPage(new Session()));
         }
 
         protected override void OnAppearing()
         {
-            this.StartCheckSessionThread();
             this.lobbyViewModel.Users.Clear();
             this.lobbyViewModel.Items.Clear();
             this.lobbyViewModel.GetUsersCommand.Execute(null);
+            this.StartCheckSessionThread();
             base.OnAppearing();
         }
 
         protected override void OnDisappearing()
         {
-            this.jobScheduler.Stop();
-            this.lobbyViewModel.Users.Clear();
-            this.lobbyViewModel.Items.Clear();
-            this.lobbyViewModel.JobScheduler.Stop();
+
             base.OnDisappearing();
         }
 
@@ -58,7 +54,7 @@ namespace PlanningPoker.App.Views.Session
         {
             if (await this.lobbyViewModel.CheckSessionStatus() != null)
             {
-                this.BeginSessionClicked(null, null);
+                await this.BeginSessionClicked();
             }
         }
     }
