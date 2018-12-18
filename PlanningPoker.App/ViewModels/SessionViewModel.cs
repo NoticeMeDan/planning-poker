@@ -1,4 +1,5 @@
-using System.Threading.Tasks;
+using System.Linq;
+using Xamarin.Forms;
 
 namespace PlanningPoker.App.ViewModels
 {
@@ -6,7 +7,7 @@ namespace PlanningPoker.App.ViewModels
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
-    using System.Net.Http;
+    using System.Threading.Tasks;
     using System.Windows.Input;
     using Models;
     using OpenJobScheduler;
@@ -52,7 +53,7 @@ namespace PlanningPoker.App.ViewModels
             this.client = client;
 
             // TODO: Get sessionkey from constructor argument
-            this.sessionKey = "N99HL5Y";
+            this.sessionKey = "YV2V7B0";
             this.BaseTitle = "Session: " + this.sessionKey;
             this.CurrentItemTitle = string.Empty;
             this.currentRound = null;
@@ -61,19 +62,19 @@ namespace PlanningPoker.App.ViewModels
             // Lists
             this.Players = new ObservableCollection<UserDTO>();
             this.Votes = new ObservableCollection<VoteDTO>();
-            this.VoteCards = new ObservableCollection<Card>();
+            this.VoteCards = new ObservableCollection<Card> {new Card {Name = "TestBoiiii", Estimate = 42}};
 
             // Setup
-            this.LoadSessionCommand = new RelayCommand(_ => this.ExecuteLoadSessionCommand());
-            this.LoadVotesCommand = new RelayCommand(_ => this.ExecuteLoadVotesCommand());
-            this.RevoteCommand = new RelayCommand(_ => this.ExecuteRevoteCommand());
-            this.NextItemCommand = new RelayCommand(async _ => await this.ExecuteNextItemCommand());
-            this.SendVoteCommand = new RelayCommand(this.ExecuteSendVoteCommand);
-            this.SendNitpickerCommand = new RelayCommand(_ => this.ExecuteNitpickerCommand());
+            this.LoadSessionCommand = new RelayCommand(async _ => await this.ExecuteLoadSessionCommand());
+            this.LoadVotesCommand = new RelayCommand(async _ => await this.ExecuteLoadVotesCommand());
+            this.RevoteCommand = new RelayCommand(async _ => await this.ExecuteRevoteCommand());
+            this.NextItemCommand = new RelayCommand(async _ =>  await this.ExecuteNextItemCommand());
+            this.SendVoteCommand = new RelayCommand(async number => await this.ExecuteSendVoteCommand(number));
+            this.SendNitpickerCommand = new RelayCommand(async _ => await this.ExecuteNitpickerCommand());
 
             // Threads
             this.StopThreadsCommand = new RelayCommand(_ => this.ExecuteStopThreadsCommand());
-            this.StartVotesPull = new RelayCommand(_ => this.ExecuteStartVotesPull());
+            this.StartVotesPull = new RelayCommand(async _ => await this.ExecuteStartVotesPull());
             this.StartRoundsPull = new RelayCommand(_ => this.ExecuteStartRoundsPull());
 
             // Initialize Session
@@ -82,25 +83,26 @@ namespace PlanningPoker.App.ViewModels
 
         private void ExecuteStartRoundsPull()
         {
-            this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(5), this.FetchRounds);
+            this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(5), new Action(async () => await this.FetchRounds()));
             this.jobScheduler.Start();
         }
 
-        private void FetchRounds()
+        private async Task FetchRounds()
         {
             var round = this.client.GetCurrentRound(this.sessionKey).Result;
 
-            if (round != this.currentRound)
+            if (round.Id != this.currentRound.Id)
             {
+                this.currentRound = round;
                 this.ExecuteStopThreadsCommand();
-                this.SetCurrentTitle();
-                this.ExecuteStartVotesPull();
+                await this.SetCurrentTitle();
+                await this.ExecuteStartVotesPull();
             }
         }
 
-        private void ExecuteStartVotesPull()
+        private async Task ExecuteStartVotesPull()
         {
-            this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(5), this.ShouldShowVotes);
+            this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(5), new Action(async () => await this.ShouldShowVotes()));
 
             this.jobScheduler.Start();
         }
@@ -122,16 +124,16 @@ namespace PlanningPoker.App.ViewModels
             }
 
             this.IsBusy = true;
-
+            this.VoteCards.Clear();
             Debug.WriteLine("Next Item clicked");
             await this.client.NextItemAsync(this.sessionKey);
-            this.SetCurrentTitle();
+            await this.SetCurrentTitle();
             Debug.WriteLine(this.currentItemTitle);
 
             this.IsBusy = false;
         }
 
-        private void ExecuteRevoteCommand()
+        private async Task ExecuteRevoteCommand()
         {
             if (this.IsBusy)
             {
@@ -142,7 +144,7 @@ namespace PlanningPoker.App.ViewModels
 
             Debug.WriteLine("Revote clicked");
 
-            this.client.NextRoundAsync(this.sessionKey).Wait();
+            await this.client.NextRoundAsync(this.sessionKey);
 
             // Resets votes because there are none in a new round
             this.LoadVotesCommand.Execute(null);
@@ -150,7 +152,7 @@ namespace PlanningPoker.App.ViewModels
             this.IsBusy = false;
         }
 
-        private void ExecuteSendVoteCommand(object number)
+        private async Task ExecuteSendVoteCommand(object number)
         {
             if (this.IsBusy)
             {
@@ -165,12 +167,12 @@ namespace PlanningPoker.App.ViewModels
             Debug.WriteLine(voteEstimate);
 
             // Call repository.Vote with new VoteDTO
-            this.client?.Vote(this.sessionKey, new VoteDTO {Estimate = voteEstimate});
+            await this.client?.Vote(this.sessionKey, new VoteDTO {Estimate = voteEstimate});
 
             this.IsBusy = false;
         }
 
-        private void ExecuteLoadSessionCommand()
+        private async Task ExecuteLoadSessionCommand()
         {
             if (this.IsBusy)
             {
@@ -180,39 +182,68 @@ namespace PlanningPoker.App.ViewModels
             this.IsBusy = true;
             Debug.WriteLine("LoadSession clicked");
 
-            var session = this.client.GetByKeyAsync(this.sessionKey);
+            var session = await this.client.GetByKeyAsync(this.sessionKey);
+            this.Players.Clear();
+            var players = session.Users;
 
-            var players = session.Result.Users;
-            foreach (var player in players)
+            Device.BeginInvokeOnMainThread(() =>
             {
-                this.Players.Add(player);
-            }
+                try
+                {
+                    foreach (var player in players)
+                    {
+                        this.Players.Add(player);
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.ToString();
+                }
+            });
 
             this.IsBusy = false;
         }
 
-        private void ExecuteLoadVotesCommand()
+        private async Task ExecuteLoadVotesCommand()
         {
             if (this.IsBusy)
             {
                 return;
             }
+            this.ExecuteStopThreadsCommand();
 
             this.IsBusy = true;
+            this.VoteCards.Clear();
 
             Debug.WriteLine("Load votes clicked");
 
-            this.currentRound = this.client.GetCurrentRound(this.sessionKey).Result;
+            this.currentRound = await this.client.GetCurrentRound(this.sessionKey);
             var votes = this.currentRound.Votes;
 
-            this.VotesToCards(votes);
+            ObservableCollection<Card> voteCards = this.VotesToCards(votes);
+
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                try
+                {
+                    foreach (var voteCard in voteCards)
+                    {
+                        this.VoteCards.Add(voteCard);
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.ToString();
+                }
+            });
+
 
             this.IsBusy = false;
 
             this.ExecuteStartRoundsPull();
         }
 
-        private void ExecuteNitpickerCommand()
+        private async Task ExecuteNitpickerCommand()
         {
             if (this.IsBusy)
             {
@@ -235,43 +266,51 @@ namespace PlanningPoker.App.ViewModels
          * Following are the methods called by the ExecuteCommands
          */
 
-        private void SetCurrentTitle()
+        private async Task SetCurrentTitle()
         {
             Debug.WriteLine("Updating Item Title");
 
-            var title = this.client.GetCurrentItem(this.sessionKey).Result.Title;
+            var title = await this.client.GetCurrentItem(this.sessionKey);
             // This requires AuthToken
 
             // Correct = title;
-            this.CurrentItemTitle = title;
+            this.CurrentItemTitle = title.Title;
             // Debug.WriteLine(title);
         }
 
-        private void ShouldShowVotes()
+        private async Task ShouldShowVotes()
         {
+            this.ExecuteStopThreadsCommand();
             Debug.WriteLine("Pulling");
-            var currentVotes = this.client.GetCurrentRound(this.sessionKey).Result.Votes;
-            var result = (currentVotes.Count == this.Players.Count);
+            var currentVotes = await this.client.GetCurrentRound(this.sessionKey);
+            var result = (currentVotes.Votes.Count == this.Players.Count);
 
             if (result)
             {
-                this.ExecuteStopThreadsCommand();
-                this.ExecuteLoadVotesCommand();
+                await this.ExecuteLoadVotesCommand();
+            }
+            else
+            {
+                await this.ExecuteStartVotesPull();
             }
         }
 
-        private void VotesToCards(ICollection<VoteDTO> votes)
+        private ObservableCollection<Card> VotesToCards(ICollection<VoteDTO> votes)
         {
+            var cards = new ObservableCollection<Card>();
             foreach (var vote in votes)
             {
                 foreach (var user in this.Players)
                 {
                     if (vote.UserId == user.Id)
                     {
-                        this.VoteCards.Add(new Card {Name = user.Nickname, Estimate = vote.Estimate});
+                        var card = (new Card {Name = user.Nickname, Estimate = vote.Estimate});
+                        cards.Add(card);
+                        //this.VoteCards.Add(card);
                     }
                 }
             }
+            return cards;
         }
 
         // Mock data to test view bindings.

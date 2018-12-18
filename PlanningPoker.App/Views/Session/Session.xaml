@@ -34,7 +34,7 @@
         <Label Text="Votes:" Margin="10"/>
         <controls:FlowListView
             FlowColumnCount="6" SeparatorVisibility="None" HasUnevenRows="false"
-            FlowItemsSource="{Binding VoteCards}"
+            FlowItemsSource="{Binding VoteCards, Mode=Default}"
             IsPullToRefreshEnabled="true"
             RefreshCommand="{Binding LoadVotesCommand}"
             IsRefreshing="{Binding IsBusy, Mode=OneWay}"
@@ -44,9 +44,9 @@
                 <DataTemplate>
                     <StackLayout>
                         <Label HorizontalOptions="Fill" VerticalOptions="Fill"
-                               XAlign="Center" YAlign="Center" Text="{Binding Name, Mode=TwoWay}"/>
+                               XAlign="Center" YAlign="Start" Text="{Binding Name, Mode=TwoWay}"/>
                         <Label HorizontalOptions="Fill" VerticalOptions="Fill"
-                               XAlign="Center" YAlign="Center" Text="{Binding Estimate, Mode=TwoWay}"/>
+                               XAlign="Center" YAlign="End" Text="{Binding Estimate, Mode=TwoWay}"/>
                     </StackLayout>
                 </DataTemplate>
             </controls:FlowListView.FlowColumnTemplate>
