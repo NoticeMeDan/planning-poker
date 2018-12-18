@@ -84,7 +84,7 @@ namespace PlanningPoker.WebApi.Controllers
             return new UserStateResponseDTO { Token = this.userStateManager.CreateState(newUser.Id, sessionKey) };
         }
 
-        // [Authorize]
+        [Authorize]
         [HttpPost("{sessionKey}/item/round/next")]
         public async Task<ActionResult<RoundDTO>> NextRound([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey)
         {
