@@ -22,11 +22,12 @@ namespace PlanningPoker.WebApi.Controllers
         private readonly UserStateManager userStateManager;
         private readonly ISummaryRepository summaryRepository;
 
-        public SessionController(ISessionRepository sessionRepo, IUserRepository userRepo, IMemoryCache cache)
+        public SessionController(ISessionRepository sessionRepo, IUserRepository userRepo, IMemoryCache cache, ISummaryRepository summaryRepo)
         {
             this.sessionRepository = sessionRepo;
             this.userRepository = userRepo;
             this.userStateManager = new UserStateManager(cache);
+            this.summaryRepository = summaryRepo;
         }
 
         // GET api/session/52A24B
