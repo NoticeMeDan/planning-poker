@@ -8,8 +8,6 @@ namespace PlanningPoker.App.Models
     {
         Task<SessionDTO> CreateAsync(SessionCreateUpdateDTO session);
 
-        Task<SessionDTO> FindAsync(int sessionId);
-
         Task<bool> UpdateAsync(SessionCreateUpdateDTO session);
 
         Task<SessionDTO> GetByKeyAsync(string key);
