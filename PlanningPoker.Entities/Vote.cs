@@ -9,5 +9,8 @@ namespace PlanningPoker.Entities
 
         [Required]
         public int Estimate { get; set; }
+
+        [Required]
+        public int RoundId { get; set; }
     }
 }
