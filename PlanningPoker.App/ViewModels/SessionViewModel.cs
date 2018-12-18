@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace PlanningPoker.App.ViewModels
 {
     using System;
@@ -66,7 +68,7 @@ namespace PlanningPoker.App.ViewModels
             this.LoadSessionCommand = new RelayCommand(_ => this.ExecuteLoadSessionCommand());
             this.LoadVotesCommand = new RelayCommand(_ => this.ExecuteLoadVotesCommand());
             this.RevoteCommand = new RelayCommand(_ => this.ExecuteRevoteCommand());
-            this.NextItemCommand = new RelayCommand(_ => this.ExecuteNextItemCommand());
+            this.NextItemCommand = new RelayCommand(async _ => await this.ExecuteNextItemCommand());
             this.SendVoteCommand = new RelayCommand(this.ExecuteSendVoteCommand);
             this.SendNitpickerCommand = new RelayCommand(_ => this.ExecuteNitpickerCommand());
 
@@ -113,7 +115,7 @@ namespace PlanningPoker.App.ViewModels
         /*
          * Following is the ExecuteCommands
          */
-        private void ExecuteNextItemCommand()
+        private async Task ExecuteNextItemCommand()
         {
             if (this.IsBusy)
             {
@@ -123,7 +125,7 @@ namespace PlanningPoker.App.ViewModels
             this.IsBusy = true;
 
             Debug.WriteLine("Next Item clicked");
-            this.repository.NextItemAsync(this.sessionKey).Wait();
+            await this.repository.NextItemAsync(this.sessionKey);
             this.SetCurrentTitle();
             Debug.WriteLine(this.currentItemTitle);
 
@@ -248,6 +250,7 @@ namespace PlanningPoker.App.ViewModels
 
         private void ShouldShowVotes()
         {
+            Debug.WriteLine("Pulling");
             var currentVotes = this.repository.GetCurrentRound(this.sessionKey).Result.Votes;
             var result = (currentVotes.Count == this.Players.Count);
 
