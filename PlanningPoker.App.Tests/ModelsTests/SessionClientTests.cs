@@ -197,7 +197,7 @@ namespace PlanningPoker.App.Tests.ModelsTests
                 "SendAsync",
                 Times.Once(),
                 ItExpr.Is<HttpRequestMessage>(req =>
-                    req.Method == HttpMethod.Get
+                    req.Method == HttpMethod.Post
                     && req.RequestUri == new Uri("https://localhost:5001/api/session/42/item/round/next")),
                 ItExpr.IsAny<CancellationToken>());
         }
@@ -267,7 +267,7 @@ namespace PlanningPoker.App.Tests.ModelsTests
                 "SendAsync",
                 Times.Once(),
                 ItExpr.Is<HttpRequestMessage>(req =>
-                    req.Method == HttpMethod.Get
+                    req.Method == HttpMethod.Post
                     && req.RequestUri == new Uri("https://localhost:5001/api/session/42/item/next")),
                 ItExpr.IsAny<CancellationToken>());
         }
