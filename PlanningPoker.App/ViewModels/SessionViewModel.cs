@@ -141,6 +141,7 @@ namespace PlanningPoker.App.ViewModels
             }
 
             this.IsBusy = true;
+            this.VoteCards.Clear();
 
             Debug.WriteLine("Revote clicked");
 

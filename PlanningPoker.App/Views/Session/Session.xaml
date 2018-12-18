@@ -42,10 +42,12 @@
         >
             <controls:FlowListView.FlowColumnTemplate>
                 <DataTemplate>
-                    <StackLayout>
-                        <Label HorizontalOptions="Fill" VerticalOptions="Fill"
+                    <StackLayout BackgroundColor="Chocolate"
+                                 >
+                        <Label TextColor="White" HorizontalOptions="Fill" VerticalOptions="Fill"
                                XAlign="Center" YAlign="Start" Text="{Binding Name, Mode=TwoWay}"/>
-                        <Label HorizontalOptions="Fill" VerticalOptions="Fill"
+                        <Label />
+                        <Label TextColor="White" HorizontalOptions="Fill" VerticalOptions="Fill"
                                XAlign="Center" YAlign="End" Text="{Binding Estimate, Mode=TwoWay}"/>
                     </StackLayout>
                 </DataTemplate>
