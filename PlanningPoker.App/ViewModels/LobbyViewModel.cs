@@ -3,19 +3,19 @@ namespace PlanningPoker.App.ViewModels
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Diagnostics;
     using System.Linq;
-    using System.Threading;
     using System.Threading.Tasks;
     using System.Windows.Input;
     using OpenJobScheduler;
     using PlanningPoker.App.Models;
     using PlanningPoker.Shared;
+    using Xamarin.Forms;
 
     public class LobbyViewModel : BaseViewModel
     {
         private readonly ISessionClient repository;
         private bool loading;
+        private SessionDTO session;
 
         public JobScheduler JobScheduler { get; set; }
 
@@ -39,6 +39,17 @@ namespace PlanningPoker.App.ViewModels
             this.StopFetchingUsers = new RelayCommand(_ => this.ExecuteKillThread());
         }
 
+        public async Task<ItemDTO> CheckSessionStatus()
+        {
+            var currentItem = await this.repository.GetCurrentItem(this.Key);
+            if (currentItem != null)
+            {
+                this.loading = true;
+            }
+
+            return currentItem;
+        }
+
         public async Task FetchUsers()
         {
             if (this.loading)
@@ -48,43 +59,34 @@ namespace PlanningPoker.App.ViewModels
 
             this.loading = true;
 
-            var session = await this.repository.GetByKeyAsync(this.Key);
+            this.session = await this.repository.GetByKeyAsync(this.Key);
 
-            if (this.Users.Count < 1)
+            Device.BeginInvokeOnMainThread(() =>
             {
-                this.UpdateItemCollection(session.Items);
-            }
+                try
+                {
+                    this.UpdateItemCollection(this.session.Items);
 
-            if (session != null)
-            {
-                this.UpdateUserCollection(session.Users);
-            }
-            else
-            {
-                this.Users.Clear();
-                this.Title = "No session found...";
-                this.JobScheduler.Stop();
-            }
+                    this.UpdateUserCollection(this.session.Users);
+                }
+                catch (Exception e)
+                {
+                    e.ToString();
+                }
+            });
 
             this.loading = false;
         }
 
         public void UpdateItemCollection(List<ItemDTO> items)
         {
-            items.ForEach(i =>
+            if (this.Items.Count < 1)
             {
-                this.Items.Add(i);
-            });
-        }
-
-        public void UpdateUserCollection(ICollection<UserDTO> users)
-        {
-            this.Users.Clear();
-
-            users.ToList().ForEach(u =>
-            {
-                    this.Users.Add(u);
-            });
+                items.ForEach(i =>
+                {
+                    this.Items.Add(i);
+                });
+            }
         }
 
         public string Title
@@ -101,13 +103,35 @@ namespace PlanningPoker.App.ViewModels
 
         private void ExecuteKillThread()
         {
-            this.JobScheduler.Stop();
+            if (this.JobScheduler != null)
+            {
+                this.JobScheduler.Stop();
+            }
         }
 
         private void ExecuteGetUsersCommand()
         {
             this.JobScheduler = new JobScheduler(TimeSpan.FromSeconds(2), new Action(async () => { await this.FetchUsers(); }));
             this.JobScheduler.Start();
+        }
+
+        private void UpdateUserCollection(ICollection<UserDTO> users)
+        {
+            if (this.session != null)
+            {
+                this.Users.Clear();
+
+                users.ToList().ForEach(u =>
+                {
+                    this.Users.Add(u);
+                });
+            }
+            else
+            {
+                this.Users.Clear();
+                this.Title = "No session found...";
+                this.JobScheduler.Stop();
+            }
         }
     }
 }
