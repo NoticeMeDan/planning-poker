@@ -6,8 +6,25 @@
     Title="Lobby"
 >
     <StackLayout Margin="10">
-        <Label Text="{Binding Title}" Font="25" Margin="20"/>
-        <Label Text="Users:" Font="20" />
+        <Label Text="{Binding Title}" Font="32" Margin="20" HorizontalTextAlignment="Center" TextColor="Black"/>
+        <Label Text="Items:" Font="20" TextColor="#009CE7"/>
+        <ListView
+            ItemsSource="{Binding Items}"
+            SelectionMode="Single"
+            >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Margin="20,10,20,10" Orientation="Horizontal">
+                            <Label Text="{Binding Title}" TextColor="Black"/>
+                            <Label Text=" : "/>
+                            <Label Text="{Binding Description}"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Label Text="Users:" Font="20" TextColor="#009CE7"/>
         <ListView
             ItemsSource="{Binding Users}"
             SelectionMode="Single"

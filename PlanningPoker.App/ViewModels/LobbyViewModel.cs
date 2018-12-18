@@ -46,7 +46,7 @@ namespace PlanningPoker.App.ViewModels
 
         private void ExecuteGetUsersCommand()
         {
-            this.JobScheduler = new JobScheduler(TimeSpan.FromSeconds(5), new Action(async () => { await this.FetchUsers(); }));
+            this.JobScheduler = new JobScheduler(TimeSpan.FromSeconds(2), new Action(async () => { await this.FetchUsers(); }));
             this.JobScheduler.Start();
         }
 
