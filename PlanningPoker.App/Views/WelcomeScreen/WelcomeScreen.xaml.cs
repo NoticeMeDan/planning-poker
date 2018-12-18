@@ -1,7 +1,6 @@
 namespace PlanningPoker.App.Views.WelcomeScreen
 {
     using System;
-    using System.Diagnostics;
     using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
     using Session;

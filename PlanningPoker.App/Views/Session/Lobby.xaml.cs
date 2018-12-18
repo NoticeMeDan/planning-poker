@@ -1,7 +1,6 @@
 namespace PlanningPoker.App.Views.Session
 {
     using System;
-    using System.Diagnostics;
     using Microsoft.Extensions.DependencyInjection;
     using PlanningPoker.App.ViewModels;
     using Xamarin.Forms;
