@@ -13,9 +13,9 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label Text="Item Title"
+            <Label TextColor="#3F6AA5" FontSize = "20" Text="Item Title"
                                     LineBreakMode="NoWrap" Grid.Column="0" />
-            <Label Text="Estimation"
+            <Label TextColor="#3F6AA5" FontSize = "20" Text="Estimation"
                                     LineBreakMode="NoWrap" Grid.Column="1" />
         </Grid>
         <ListView
@@ -35,9 +35,9 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Label TextColor="#3F6AA5" FontSize = "20" Text="{Binding ItemTitle}"
+                            <Label TextColor="#4d4d4d" FontSize = "18" Text="{Binding ItemTitle}"
                                     LineBreakMode="NoWrap" Grid.Column="0" />
-                            <Label TextColor="#3F6AA5" FontSize = "20" Text="{Binding Estimate}"
+                            <Label TextColor="#4d4d4d" FontSize = "18" Text="{Binding Estimate}"
                                     LineBreakMode="NoWrap" Grid.Column="1" />
                         </Grid>
                     </ViewCell>
