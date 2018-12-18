@@ -16,10 +16,8 @@ namespace PlanningPoker.App.Views.Session
 
             this.BindingContext = this.lobbyViewModel =
                (Application.Current as App)?.Container.GetRequiredService<LobbyViewModel>();
-            Debug.Write("SessionKey: " + sessionKey);
             this.lobbyViewModel.Key = sessionKey;
             this.lobbyViewModel.Title = sessionKey;
-            Debug.Write("SessionKey vm: " + this.lobbyViewModel.Key);
         }
 
         private void BeginSessionClicked(object sender, EventArgs e)
