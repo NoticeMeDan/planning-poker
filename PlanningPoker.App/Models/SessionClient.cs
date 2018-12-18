@@ -52,7 +52,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<UserStateResponseDTO> Join(string sessionKey, UserCreateDTO user)
         {
-            var response = await this.httpClient.PostAsJsonAsync($"api/session/{sessionKey}/join", user);
+            var response = await this.httpClient.PostAsJsonAsync($"{this.url}api/session/{sessionKey}/join", user);
             Debug.Write("Join(PostAsJsonAsync) Response: " + response.StatusCode);
             if (response.StatusCode != HttpStatusCode.OK)
             {
@@ -66,7 +66,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<RoundDTO> NextRoundAsync(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/round/next");
+            var response = await this.httpClient.GetAsync($"{this.url}api/session/{sessionKey}/item/round/next");
 
             var result = JsonConvert.DeserializeObject<RoundDTO>(response.Content.ReadAsStringAsync().Result);
 
@@ -75,7 +75,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<RoundDTO> GetCurrentRound(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/round");
+            var response = await this.httpClient.GetAsync($"{this.url}api/session/{sessionKey}/item/round");
 
             var result = JsonConvert.DeserializeObject<RoundDTO>(response.Content.ReadAsStringAsync().Result);
 
@@ -84,7 +84,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<ItemDTO> NextItemAsync(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"{this.url}api/session/{sessionKey}/item/next");
+            var response = await this.httpClient.GetAsync($"{this.url}api/session/{sessionKey}/item/next", HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
 
             var result = JsonConvert.DeserializeObject<ItemDTO>(response.Content.ReadAsStringAsync().Result);
 
@@ -93,7 +93,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<ICollection<ItemDTO>> GetAllItems(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item");
+            var response = await this.httpClient.GetAsync($"{this.url}api/session/{sessionKey}/item");
 
             var result = JsonConvert.DeserializeObject<ICollection<ItemDTO>>(response.Content.ReadAsStringAsync().Result);
 
@@ -102,7 +102,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<ItemDTO> GetCurrentItem(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/current");
+            var response = await this.httpClient.GetAsync($"{this.url}api/session/{sessionKey}/item/current");
 
             var result = JsonConvert.DeserializeObject<ItemDTO>(response.Content.ReadAsStringAsync().Result);
 
@@ -111,21 +111,21 @@ namespace PlanningPoker.App.Models
 
         public async Task<bool> Vote(string sessionKey, VoteDTO vote)
         {
-            var response = await this.httpClient.PostAsJsonAsync($"api/session/{sessionKey}/vote", vote);
+            var response = await this.httpClient.PostAsJsonAsync($"{this.url}api/session/{sessionKey}/vote", vote);
 
             return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> ThrowNitpickerCard(string sessionKey)
         {
-            var response = await this.httpClient.PostAsync($"api/session/{sessionKey}/nitpicker", default(HttpContent));
+            var response = await this.httpClient.PostAsync($"{this.url}api/session/{sessionKey}/nitpicker", default(HttpContent));
 
             return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> KickUser(string sessionKey, int userId)
         {
-            var response = await this.httpClient.PostAsJsonAsync($"api/session/{sessionKey}/user/kick", userId);
+            var response = await this.httpClient.PostAsJsonAsync($"{this.url}api/session/{sessionKey}/user/kick", userId);
 
             return response.IsSuccessStatusCode;
         }

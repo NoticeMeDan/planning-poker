@@ -51,7 +51,7 @@ namespace PlanningPoker.App.ViewModels
             this.repository = new SessionClient(new HttpClient());
 
             // TODO: Get sessionkey from constructor argument
-            this.sessionKey = "5NTXHKA";
+            this.sessionKey = "H53XWNW";
             this.BaseTitle = "Session: " + this.sessionKey;
             this.CurrentItemTitle = string.Empty;
             this.currentRound = null;
@@ -76,7 +76,7 @@ namespace PlanningPoker.App.ViewModels
             this.StartRoundsPull = new RelayCommand(_ => this.ExecuteStartRoundsPull());
 
             // Initialize Session
-            // this.NextItemCommand;
+            this.ExecuteNextItemCommand();
         }
 
         private void ExecuteStartRoundsPull()
@@ -178,7 +178,6 @@ namespace PlanningPoker.App.ViewModels
 
             this.IsBusy = true;
             Debug.WriteLine("LoadSession clicked");
-            this.SetCurrentTitle();
 
             var session = this.repository.GetByKeyAsync(this.sessionKey);
 
@@ -243,7 +242,7 @@ namespace PlanningPoker.App.ViewModels
             // This requires AuthToken
 
             // Correct = title;
-            this.CurrentItemTitle = "Current Item";
+            this.CurrentItemTitle = title;
             // Debug.WriteLine(title);
         }
 

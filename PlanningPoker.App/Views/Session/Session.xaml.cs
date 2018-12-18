@@ -15,6 +15,7 @@ namespace PlanningPoker.App.Views.Session
             this.viewModel = new SessionViewModel();
             this.BindingContext = this.viewModel =
                 (Application.Current as App)?.Container.GetRequiredService<SessionViewModel>();
+
             this.InitializeComponent();
         }
 
