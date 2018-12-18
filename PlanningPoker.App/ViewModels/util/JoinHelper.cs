@@ -13,29 +13,20 @@ namespace PlanningPoker.App.ViewModels
 
         private readonly ISessionClient client;
 
-        public ICommand Join { get; }
-
         public string Key { get; set; }
 
         public string Token { get; set; }
 
-        public bool Loading { get; private set; }
-
-        public async Task JoinSession()
+        public JoinHelper(ISessionClient client, string key, UserCreateDTO user)
         {
-            try
-            {
-                var response = await this.client.Join(this.Key, this.user);
-                this.Token = response.Token;
-            }
-            catch (Exception e)
-            {
-                this.Key = string.Empty;
-                Debug.WriteLine("JoinSession failed. Caught exception: " + e.GetType());
-            }
+            this.Key = key;
+            this.user = user;
+            this.client = client;
         }
 
-        private async Task ExecuteJoinCommand()
+        public bool Loading { get; private set; }
+
+        public async Task Join()
         {
             if (this.Loading)
             {
@@ -49,12 +40,18 @@ namespace PlanningPoker.App.ViewModels
             this.Loading = false;
         }
 
-        public JoinHelper(ISessionClient client, string key, UserCreateDTO user)
+        public async Task JoinSession()
         {
-            this.Key = key;
-            this.user = user;
-            this.client = client;
-            this.Join = new RelayCommand(async _ => await this.ExecuteJoinCommand());
+            try
+            {
+                var response = await this.client.Join(this.Key, this.user);
+                this.Token = response.Token;
+            }
+            catch (Exception e)
+            {
+                this.Key = string.Empty;
+                Debug.WriteLine("JoinSession failed. Caught exception: " + e.GetType());
+            }
         }
     }
 }
