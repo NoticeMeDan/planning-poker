@@ -29,5 +29,12 @@
 
     <ItemGroup>
       <Compile Remove="ModelsTests\ItemRepositoryTests.cs" />
+      <Compile Remove="ViewModelsTests\SessionCreateViewModelTests.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="ViewModelsTests\" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Remove="ViewModelsTests\WelcomeViewModel.xml" />
     </ItemGroup>
 </Project>

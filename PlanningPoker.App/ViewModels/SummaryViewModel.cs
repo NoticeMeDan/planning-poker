@@ -37,7 +37,7 @@ namespace PlanningPoker.App.ViewModels
 
         public ICommand LoadSummaryCommand { get; set; }
 
-        private async Task ExecuteLoadSummaryCommand()
+        public async Task ExecuteLoadSummaryCommand()
         {
             if (this.IsBusy)
             {
