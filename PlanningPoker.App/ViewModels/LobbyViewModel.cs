@@ -43,17 +43,6 @@ namespace PlanningPoker.App.ViewModels
             return await this.repository.GetCurrentItem(this.Key);
         }
 
-        private void ExecuteKillThread()
-        {
-            this.JobScheduler.Stop();
-        }
-
-        private void ExecuteGetUsersCommand()
-        {
-            this.JobScheduler = new JobScheduler(TimeSpan.FromSeconds(2), new Action(async () => { await this.FetchUsers(); }));
-            this.JobScheduler.Start();
-        }
-
         public async Task FetchUsers()
         {
             if (this.loading)
@@ -83,25 +72,6 @@ namespace PlanningPoker.App.ViewModels
             }
         }
 
-        public void UpdateUserCollection(ICollection<UserDTO> users)
-        {
-            if (this.session != null)
-            {
-                this.Users.Clear();
-
-                users.ToList().ForEach(u =>
-                {
-                        this.Users.Add(u);
-                });
-            }
-            else
-            {
-                this.Users.Clear();
-                this.Title = "No session found...";
-                this.JobScheduler.Stop();
-            }
-        }
-
         public string Title
         {
             get => this.title;
@@ -112,6 +82,36 @@ namespace PlanningPoker.App.ViewModels
         {
             get => this.key;
             set => this.SetProperty(ref this.key, value);
+        }
+
+        private void ExecuteKillThread()
+        {
+            this.JobScheduler.Stop();
+        }
+
+        private void ExecuteGetUsersCommand()
+        {
+            this.JobScheduler = new JobScheduler(TimeSpan.FromSeconds(2), new Action(async () => { await this.FetchUsers(); }));
+            this.JobScheduler.Start();
+        }
+
+        private void UpdateUserCollection(ICollection<UserDTO> users)
+        {
+            if (this.session != null)
+            {
+                this.Users.Clear();
+
+                users.ToList().ForEach(u =>
+                {
+                    this.Users.Add(u);
+                });
+            }
+            else
+            {
+                this.Users.Clear();
+                this.Title = "No session found...";
+                this.JobScheduler.Stop();
+            }
         }
     }
 }
