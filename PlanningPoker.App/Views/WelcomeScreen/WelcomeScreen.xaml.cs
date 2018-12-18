@@ -24,8 +24,8 @@ namespace PlanningPoker.App.Views.WelcomeScreen
 
         private async Task HandleClickedAsync(object sender, EventArgs e)
         {
-            Debug.WriteLine("try to connection?");
-            this.welcomeViewModel.JoinCommand.Execute(e);
+            Debug.WriteLine("Connecting to session...");
+            this.welcomeViewModel.Join.Execute(e);
             await this.Navigation.PushModalAsync(new NavigationPage(new Lobby(this.welcomeViewModel.Key)));
         }
 

@@ -11,12 +11,12 @@ namespace PlanningPoker.App.Views.SessionCreation
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CreateSession : ContentPage
     {
-        private readonly ItemsViewModel itemsViewModel;
+        private readonly SessionCreateViewModel itemsViewModel;
 
         public CreateSession()
         {
             this.BindingContext = this.itemsViewModel =
-                (Application.Current as App)?.Container.GetRequiredService<ItemsViewModel>();
+                (Application.Current as App)?.Container.GetRequiredService<SessionCreateViewModel>();
 
             this.InitializeComponent();
         }
