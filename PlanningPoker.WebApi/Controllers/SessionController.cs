@@ -18,14 +18,13 @@ namespace PlanningPoker.WebApi.Controllers
     public class SessionController : ControllerBase, ISessionController
     {
         private readonly ISessionRepository sessionRepository;
-        private readonly IUserRepository userRepository;
         private readonly UserStateManager userStateManager;
         private readonly ISummaryRepository summaryRepository;
 
-        public SessionController(ISessionRepository sessionRepo, IUserRepository userRepo, IMemoryCache cache)
+        public SessionController(ISessionRepository sessionRepo, IMemoryCache cache, ISummaryRepository summaryRepo)
         {
             this.sessionRepository = sessionRepo;
-            this.userRepository = userRepo;
+            this.summaryRepository = summaryRepo;
             this.userStateManager = new UserStateManager(cache);
         }
 
@@ -160,6 +159,7 @@ namespace PlanningPoker.WebApi.Controllers
             // TODO: Generate summary when this happens
             if (nextItem == default(ItemDTO))
             {
+                await this.summaryRepository.BuildSummary(session);
                 return this.BadRequest();
             }
 
