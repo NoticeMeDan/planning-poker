@@ -76,7 +76,7 @@ namespace PlanningPoker.App.ViewModels
             this.StartRoundsPull = new RelayCommand(_ => this.ExecuteStartRoundsPull());
 
             // Initialize Session
-            this.ExecuteNextItemCommand();
+
         }
 
         private void ExecuteStartRoundsPull()
