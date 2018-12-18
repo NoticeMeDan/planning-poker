@@ -51,7 +51,7 @@ namespace PlanningPoker.App.ViewModels
             this.repository = new SessionClient(new HttpClient());
 
             // TODO: Get sessionkey from constructor argument
-            this.sessionKey = "H53XWNW";
+            this.sessionKey = "N99HL5Y";
             this.BaseTitle = "Session: " + this.sessionKey;
             this.CurrentItemTitle = string.Empty;
             this.currentRound = null;

@@ -27,13 +27,6 @@ namespace PlanningPoker.App.Models
             return result;
         }
 
-        public async Task<SessionDTO> FindAsync(int sessionId)
-        {
-            var response = await this.httpClient.GetAsync($"{this.url}api/session/{sessionId}");
-
-            return await response.Content.ReadAsAsync<SessionDTO>();
-        }
-
         public async Task<bool> UpdateAsync(SessionCreateUpdateDTO session)
         {
             var response = await this.httpClient.PutAsJsonAsync($"{this.url}api/session/{session.Id}", session);
@@ -53,7 +46,7 @@ namespace PlanningPoker.App.Models
         public async Task<UserStateResponseDTO> Join(string sessionKey, UserCreateDTO user)
         {
             var response = await this.httpClient.PostAsJsonAsync($"{this.url}api/session/{sessionKey}/join", user);
-            Debug.Write("Join(PostAsJsonAsync) Response: " + response.StatusCode);
+
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 throw new KeyNotFoundException();
@@ -66,7 +59,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<RoundDTO> NextRoundAsync(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"{this.url}api/session/{sessionKey}/item/round/next");
+            var response = await this.httpClient.PostAsJsonAsync($"{this.url}api/session/{sessionKey}/item/round/next", string.Empty);
 
             var result = JsonConvert.DeserializeObject<RoundDTO>(response.Content.ReadAsStringAsync().Result);
 
@@ -84,7 +77,8 @@ namespace PlanningPoker.App.Models
 
         public async Task<ItemDTO> NextItemAsync(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"{this.url}api/session/{sessionKey}/item/next", HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
+            var response = await this.httpClient
+                .PostAsJsonAsync($"{this.url}api/session/{sessionKey}/item/next").ConfigureAwait(false);
 
             var result = JsonConvert.DeserializeObject<ItemDTO>(response.Content.ReadAsStringAsync().Result);
 
