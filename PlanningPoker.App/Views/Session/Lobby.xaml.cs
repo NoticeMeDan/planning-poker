@@ -33,5 +33,11 @@ namespace PlanningPoker.App.Views.Session
             this.viewModel.GetUsersCommand.Execute(null);
             base.OnAppearing();
         }
+
+        protected override void OnDisappearing()
+        {
+            this.viewModel.JobScheduler.Stop();
+            base.OnDisappearing();
+        }
     }
 }
