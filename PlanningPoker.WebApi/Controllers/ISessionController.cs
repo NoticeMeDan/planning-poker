@@ -1,10 +1,9 @@
-using PlanningPoker.WebApi.Security;
-
 namespace PlanningPoker.WebApi.Controllers
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
+    using Security;
     using Shared;
 
     public interface ISessionController

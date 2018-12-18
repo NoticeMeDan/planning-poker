@@ -42,7 +42,7 @@ namespace PlanningPoker.WebApi.Controllers
 
         // POST api/session
         [HttpPost]
-        // [Authorize]
+        [Authorize]
         public async Task<ActionResult<SessionDTO>> Create([FromBody] SessionCreateUpdateDTO session)
         {
             var key = string.Empty;
