@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="OpenJobScheduler" Version="1.0.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
     <PackageReference Include="Xamarin.Forms" Version="3.1.0.697729" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
@@ -22,9 +23,6 @@
     <Compile Remove="Models\Item.cs" />
     <Compile Remove="Services\IDataStore.cs" />
     <Compile Remove="Views\MainPage.xaml.cs" />
-    <Compile Update="Views\WelcomeScreen\Login.xaml.cs">
-      <DependentUpon>JoinSession.xaml</DependentUpon>
-    </Compile>
     <Compile Remove="Views\Components\NewItem.xaml.cs" />
     <Compile Remove="Views\Components\Items.xaml.cs" />
     <Compile Remove="Models\IItemRepository.cs" />
@@ -44,14 +42,6 @@
       <Generator></Generator>
     </Page>
     <Page Include="Views\Session\Session.xaml">
-      <SubType>Designer</SubType>
-      <Generator></Generator>
-    </Page>
-    <Page Include="Views\WelcomeScreen\Login.xaml">
-      <SubType>Designer</SubType>
-      <Generator></Generator>
-    </Page>
-    <Page Include="Views\WelcomeScreen\Join.xaml">
       <SubType>Designer</SubType>
       <Generator></Generator>
     </Page>

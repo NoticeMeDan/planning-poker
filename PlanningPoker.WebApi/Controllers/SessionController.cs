@@ -43,10 +43,7 @@ namespace PlanningPoker.WebApi.Controllers
 
         // POST api/session
         [HttpPost]
-#if DEBUG
-#else
-    [Authorize]
-#endif
+        [Authorize]
         public async Task<ActionResult<SessionDTO>> Create([FromBody] SessionCreateUpdateDTO session)
         {
             var key = string.Empty;
@@ -82,12 +79,9 @@ namespace PlanningPoker.WebApi.Controllers
                 return this.BadRequest();
             }
 
-            var createdUser = await this.userRepository.CreateAsync(user);
+            var newUser = this.sessionRepository.AddUserToSession(user, session.Id);
 
-            session.Users.Add(createdUser);
-            await this.sessionRepository.UpdateAsync(EntityMapper.ToSessionCreateUpdateDto(session));
-
-            return new UserStateResponseDTO { Token = this.userStateManager.CreateState(createdUser.Id, sessionKey) };
+            return new UserStateResponseDTO { Token = this.userStateManager.CreateState(newUser.Id, sessionKey) };
         }
 
         [HttpPost("{sessionKey}/item/round/next")]
@@ -226,19 +220,55 @@ namespace PlanningPoker.WebApi.Controllers
         }
 
         [HttpPost("{sessionKey}/vote")]
-        public Task<ActionResult> Vote([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey, [FromBody] VoteDTO vote)
+        public async Task<ActionResult> Vote([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey, [FromBody] VoteCreateUpdateDTO vote)
         {
-            throw new System.NotImplementedException();
-        }
+            if (!SecurityFilter.RequestIsValid(authToken, sessionKey, this.userStateManager))
+            {
+                return this.Unauthorized();
+            }
 
-        [HttpPost("{sessionKey}/nitpicker")]
-        public Task<ActionResult> ThrowNitpickerCard([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey)
-        {
-            throw new System.NotImplementedException();
+            var session = await this.sessionRepository.FindByKeyAsync(sessionKey);
+
+            if (session == null)
+            {
+                return this.StatusCode(404, "Session not found");
+            }
+
+            var currentItem = SessionUtils.GetCurrentActiveItem(session.Items, session.Users.Count);
+
+            if (!currentItem.HasValue)
+            {
+                return this.StatusCode(404, "Active Item not found");
+            }
+
+            var currentRound = SessionUtils.GetCurrentActiveRound(currentItem.ValueOrDefault().Rounds.ToList(), session.Users.Count);
+
+            if (!currentRound.HasValue)
+            {
+                return this.StatusCode(404, "Active Round not found");
+            }
+
+            var updatedItem = currentItem.ValueOrDefault();
+            var updatedRound = currentRound.ValueOrDefault();
+            var userState = this.userStateManager.GetState(authToken).ValueOrDefault();
+
+            updatedRound.Votes.Add(new VoteDTO { Estimate = vote.Estimate, UserId = userState.Id });
+            updatedItem.Rounds.ToList()[updatedItem.Rounds.ToList().FindIndex(round => round.Id == updatedRound.Id)] = updatedRound;
+            session.Items[session.Items.FindIndex(item => item.Id == updatedItem.Id)] = updatedItem;
+
+            await this.sessionRepository.UpdateAsync(EntityMapper.ToSessionCreateUpdateDto(session));
+
+            return this.Ok();
         }
 
         [HttpPost("{sessionKey}/user/kick")]
         public Task<ActionResult> KickUser([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey, int userId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        // [HttpPost("{sessionKey}/nitpicker")]
+        public Task<ActionResult> ThrowNitpickerCard([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey)
         {
             throw new System.NotImplementedException();
         }

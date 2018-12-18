@@ -17,6 +17,8 @@ namespace PlanningPoker.App.Models
             "https://ituniversity.onmicrosoft.com/PlanningPoker.WebApi/user_impersonation"
         };
 
+        public string Token { get; set; }
+
         public string Authority => $"https://login.microsoftonline.com/{this.TenantId}/v2.0";
     }
 }

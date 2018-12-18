@@ -12,20 +12,27 @@ namespace PlanningPoker.App.Models
     {
         private readonly IPublicClientApplication publicClientApplication;
         private readonly IReadOnlyCollection<string> scopes;
+        private ISettings settings;
 
         public BearerTokenClientHandler(IPublicClientApplication publicClientApplication, ISettings settings)
         {
             this.publicClientApplication = publicClientApplication;
             this.scopes = settings.Scopes;
+            this.settings = settings;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var accounts = await this.publicClientApplication.GetAccountsAsync();
 
-            var result = await this.publicClientApplication.AcquireTokenSilentAsync(this.scopes, accounts.First());
+            var firstAccount = accounts.FirstOrDefault();
 
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", result.AccessToken);
+            if (firstAccount != null)
+            {
+                var result = await this.publicClientApplication.AcquireTokenSilentAsync(this.scopes, firstAccount);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", result.AccessToken);
+                request.Headers.Add("PPAuthorization", this.settings.Token);
+            }
 
             return await base.SendAsync(request, cancellationToken);
         }

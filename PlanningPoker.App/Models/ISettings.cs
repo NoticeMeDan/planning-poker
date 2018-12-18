@@ -12,5 +12,7 @@ namespace PlanningPoker.App.Models
         string TenantId { get; }
 
         IReadOnlyCollection<string> Scopes { get; }
+
+        string Token { get; set; }
     }
 }

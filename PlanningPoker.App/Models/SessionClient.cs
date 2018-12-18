@@ -1,6 +1,8 @@
 namespace PlanningPoker.App.Models
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
     using Newtonsoft.Json;
@@ -41,6 +43,7 @@ namespace PlanningPoker.App.Models
         public async Task<SessionDTO> GetByKeyAsync(string sessionKey)
         {
             var response = await this.httpClient.GetAsync($"api/session/{sessionKey}");
+            Debug.Write("Response: " + response.StatusCode);
 
             var result = JsonConvert.DeserializeObject<SessionDTO>(response.Content.ReadAsStringAsync().Result);
 
@@ -50,6 +53,11 @@ namespace PlanningPoker.App.Models
         public async Task<UserStateResponseDTO> Join(string sessionKey, UserCreateDTO user)
         {
             var response = await this.httpClient.PostAsJsonAsync($"api/session/{sessionKey}/join", user);
+            Debug.Write("Join(PostAsJsonAsync) Response: " + response.StatusCode);
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new KeyNotFoundException();
+            }
 
             var result = JsonConvert.DeserializeObject<UserStateResponseDTO>(response.Content.ReadAsStringAsync().Result);
 

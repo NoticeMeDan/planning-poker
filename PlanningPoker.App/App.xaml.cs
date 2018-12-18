@@ -5,8 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Client;
 using PlanningPoker.App.Models;
 using PlanningPoker.App.ViewModels;
-using PlanningPoker.App.Views;
-using PlanningPoker.App.Views.SessionCreation;
+using PlanningPoker.App.Views.Session;
 using PlanningPoker.App.Views.WelcomeScreen;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -74,12 +73,10 @@ namespace PlanningPoker.App
             // Adding the ViewModels
             services.AddScoped<ISessionClient, SessionClient>();
             services.AddScoped<ISummaryClient, SummaryClient>();
-            services.AddScoped<LoginViewModel>();
+            services.AddScoped<WelcomeViewModel>();
             services.AddScoped<ItemsViewModel>();
             services.AddScoped<UsersViewModel>();
-            services.AddScoped<JoinViewModel>();
             services.AddScoped<LobbyViewModel>();
-            services.AddScoped<SummaryViewModel>();
 
             return services.BuildServiceProvider();
         }
