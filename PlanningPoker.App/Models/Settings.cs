@@ -6,7 +6,6 @@ namespace PlanningPoker.App.Models
     public class Settings : ISettings
     {
         public Uri BackendUrl => new Uri("http://planningpoker-webapi.azurewebsites.net/");
-        //public Uri BackendUrl => new Uri("https://localhost:5001/");
 
         public string ClientId => "e1ab0ad7-71d7-47a4-a01a-0d78e2a5cf22";
 

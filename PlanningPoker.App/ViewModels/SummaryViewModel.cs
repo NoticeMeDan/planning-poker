@@ -37,18 +37,6 @@ namespace PlanningPoker.App.ViewModels
 
         public ICommand LoadSummaryCommand { get; set; }
 
-        public string Title
-        {
-            get => this.title;
-            set => this.SetProperty(ref this.title, value);
-        }
-
-        public int Estimate
-        {
-            get => this.estimate;
-            set => this.SetProperty(ref this.estimate, value);
-        }
-
         private async Task ExecuteLoadSummaryCommand()
         {
             if (this.IsBusy)
