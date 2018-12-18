@@ -51,6 +51,7 @@ namespace PlanningPoker.App.ViewModels
                 IAccount account = accounts.FirstOrDefault();
                 authenticationResult =
                     await this.publicClientApplication.AcquireTokenSilentAsync(this.settings.Scopes, account);
+                //TODO: Save token in this.settings.token
                 return true;
             }
             catch (MsalUiRequiredException e)
@@ -97,6 +98,7 @@ namespace PlanningPoker.App.ViewModels
             try
             {
                 var x = await this.client.Join(this.key, this.User);
+                //TODO: Save token in this.settings.token = x.Token ?
                 Debug.Write("User TOKEN: " + x.Token);
             }
             catch (Exception e)
