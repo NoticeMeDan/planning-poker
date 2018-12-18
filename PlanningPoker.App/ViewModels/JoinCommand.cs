@@ -17,6 +17,8 @@ namespace PlanningPoker.App.ViewModels
 
         public string Key { get; set; }
 
+        public string Token { get; set; }
+
         public JoinCommand(ISessionClient client, string key, UserCreateDTO user)
         {
             this.Key = key;
@@ -45,8 +47,8 @@ namespace PlanningPoker.App.ViewModels
         {
             try
             {
-                Debug.WriteLine("Key in join: " + this.Key);
-                await this.client.Join(this.Key, this.user);
+                var response = await this.client.Join(this.Key, this.user);
+                this.Token = response.Token;
             }
             catch (Exception e)
             {
