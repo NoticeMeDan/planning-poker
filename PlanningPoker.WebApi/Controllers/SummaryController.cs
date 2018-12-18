@@ -1,5 +1,6 @@
 namespace PlanningPoker.WebApi.Controllers
 {
+    using System.Diagnostics;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using Services;
@@ -17,16 +18,17 @@ namespace PlanningPoker.WebApi.Controllers
         }
 
         // GET api/summary/5
-        [HttpGet("{id}")]
+        [HttpGet("{sessionId}")]
         public async Task<ActionResult<SummaryDTO>> FindBySessionIdAsync(int sessionId)
         {
             var summary = await this.repository.FindBySessionIdAsync(sessionId);
+            
 
             if (summary == null)
             {
                 return this.NotFound();
             }
-
+            
             return summary;
         }
     }

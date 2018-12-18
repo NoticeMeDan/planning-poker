@@ -30,7 +30,7 @@ namespace PlanningPoker.App.ViewModels
 
             this.Items = new ObservableCollection<ItemEstimateDTO>();
 
-            this.LoadSummaryCommand = new RelayCommand(_ => this.ExecuteLoadSummaryCommand());
+            this.LoadSummaryCommand = new RelayCommand(async _ => await this.ExecuteLoadSummaryCommand());
         }
 
         public ObservableCollection<ItemEstimateDTO> Items { get; set; }
@@ -76,11 +76,11 @@ namespace PlanningPoker.App.ViewModels
 
             this.Items.Clear();
             //give input this.sessionId
-            //var summary = await this.summaryClient.FindBySessionIdAsync(12);
+            var summary = await this.summaryClient.FindBySessionIdAsync(2);
 
-            var summary = MockData();
+            //var summary = MockData();
 
-            foreach (var s in summary)
+            foreach (var s in summary.ItemEstimates)
             {
                 this.Items.Add(s);
             }
