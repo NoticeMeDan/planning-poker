@@ -26,13 +26,6 @@ namespace PlanningPoker.App.Models
             return result;
         }
 
-        public async Task<SessionDTO> FindAsync(int sessionId)
-        {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionId}");
-
-            return await response.Content.ReadAsAsync<SessionDTO>();
-        }
-
         public async Task<bool> UpdateAsync(SessionCreateUpdateDTO session)
         {
             var response = await this.httpClient.PutAsJsonAsync($"api/session/{session.Id}", session);
@@ -43,7 +36,6 @@ namespace PlanningPoker.App.Models
         public async Task<SessionDTO> GetByKeyAsync(string sessionKey)
         {
             var response = await this.httpClient.GetAsync($"api/session/{sessionKey}");
-            Debug.Write("Response: " + response.StatusCode);
 
             var result = JsonConvert.DeserializeObject<SessionDTO>(response.Content.ReadAsStringAsync().Result);
 
@@ -53,7 +45,7 @@ namespace PlanningPoker.App.Models
         public async Task<UserStateResponseDTO> Join(string sessionKey, UserCreateDTO user)
         {
             var response = await this.httpClient.PostAsJsonAsync($"api/session/{sessionKey}/join", user);
-            Debug.Write("Join(PostAsJsonAsync) Response: " + response.StatusCode);
+
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 throw new KeyNotFoundException();
@@ -66,7 +58,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<RoundDTO> NextRoundAsync(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/round/next");
+            var response = await this.httpClient.PostAsJsonAsync($"api/session/{sessionKey}/item/round/next", string.Empty);
 
             var result = JsonConvert.DeserializeObject<RoundDTO>(response.Content.ReadAsStringAsync().Result);
 
@@ -84,7 +76,7 @@ namespace PlanningPoker.App.Models
 
         public async Task<ItemDTO> NextItemAsync(string sessionKey)
         {
-            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/item/next");
+            var response = await this.httpClient.PostAsJsonAsync($"api/session/{sessionKey}/item/next", string.Empty);
 
             var result = JsonConvert.DeserializeObject<ItemDTO>(response.Content.ReadAsStringAsync().Result);
 
