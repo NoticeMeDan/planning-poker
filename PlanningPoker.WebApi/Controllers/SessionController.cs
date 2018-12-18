@@ -9,6 +9,7 @@ namespace PlanningPoker.WebApi.Controllers
     using Optional.Unsafe;
     using Security;
     using Services;
+    using Services.Util;
     using Shared;
     using Utils;
 
@@ -20,10 +21,10 @@ namespace PlanningPoker.WebApi.Controllers
         private readonly IUserRepository userRepository;
         private readonly UserStateManager userStateManager;
 
-        public SessionController(ISessionRepository sessionRepository, IUserRepository userRepository, IMemoryCache cache)
+        public SessionController(ISessionRepository sessionRepo, IMemoryCache cache, ISummaryRepository summaryRepo)
         {
-            this.sessionRepository = sessionRepository;
-            this.userRepository = userRepository;
+            this.sessionRepository = sessionRepo;
+            this.summaryRepository = summaryRepo;
             this.userStateManager = new UserStateManager(cache);
         }
 
@@ -158,6 +159,7 @@ namespace PlanningPoker.WebApi.Controllers
             // TODO: Generate summary when this happens
             if (nextItem == default(ItemDTO))
             {
+                await this.summaryRepository.BuildSummary(session);
                 return this.BadRequest();
             }
 

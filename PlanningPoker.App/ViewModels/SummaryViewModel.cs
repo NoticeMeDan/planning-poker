@@ -4,24 +4,15 @@ namespace PlanningPoker.App.ViewModels
     using System.Threading.Tasks;
     using System.Windows.Input;
     using PlanningPoker.App.Models;
+    using PlanningPoker.App.Views;
     using PlanningPoker.Shared;
+    using Xamarin.Forms;
 
     public class SummaryViewModel : BaseViewModel
     {
         private readonly ISummaryClient summaryClient;
 
         public int SessionId { get; set; }
-
-        public SummaryViewModel(ISummaryClient summaryClient)
-        {
-            this.summaryClient = summaryClient;
-
-            this.BaseTitle = "Summary Overview";
-
-            this.Items = new ObservableCollection<ItemEstimateDTO>();
-
-            this.LoadSummaryCommand = new RelayCommand(async _ => await this.ExecuteLoadSummaryCommand());
-        }
 
         public ObservableCollection<ItemEstimateDTO> Items { get; set; }
 
@@ -46,6 +37,17 @@ namespace PlanningPoker.App.ViewModels
             }
 
             this.IsBusy = false;
+        }
+
+        public SummaryViewModel(ISummaryClient summaryClient)
+        {
+            this.summaryClient = summaryClient;
+
+            this.BaseTitle = "Summary Overview";
+
+            this.Items = new ObservableCollection<ItemEstimateDTO>();
+
+            this.LoadSummaryCommand = new RelayCommand(async _ => await this.ExecuteLoadSummaryCommand());
         }
     }
 }

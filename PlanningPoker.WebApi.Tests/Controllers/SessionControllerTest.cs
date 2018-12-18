@@ -66,7 +66,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             var input = new UserCreateDTO { Nickname = "Marty McTestface" };
             var sessionRepo = new Mock<ISessionRepository>();
             var cache = new Mock<IMemoryCache>();
-            var controller = new SessionController(sessionRepo.Object, null, cache.Object);
+            var controller = new SessionController(sessionRepo.Object, cache.Object, null);
             var post = await controller.Join("ABC123", input);
             Assert.IsType<NotFoundResult>(post.Result);
         }
@@ -81,7 +81,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
                 .ReturnsAsync(new SessionDTO
                     { SessionKey = "ABC1234", Users = new HashSet<UserDTO> { new UserDTO { IsHost = true } } });
 
-            var controller = new SessionController(sessionRepo.Object, null, cache.Object);
+            var controller = new SessionController(sessionRepo.Object, cache.Object, null);
             var input = new UserCreateDTO { Nickname = "Marty McTestface", IsHost = true };
             var post = await controller.Join("ABC123", input);
             Assert.IsType<BadRequestResult>(post.Result);
@@ -100,7 +100,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.AddUserToSession(It.IsAny<UserCreateDTO>(), It.IsAny<int>()))
                 .Returns(new UserDTO { Id = 42 });
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
             var input = new UserCreateDTO { Nickname = "Marty McTestface" };
             var post = await controller.Join("ABC1234", input);
 
@@ -122,7 +122,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.AddUserToSession(It.IsAny<UserCreateDTO>(), It.IsAny<int>()))
                 .Returns(new UserDTO { Id = 42 });
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
             var input = new UserCreateDTO { Nickname = "Marty McTestface", IsHost = true };
             var post = await controller.Join("ABC1234", input);
             Assert.IsType<UserStateResponseDTO>(post.Value);
@@ -135,7 +135,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         {
             var cache = new MemoryCache(new MemoryCacheOptions());
 
-            var controller = new SessionController(null, null, cache);
+            var controller = new SessionController(null, cache, null);
 
             var result = await controller.NextItem("IDoNotExist", "ABC1234");
 
@@ -152,7 +152,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(default(SessionDTO));
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
 
             var result = await controller.NextItem(token, "ABC1234");
 
@@ -164,6 +164,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         {
             var cache = new MemoryCache(new MemoryCacheOptions());
             var sessionRepo = new Mock<ISessionRepository>();
+            var summaryRepo = new Mock<ISummaryRepository>();
 
             var token = CreateUserState(cache, 42, "ABC1234");
 
@@ -181,10 +182,21 @@ namespace PlanningPoker.WebApi.Tests.Controllers
                     }
                 }
             };
+
+            var mockSummary = new SummaryDTO
+            {
+                ItemEstimates = new List<ItemEstimateDTO>
+                {
+                    new ItemEstimateDTO(),
+                    new ItemEstimateDTO()
+                }
+            };
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(mockSession);
+            summaryRepo.Setup(s => s.BuildSummary(mockSession)).
+                ReturnsAsync(mockSummary);
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, summaryRepo.Object);
 
             var result = await controller.NextItem(token, "ABC1234");
 
@@ -224,7 +236,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.UpdateAsync(It.IsAny<SessionCreateUpdateDTO>()))
                 .ReturnsAsync(true);
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
 
             var result = await controller.NextItem(token, "ABC1234");
 
@@ -237,7 +249,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         {
             var cache = new MemoryCache(new MemoryCacheOptions());
 
-            var controller = new SessionController(null, null, cache);
+            var controller = new SessionController(null, cache, null);
 
             var result = await controller.GetCurrentItem("IDoNotExist", "ABC1234");
 
@@ -254,7 +266,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(default(SessionDTO));
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
 
             var result = await controller.GetCurrentItem(token, "ABC1234");
 
@@ -283,7 +295,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(mockSession);
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
 
             var result = await controller.GetCurrentItem(token, "ABC1234");
 
@@ -327,7 +339,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(mockSession);
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
 
             var result = await controller.GetCurrentItem(token, "ABC1234");
 
@@ -387,7 +399,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(mockSession);
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
 
             var result = await controller.GetCurrentItem(token, "ABC1234");
 
@@ -400,7 +412,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         {
             var cache = new MemoryCache(new MemoryCacheOptions());
 
-            var controller = new SessionController(null, null, cache);
+            var controller = new SessionController(null, cache, null);
 
             var result = await controller.GetAllItems("IDontExist", "ABC1234");
 
@@ -417,7 +429,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(default(SessionDTO));
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
 
             var result = await controller.GetAllItems(token, "ABC1234");
 
@@ -455,7 +467,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(mockSession);
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
 
             var result = await controller.GetAllItems(token, "ABC1234");
 
@@ -470,7 +482,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         {
             var cache = new MemoryCache(new MemoryCacheOptions());
 
-            var controller = new SessionController(null, null, cache);
+            var controller = new SessionController(null, cache, null);
 
             var result = await controller.NextRound("IDontExist", "ABC1234");
 
@@ -487,7 +499,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(default(SessionDTO));
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
 
             var result = await controller.NextRound(token, "ABC1234");
 
@@ -526,7 +538,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(mockSession);
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
 
             var result = await controller.NextRound(token, "ABC1234");
 
@@ -568,7 +580,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.AddRoundToSessionItem(It.IsAny<int>()))
                 .Returns(new RoundDTO { Votes = new List<VoteDTO>() });
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
 
             var result = await controller.NextRound(token, "ABC1234");
 
@@ -580,7 +592,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         {
             var cache = new MemoryCache(new MemoryCacheOptions());
 
-            var controller = new SessionController(null, null, cache);
+            var controller = new SessionController(null, cache, null);
 
             var result = await controller.GetCurrentRound("IDontExist", "ABC1234");
 
@@ -597,7 +609,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(default(SessionDTO));
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
 
             var result = await controller.GetCurrentRound(token, "ABC1234");
 
@@ -636,7 +648,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(mockSession);
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
 
             var result = await controller.GetCurrentRound(token, "ABC1234");
 
@@ -675,7 +687,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(mockSession);
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
 
             var result = await controller.GetCurrentRound(token, "ABC1234");
 
@@ -687,7 +699,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         {
             var cache = new MemoryCache(new MemoryCacheOptions());
 
-            var controller = new SessionController(null, null, cache);
+            var controller = new SessionController(null, cache, null);
 
             var result = await controller.Vote("IDontExist", "ABC1234", new VoteCreateUpdateDTO());
 
@@ -704,7 +716,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(default(SessionDTO));
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
 
             var result = await controller.Vote(token, "ABC1234", new VoteCreateUpdateDTO()) as ObjectResult;
 
@@ -745,7 +757,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(mockSession);
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
 
             var result = await controller.Vote(token, "ABC1234", new VoteCreateUpdateDTO { Estimate = 13 }) as ObjectResult;
 
@@ -786,7 +798,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(mockSession);
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
 
             var result = await controller.Vote(token, "ABC1234", new VoteCreateUpdateDTO { Estimate = 13 }) as ObjectResult;
 
@@ -827,7 +839,7 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             sessionRepo.Setup(s => s.FindByKeyAsync(It.IsAny<string>()))
                 .ReturnsAsync(mockSession);
 
-            var controller = new SessionController(sessionRepo.Object, null, cache);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
 
             var result = await controller.Vote(token, "ABC1234", new VoteCreateUpdateDTO { Estimate = 13 });
 
