@@ -16,6 +16,7 @@ namespace PlanningPoker.App.ViewModels
     {
         private readonly ISessionClient repository;
         private bool loading;
+        private SessionDTO session;
 
         public JobScheduler JobScheduler { get; set; }
 
@@ -25,6 +26,8 @@ namespace PlanningPoker.App.ViewModels
         public ObservableCollection<UserDTO> Users { get; set; }
 
         public ObservableCollection<ItemDTO> Items { get; set; }
+
+        public bool IsSessionStarted { get; private set; }
 
         public ICommand GetUsersCommand { get; }
 
@@ -59,16 +62,50 @@ namespace PlanningPoker.App.ViewModels
 
             this.loading = true;
 
-            var session = await this.repository.GetByKeyAsync(this.Key);
+            this.session = await this.repository.GetByKeyAsync(this.Key);
 
-            if (this.Users.Count < 1)
+            this.UpdateItemCollection(this.session.Items);
+
+            await this.CheckSessionStatus();
+
+            this.UpdateUserCollection(this.session.Users);
+
+            this.loading = false;
+        }
+
+        private async Task CheckSessionStatus()
+        {
+            if (!this.IsSessionStarted)
             {
-                this.UpdateItemCollection(session.Items);
+                var currentItem = await this.repository.GetCurrentItem(this.Key);
+                if (currentItem != null)
+                {
+                    this.IsSessionStarted = true;
+                }
             }
+        }
 
-            if (session != null)
+        private void UpdateItemCollection(List<ItemDTO> items)
+        {
+            if (this.Items.Count < 1)
             {
-                this.UpdateUserCollection(session.Users);
+                items.ForEach(i =>
+                {
+                    this.Items.Add(i);
+                });
+            }
+        }
+
+        private void UpdateUserCollection(ICollection<UserDTO> users)
+        {
+            if (this.session != null)
+            {
+                this.Users.Clear();
+
+                users.ToList().ForEach(u =>
+                {
+                        this.Users.Add(u);
+                });
             }
             else
             {
@@ -76,26 +113,6 @@ namespace PlanningPoker.App.ViewModels
                 this.Title = "No session found...";
                 this.JobScheduler.Stop();
             }
-
-            this.loading = false;
-        }
-
-        private void UpdateItemCollection(List<ItemDTO> items)
-        {
-            items.ForEach(i =>
-            {
-                this.Items.Add(i);
-            });
-        }
-
-        private void UpdateUserCollection(ICollection<UserDTO> users)
-        {
-            this.Users.Clear();
-
-            users.ToList().ForEach(u =>
-            {
-                    this.Users.Add(u);
-            });
         }
 
         public string Title
