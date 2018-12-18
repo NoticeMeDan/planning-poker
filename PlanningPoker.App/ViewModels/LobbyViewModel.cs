@@ -24,6 +24,8 @@ namespace PlanningPoker.App.ViewModels
 
         public ObservableCollection<UserDTO> Users { get; set; }
 
+        public ObservableCollection<ItemDTO> Items { get; set; }
+
         public ICommand GetUsersCommand { get; }
 
         public ICommand StopFetchingUsers { get; }
@@ -32,6 +34,7 @@ namespace PlanningPoker.App.ViewModels
         {
             this.repository = client;
             this.Users = new ObservableCollection<UserDTO>();
+            this.Items = new ObservableCollection<ItemDTO>();
             this.GetUsersCommand = new RelayCommand(_ => this.ExecuteGetUsersCommand());
             this.StopFetchingUsers = new RelayCommand(_ => this.ExecuteKillThread());
         }
@@ -58,6 +61,11 @@ namespace PlanningPoker.App.ViewModels
 
             var session = await this.repository.GetByKeyAsync(this.Key);
 
+            if (this.Users.Count < 1)
+            {
+                this.UpdateItemCollection(session.Items);
+            }
+
             if (session != null)
             {
                 this.UpdateUserCollection(session.Users);
@@ -70,6 +78,14 @@ namespace PlanningPoker.App.ViewModels
             }
 
             this.loading = false;
+        }
+
+        private void UpdateItemCollection(List<ItemDTO> items)
+        {
+            items.ForEach(i =>
+            {
+                this.Items.Add(i);
+            });
         }
 
         private void UpdateUserCollection(ICollection<UserDTO> users)
