@@ -9,7 +9,6 @@ namespace PlanningPoker.WebApi.Controllers
     using Optional.Unsafe;
     using Security;
     using Services;
-    using Services.Util;
     using Shared;
     using Utils;
 
@@ -249,6 +248,19 @@ namespace PlanningPoker.WebApi.Controllers
                     currentRound.ValueOrDefault().Id);
 
             return this.Ok();
+        }
+
+        [HttpGet("{sessionKey}/whoami")]
+        public ActionResult<UserState> WhoAmI([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey)
+        {
+            if (!SecurityFilter.RequestIsValid(authToken, sessionKey, this.userStateManager))
+            {
+                return this.Unauthorized();
+            }
+
+            var state = this.userStateManager.GetState(authToken.Replace("Bearer ", string.Empty));
+
+            return state.ValueOrDefault();
         }
 
         [HttpPost("{sessionKey}/user/kick")]

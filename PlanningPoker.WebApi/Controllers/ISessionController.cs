@@ -3,6 +3,7 @@ namespace PlanningPoker.WebApi.Controllers
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
+    using Security;
     using Shared;
 
     public interface ISessionController
@@ -28,5 +29,7 @@ namespace PlanningPoker.WebApi.Controllers
         Task<ActionResult> ThrowNitpickerCard(string authToken, string sessionKey);
 
         Task<ActionResult> KickUser(string authToken, string sessionKey, int userId);
+
+        ActionResult<UserState> WhoAmI(string authToken, string sessionKey);
     }
 }

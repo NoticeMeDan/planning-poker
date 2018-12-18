@@ -846,6 +846,34 @@ namespace PlanningPoker.WebApi.Tests.Controllers
             Assert.IsType<OkResult>(result);
         }
 
+        [Fact]
+        public void WhoAmI_given_invalid_token_and_sessionKey_return_unauthorized()
+        {
+            var cache = new MemoryCache(new MemoryCacheOptions());
+
+            var controller = new SessionController(null, cache, null);
+
+            var result = controller.WhoAmI("Idontexist", "neitherdoi");
+
+            Assert.IsType<UnauthorizedResult>(result.Result);
+        }
+
+        [Fact]
+        public void WhoAmI_given_valid_token_and_sessionkey_return_userState()
+        {
+            var cache = new MemoryCache(new MemoryCacheOptions());
+
+            var token = CreateUserState(cache, 42, "ABC1234");
+
+            var controller = new SessionController(null, cache, null);
+
+            var result = controller.WhoAmI(token, "ABC1234");
+
+            Assert.IsType<UserState>(result.Value);
+            Assert.Equal(42, result.Value.Id);
+            Assert.Equal("ABC1234", result.Value.SessionKey);
+        }
+
         private static string CreateUserState(IMemoryCache cache, int userId, string sessionKey)
         {
             var sm = new UserStateManager(cache);
