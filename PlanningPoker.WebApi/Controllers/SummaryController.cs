@@ -17,7 +17,7 @@ namespace PlanningPoker.WebApi.Controllers
         }
 
         // GET api/summary/5
-        [HttpGet("{id}")]
+        [HttpGet("{sessionId}")]
         public async Task<ActionResult<SummaryDTO>> FindBySessionIdAsync(int sessionId)
         {
             var summary = await this.repository.FindBySessionIdAsync(sessionId);
