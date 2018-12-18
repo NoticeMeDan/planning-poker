@@ -160,6 +160,7 @@ namespace PlanningPoker.WebApi.Controllers
             // TODO: Generate summary when this happens
             if (nextItem == default(ItemDTO))
             {
+                await this.summaryRepository.BuildSummary(session);
                 return this.BadRequest();
             }
 
