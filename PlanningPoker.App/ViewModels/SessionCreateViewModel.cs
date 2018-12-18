@@ -18,6 +18,7 @@ namespace PlanningPoker.App.ViewModels
         private string title;
         private string description;
         private JoinCommand joinCommander;
+        private readonly ISettings settings;
 
         public ObservableCollection<ItemCreateUpdateDTO> Items { get; set; }
 
@@ -25,9 +26,11 @@ namespace PlanningPoker.App.ViewModels
 
         public ICommand LoadCommand { get; }
 
-        public SessionCreateViewModel(ISessionClient client)
+        public SessionCreateViewModel(ISessionClient client, ISettings settings)
         {
             this.client = client;
+
+            this.settings = settings;
 
             this.BaseTitle = "Items";
 
@@ -58,6 +61,8 @@ namespace PlanningPoker.App.ViewModels
             this.joinCommander = new JoinCommand(this.client, this.Key, user);
 
             this.joinCommander.Join.Execute(null);
+
+            this.settings.Token = this.joinCommander.Token;
         }
 
         public string Title
