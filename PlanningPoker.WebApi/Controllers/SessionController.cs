@@ -160,8 +160,7 @@ namespace PlanningPoker.WebApi.Controllers
             // TODO: Generate summary when this happens
             if (nextItem == default(ItemDTO))
             {
-                var summary = await this.summaryRepository.BuildSummary(session);
-
+                return this.BadRequest();
             }
 
             var newRound = this.sessionRepository.AddRoundToSessionItem(nextItem.Id);
