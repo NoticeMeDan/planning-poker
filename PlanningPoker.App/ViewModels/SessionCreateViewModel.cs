@@ -15,10 +15,10 @@ namespace PlanningPoker.App.ViewModels
     public class SessionCreateViewModel : BaseViewModel
     {
         private readonly ISessionClient client;
+        private readonly ISettings settings;
         private string title;
         private string description;
         private JoinCommand joinCommander;
-        private readonly ISettings settings;
 
         public ObservableCollection<ItemCreateUpdateDTO> Items { get; set; }
 
