@@ -1,10 +1,7 @@
 namespace PlanningPoker.App.Views.SessionCreation
 {
     using System;
-    using System.Diagnostics;
-    using System.Threading;
     using System.Threading.Tasks;
-    using Components;
     using Microsoft.Extensions.DependencyInjection;
     using Session;
     using ViewModels;
