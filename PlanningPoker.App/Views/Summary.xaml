@@ -25,7 +25,7 @@
             IsPullToRefreshEnabled="true"
             CachingStrategy="RecycleElement"
             SelectionMode="None">
-            
+
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -48,5 +48,4 @@
     </StackLayout>
 
 </ContentPage>
-
 

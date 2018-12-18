@@ -59,6 +59,11 @@
     <ProjectReference Include="..\PlanningPoker.Shared\PlanningPoker.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Views\Summary.xaml.cs">
+      <DependentUpon>Summary.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Update="Views\SessionCreate\CreateSession.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
