@@ -32,8 +32,7 @@ namespace PlanningPoker.App.Views.WelcomeScreen
             var result = await this.welcomeViewModel.ExecuteLoginCommand();
             if (result)
             {
-                //await this.Navigation.PushModalAsync(new SessionCreation.CreateSession());
-                await this.Navigation.PushModalAsync(new Summary(12));
+                await this.Navigation.PushModalAsync(new SessionCreation.CreateSession());
             }
         }
     }
