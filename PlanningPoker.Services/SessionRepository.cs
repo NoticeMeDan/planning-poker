@@ -47,7 +47,7 @@ namespace PlanningPoker.Services
 
         public VoteDTO AddVoteToRound(VoteCreateUpdateDTO vote, int roundId)
         {
-            var newVote = new Vote { Estimate = vote.Estimate, UserId = vote.UserId, RoundId = roundId};
+            var newVote = new Vote { Estimate = vote.Estimate, UserId = vote.UserId, RoundId = roundId };
             this.context.Votes.Add(newVote);
             this.context.SaveChanges();
 
