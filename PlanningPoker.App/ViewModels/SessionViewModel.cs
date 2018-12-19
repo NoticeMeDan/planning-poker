@@ -14,7 +14,7 @@ namespace PlanningPoker.App.ViewModels
     public class SessionViewModel : BaseViewModel
     {
         private readonly ISessionClient client;
-        private readonly string sessionKey;
+        public string sessionKey;
         private string currentItemTitle;
         private JobScheduler jobSchedulerVotes;
         private JobScheduler jobSchedulerRounds;
@@ -25,7 +25,6 @@ namespace PlanningPoker.App.ViewModels
             this.client = client;
 
             // TODO: Get sessionkey from constructor argument
-            this.sessionKey = "D0LEGK7";
             this.BaseTitle = "Session: " + this.sessionKey;
             this.CurrentItemTitle = string.Empty;
             this.currentRound = null;
@@ -112,7 +111,7 @@ namespace PlanningPoker.App.ViewModels
 
                 // Listen for incoming votes
                 Debug.WriteLine("ShouldFetchRounds");
-                this.startJobSchedulerVotes();
+                this.StartJobSchedulerVotes();
             }
         }
 
@@ -185,7 +184,7 @@ namespace PlanningPoker.App.ViewModels
             this.IsBusy = false;
 
             Debug.WriteLine("ExecuteRevote Method");
-            this.startJobSchedulerVotes();
+            this.StartJobSchedulerVotes();
         }
 
         private async Task ExecuteSendVoteCommand(object number)
@@ -240,7 +239,7 @@ namespace PlanningPoker.App.ViewModels
 
             this.IsBusy = false;
             Debug.WriteLine("ExecuteLoadSession");
-            this.startJobSchedulerVotes();
+            this.StartJobSchedulerVotes();
         }
 
         private async Task ExecuteLoadVotesCommand()
@@ -286,17 +285,28 @@ namespace PlanningPoker.App.ViewModels
 
             this.IsBusy = false;
 
-            this.startJobSchedulerRounds();
+            try
+            {
+                this.StartJobSchedulerRounds();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                Debug.WriteLine("Too bad, try again");
+                this.StartJobSchedulerRounds();
+            }
         }
 
-        private void startJobSchedulerRounds() {
+        private void StartJobSchedulerRounds()
+        {
             this.jobSchedulerRounds = new JobScheduler(
                 TimeSpan.FromSeconds(5),
                 new Action(async () => await this.ShouldFetchRounds()));
             this.jobSchedulerRounds.Start();
         }
 
-        private void startJobSchedulerVotes() {
+        private void StartJobSchedulerVotes()
+        {
             this.jobSchedulerVotes = new JobScheduler(
                 TimeSpan.FromSeconds(5),
                 new Action(async () => await this.ShouldShowVotes()));
@@ -348,11 +358,23 @@ namespace PlanningPoker.App.ViewModels
             return cards;
         }
 
+        public async Task<ItemDTO> CheckSessionStatus()
+        {
+            return await this.client.GetCurrentItem(this.sessionKey);
+        }
+
         public class Card
         {
             public string Name { get; set; }
 
             public int Estimate { get; set; }
+        }
+
+        public async Task<int> GetId()
+        {
+            var session = await this.client.GetByKeyAsync(this.sessionKey);
+
+            return session.Id;
         }
     }
 }

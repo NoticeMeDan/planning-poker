@@ -9,7 +9,6 @@ namespace PlanningPoker.WebApi.Controllers
     using Optional.Unsafe;
     using Security;
     using Services;
-    using Services.Util;
     using Shared;
     using Utils;
 
@@ -18,13 +17,13 @@ namespace PlanningPoker.WebApi.Controllers
     public class SessionController : ControllerBase, ISessionController
     {
         private readonly ISessionRepository sessionRepository;
-        private readonly IUserRepository userRepository;
+        private readonly ISummaryRepository summaryRepository;
         private readonly UserStateManager userStateManager;
 
-        public SessionController(ISessionRepository sessionRepo, IUserRepository userRepo, IMemoryCache cache)
+        public SessionController(ISessionRepository sessionRepo, IMemoryCache cache, ISummaryRepository summaryRepo)
         {
             this.sessionRepository = sessionRepo;
-            this.userRepository = userRepo;
+            this.summaryRepository = summaryRepo;
             this.userStateManager = new UserStateManager(cache);
         }
 
@@ -159,6 +158,7 @@ namespace PlanningPoker.WebApi.Controllers
             // TODO: Generate summary when this happens
             if (nextItem == default(ItemDTO))
             {
+                await this.summaryRepository.BuildSummary(session);
                 return this.BadRequest();
             }
 
@@ -190,10 +190,10 @@ namespace PlanningPoker.WebApi.Controllers
         [HttpGet("{sessionKey}/item/current")]
         public async Task<ActionResult<ItemDTO>> GetCurrentItem([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey)
         {
-            /*if (!SecurityFilter.RequestIsValid(authToken, sessionKey, this.userStateManager))
+            if (!SecurityFilter.RequestIsValid(authToken, sessionKey, this.userStateManager))
             {
                 return this.Unauthorized();
-            }*/
+            }
 
             var session = await this.sessionRepository.FindByKeyAsync(sessionKey);
 
@@ -248,6 +248,19 @@ namespace PlanningPoker.WebApi.Controllers
                     currentRound.ValueOrDefault().Id);
 
             return this.Ok();
+        }
+
+        [HttpGet("{sessionKey}/whoami")]
+        public ActionResult<UserState> WhoAmI([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey)
+        {
+            if (!SecurityFilter.RequestIsValid(authToken, sessionKey, this.userStateManager))
+            {
+                return this.Unauthorized();
+            }
+
+            var state = this.userStateManager.GetState(authToken.Replace("Bearer ", string.Empty));
+
+            return state.ValueOrDefault();
         }
 
         [HttpPost("{sessionKey}/user/kick")]

@@ -1,12 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ContentPage
-    xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="PlanningPoker.App.Views.Session.Summary"
-    Title="{Binding BaseTitle}"
->
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PlanningPoker.App.Views.Session.Summary"
+             Title="{Binding BaseTitle}"
+             >
+
 
     <StackLayout>
+        <Label Text="Session Overview" />
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label TextColor="#3F6AA5" FontSize = "20" Text="Item Title"
+                                    LineBreakMode="NoWrap" Grid.Column="0" />
+            <Label TextColor="#3F6AA5" FontSize = "20" Text="Estimation"
+                                    LineBreakMode="NoWrap" Grid.Column="1" />
+        </Grid>
         <ListView
             ItemsSource="{Binding Items}"
             VerticalOptions="FillAndExpand"
@@ -18,18 +29,23 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout>
-                            <Label Text="{Binding Id}"
-                                   LineBreakMode="NoWrap" />
-                            <Label Text="{Binding Title}"
-                                   LineBreakMode="NoWrap" />
-                            <Label Text="{Binding Description}"
-                                   LineBreakMode="NoWrap" />
-                        </StackLayout>
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label TextColor="#4d4d4d" FontSize = "18" Text="{Binding ItemTitle}"
+                                    LineBreakMode="NoWrap" Grid.Column="0" />
+                            <Label TextColor="#4d4d4d" FontSize = "18" Text="{Binding Estimate}"
+                                    LineBreakMode="NoWrap" Grid.Column="1" />
+                        </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
-
         </ListView>
+
     </StackLayout>
+
 </ContentPage>
+

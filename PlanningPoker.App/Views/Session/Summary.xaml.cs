@@ -1,25 +1,26 @@
 namespace PlanningPoker.App.Views.Session
 {
-    using System;
     using Microsoft.Extensions.DependencyInjection;
-    using ViewModels;
+    using PlanningPoker.App.ViewModels;
     using Xamarin.Forms;
 
     public partial class Summary : ContentPage
     {
-        private readonly SummaryViewModel viewModel;
+        private readonly SummaryViewModel summaryViewModel;
 
-        public Summary()
+        public Summary(int sessionId)
         {
-            this.BindingContext = this.viewModel =
-               (Application.Current as App)?.Container.GetRequiredService<SummaryViewModel>();
+            this.BindingContext = this.summaryViewModel =
+                (Application.Current as App)?.Container.GetRequiredService<SummaryViewModel>();
+
+            this.summaryViewModel.SessionId = sessionId;
 
             this.InitializeComponent();
         }
 
-        private void EstimateItem_Clicked(object sender, EventArgs e)
+        protected override void OnAppearing()
         {
-            this.Navigation.PushAsync(new Summary());
+            this.summaryViewModel.LoadSummaryCommand.Execute(null);
         }
     }
 }

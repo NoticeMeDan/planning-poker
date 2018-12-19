@@ -1,10 +1,6 @@
 namespace PlanningPoker.App.ViewModels
 {
-    using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Diagnostics;
-    using System.Text;
     using System.Threading.Tasks;
     using System.Windows.Input;
     using PlanningPoker.App.Models;
@@ -16,24 +12,13 @@ namespace PlanningPoker.App.ViewModels
     {
         private readonly ISummaryClient summaryClient;
 
-        public SummaryViewModel(ISummaryClient summaryClient)
-        {
-            this.summaryClient = summaryClient;
-
-            this.BaseTitle = "Summary Overview";
-
-            this.Items = new ObservableCollection<ItemEstimateDTO>();
-
-            this.LoadSummaryCommand = new RelayCommand(async _ => await this.ExecuteLoadSummaryCommand());
-        }
-
         public int SessionId { get; set; }
 
         public ObservableCollection<ItemEstimateDTO> Items { get; set; }
 
         public ICommand LoadSummaryCommand { get; set; }
 
-        private async Task ExecuteLoadSummaryCommand()
+        public async Task ExecuteLoadSummaryCommand()
         {
             if (this.IsBusy)
             {
@@ -52,6 +37,17 @@ namespace PlanningPoker.App.ViewModels
             }
 
             this.IsBusy = false;
+        }
+
+        public SummaryViewModel(ISummaryClient summaryClient)
+        {
+            this.summaryClient = summaryClient;
+
+            this.BaseTitle = "Summary Overview";
+
+            this.Items = new ObservableCollection<ItemEstimateDTO>();
+
+            this.LoadSummaryCommand = new RelayCommand(async _ => await this.ExecuteLoadSummaryCommand());
         }
     }
 }

@@ -13,23 +13,20 @@ namespace PlanningPoker.App.ViewModels
 
         private readonly ISessionClient client;
 
+        public string Key { get; set; }
+
+        public string Token { get; set; }
+
         public JoinHelper(ISessionClient client, string key, UserCreateDTO user)
         {
             this.Key = key;
             this.user = user;
             this.client = client;
-            this.Join = new RelayCommand(async _ => await this.ExecuteJoinCommand());
         }
-
-        public ICommand Join { get; }
-
-        public string Key { get; set; }
-
-        public string Token { get; set; }
 
         public bool Loading { get; private set; }
 
-        private async Task ExecuteJoinCommand()
+        public async Task Join()
         {
             if (this.Loading)
             {
@@ -43,7 +40,7 @@ namespace PlanningPoker.App.ViewModels
             this.Loading = false;
         }
 
-        private async Task JoinSession()
+        public async Task JoinSession()
         {
             try
             {
