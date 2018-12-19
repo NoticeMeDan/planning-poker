@@ -120,5 +120,14 @@ namespace PlanningPoker.App.Models
 
             return response.IsSuccessStatusCode;
         }
+
+        public async Task<UserState> WhoAmI(string sessionKey)
+        {
+            var response = await this.httpClient.GetAsync($"api/session/{sessionKey}/whoami");
+
+            var result = JsonConvert.DeserializeObject<UserState>(response.Content.ReadAsStringAsync().Result);
+
+            return result;
+        }
     }
 }
