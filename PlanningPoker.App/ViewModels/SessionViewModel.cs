@@ -5,6 +5,7 @@ namespace PlanningPoker.App.ViewModels
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows.Input;
+    using OpenJobScheduler;
     using PlanningPoker.App.Models;
     using PlanningPoker.App.ViewModels.util;
     using PlanningPoker.Shared;
@@ -16,6 +17,8 @@ namespace PlanningPoker.App.ViewModels
         private GameInfo GameInfo { get; set; }
 
         private int RoundId { get; set; }
+
+        private JobScheduler jobScheduler;
 
         public bool Waiting { get; set; }
 
@@ -33,20 +36,21 @@ namespace PlanningPoker.App.ViewModels
 
         public ICommand Vote { get; }
 
-        public ICommand Fetch { get; }
-
         public ICommand NewRound { get; }
 
         public ICommand NextItem { get; }
 
+        public ICommand LoadCommand { get; }
+
         public SessionViewModel(ISessionClient client)
         {
             this.client = client;
-
+            this.End = false;
             this.Vote = new RelayCommand(async estimate => await this.Sendvote(estimate));
-            this.Fetch = new RelayCommand(async _ => await this.FetchVotes());
             this.NewRound = new RelayCommand(async _ => await this.StartNewRound());
             this.NextItem = new RelayCommand(async _ => await this.StartNextItem());
+            this.LoadCommand = new RelayCommand(async _ => await this.Initialize());
+            this.jobScheduler = this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(3), new Action(async () => { await this.FetchVotes(); }));
         }
 
         private async Task StartNextItem()
@@ -93,6 +97,12 @@ namespace PlanningPoker.App.ViewModels
 
         private async Task FetchVotes()
         {
+            if (this.PlayerList.Count == this.Votes.Count || this.End)
+            {
+                this.jobScheduler.Stop();
+                return;
+            }
+
             if (this.IsBusy)
             {
                 return;
@@ -147,6 +157,8 @@ namespace PlanningPoker.App.ViewModels
             };
 
             await this.client.Vote(this.SessionKey, vote);
+
+            this.jobScheduler.Start();
 
             this.Waiting = true;
         }

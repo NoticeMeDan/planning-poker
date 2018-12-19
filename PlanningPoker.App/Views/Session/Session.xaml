@@ -8,14 +8,42 @@
 >
     <StackLayout>
         <!-- Item of the current item -->
-        <Label Text="Item title" HorizontalTextAlignment="Center" FontSize="20" />
+        <Label Text="{Binding Title, Mode=TwoWay}" HorizontalTextAlignment="Center" FontSize="20" />
 
         <!-- List over the participating players -->
         <Label Text="Players:" Margin="10,10,10,50" />
-        
+        <ListView
+            ItemsSource="{Binding PlayerList}"
+            SelectionMode="Single"
+            >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Margin="20,10,20,10" Orientation="Horizontal" BackgroundColor="LightGray">
+                            <Label Text="{Binding Nickname}" TextColor="Black"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
         <!-- List over the chosen estimate by players -->
         <Label Text="Votes:" Margin="10"/>
-        
+        <ListView
+            ItemsSource="{Binding Votes}"
+            SelectionMode="Single"
+            >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Margin="20,10,20,10" Orientation="Horizontal" BackgroundColor="#009CE7">
+                            <Label Text="{Binding Nickname}" TextColor="Black"/>
+                            <Label Text=":"/>
+                            <Label Text="{Binding Estimate}" TextColor="Black"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
         <!-- Available cards to play-->
         <Grid
@@ -34,12 +62,12 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Text="1" Grid.Row="0" Grid.Column="0"/>
-            <Button Text="3" Grid.Row="0" Grid.Column="1"/>
-            <Button Text="5" Grid.Row="0" Grid.Column="2"/>
-            <Button Text="8" Grid.Row="0" Grid.Column="3"/>
-            <Button Text="13" Grid.Row="0" Grid.Column="4"/>
-            <Button Text="20" Grid.Row="0" Grid.Column="5"/>
+            <Button Text="1" Grid.Row="0" Grid.Column="0" Command="{Binding Vote}" CommandParameter="1"/>
+            <Button Text="3" Grid.Row="0" Grid.Column="1" Command="{Binding Vote}" CommandParameter="3"/>
+            <Button Text="5" Grid.Row="0" Grid.Column="2" Command="{Binding Vote}" CommandParameter="5"/>
+            <Button Text="8" Grid.Row="0" Grid.Column="3" Command="{Binding Vote}" CommandParameter="8"/>
+            <Button Text="13" Grid.Row="0" Grid.Column="4" Command="{Binding Vote}" CommandParameter="13"/>
+            <Button Text="20" Grid.Row="0" Grid.Column="5" Command="{Binding Vote}" CommandParameter="20"/>
         </Grid>
 
         <!-- Buttons for Play Nitpicker, Re-vote and Next item -->
@@ -56,8 +84,8 @@
             </Grid.ColumnDefinitions>
 
             <Button Text="Nitpicker" Grid.Row="0" Grid.Column="0" />
-            <Button Text="Re-vote" Grid.Row="0" Grid.Column="1" />
-            <Button Text="Next Item" Grid.Row="0" Grid.Column="2" Clicked="Btn_clicked"/>
+            <Button Text="Re-vote" Grid.Row="0" Grid.Column="1" Clicked="Btn_ReVote"/>
+            <Button Text="Next Item" Grid.Row="0" Grid.Column="2" Clicked="Btn_NextItem"/>
         </Grid>
 
     </StackLayout>

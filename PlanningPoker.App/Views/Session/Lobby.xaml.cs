@@ -24,14 +24,14 @@ namespace PlanningPoker.App.Views.Session
 
         private async Task BeginSessionClicked()
         {
-            if (!this.lobbyViewModel.IsHost || this.lobbyViewModel.Users.Count < 2)
+            if (!this.lobbyViewModel.IsHost)
             {
                 return;
             }
 
             this.jobScheduler.Stop();
             this.lobbyViewModel.StopFetchingUsers.Execute(null);
-            await this.Navigation.PushModalAsync(new NavigationPage(new Session()));
+            await this.Navigation.PushModalAsync(new NavigationPage(new Session(this.lobbyViewModel.Key)));
         }
 
         protected override void OnAppearing()
