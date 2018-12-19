@@ -26,7 +26,10 @@ namespace PlanningPoker.App.Views.Session
         {
             this.jobScheduler.Stop();
             this.lobbyViewModel.StopFetchingUsers.Execute(null);
-            await this.Navigation.PushModalAsync(new NavigationPage(new Session(this.lobbyViewModel.Key)));
+            Device.BeginInvokeOnMainThread(() =>
+               {
+                   this.Navigation.PushModalAsync(new NavigationPage(new Session(this.lobbyViewModel.Key)));
+               });
         }
 
         protected override void OnAppearing()
