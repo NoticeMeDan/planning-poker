@@ -6,6 +6,7 @@ namespace PlanningPoker.App.ViewModels
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
+    using System.Linq;
     using System.Threading.Tasks;
     using System.Windows.Input;
     using Models;
@@ -15,13 +16,14 @@ namespace PlanningPoker.App.ViewModels
 
     public class SessionViewModel : BaseViewModel
     {
-        private readonly ISessionClient client;
+        public readonly ISessionClient client;
         public string sessionKey;
         private string currentItemTitle;
         private JobScheduler jobSchedulerVotes;
         private JobScheduler jobSchedulerRounds;
         private RoundDTO currentRound;
         private bool finishedSession;
+        private bool render;
 
         public SessionViewModel(ISessionClient client)
         {
@@ -55,6 +57,7 @@ namespace PlanningPoker.App.ViewModels
                 new Action(async () => await this.ShouldShowVotes()));
 
             this.finishedSession = false;
+            this.render = true;
         }
 
         public ObservableCollection<UserDTO> Players { get; set; }
@@ -80,6 +83,7 @@ namespace PlanningPoker.App.ViewModels
             get => this.currentItemTitle;
             set => this.SetProperty(ref this.currentItemTitle, value);
         }
+        public bool IsHost { get; private set; }
 
         private async Task ShouldFetchRounds()
         {
@@ -146,6 +150,17 @@ namespace PlanningPoker.App.ViewModels
          */
         private async Task ExecuteNextItemCommand()
         {
+            if (this.render)
+            {
+                this.render = false;
+                var session = this.client.GetByKeyAsync(this.sessionKey);
+                await this.CheckUserIsHost(session.Result);
+                if (this.IsHost)
+                {
+                    await this.ExecuteLoadSessionCommand();
+                    return;
+                }
+            }
             if (this.IsBusy)
             {
                 return;
@@ -391,5 +406,18 @@ namespace PlanningPoker.App.ViewModels
 
             return session.Id;
         }
+
+        private async Task CheckUserIsHost(SessionDTO session)
+        {
+            var userState = await this.client.WhoAmI(session.SessionKey);
+            var user = session.Users.ToList().Where(u => u.Id == userState.Id).Select(u => u).FirstOrDefault();
+            Debug.WriteLine("IsHOST: " + user.IsHost);
+            if (user != null)
+            {
+                this.IsHost = user.IsHost;
+            }
+        }
     }
+
+
 }

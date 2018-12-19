@@ -24,11 +24,8 @@ namespace PlanningPoker.App.Views.Session
         }
 
         protected override void OnAppearing()
-        {    
-            //if I am host, do this
+        {
             this.viewModel.NextItemCommand.Execute(null);
-            //else do this
-            //this.viewModel.LoadSessionCommand.Execute(null);
             this.StartCheckSessionThread();
         }
 
