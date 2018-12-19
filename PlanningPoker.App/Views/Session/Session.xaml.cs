@@ -1,6 +1,8 @@
 namespace PlanningPoker.App.Views.Session
 {
     using System;
+    using System.Diagnostics;
+    using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
     using OpenJobScheduler;
     using PlanningPoker.App.ViewModels;
@@ -18,13 +20,9 @@ namespace PlanningPoker.App.Views.Session
               (Application.Current as App)?.Container.GetRequiredService<SessionViewModel>();
             this.sessionViewModel.SessionKey = sessionKey;
             this.sessionViewModel.LoadCommand.Execute(null);
-            this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(2), new Action(() => { this.CheckSession(); }));
-        }
-
-        protected override void OnAppearing()
-        {
+            this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(3), new Action(async () => {await this.CheckSession(); }));
             this.jobScheduler.Start();
-            base.OnAppearing();
+            Debug.WriteLine("start success");
         }
 
         private void Btn_NextItem(object sender, EventArgs e)
@@ -37,13 +35,14 @@ namespace PlanningPoker.App.Views.Session
             this.sessionViewModel.NewRound.Execute(null);
         }
 
-        private void CheckSession()
+        private async Task CheckSession()
         {
-            if (this.sessionViewModel.End == true)
-            {
-                this.jobScheduler.Stop();
-                this.Navigation.PushModalAsync(new NavigationPage(new Summary(12)));
-            }
+                await this.sessionViewModel.FetchVotes();
+                if (this.sessionViewModel.End == true)
+                {
+                    this.jobScheduler.Stop();
+                    await this.Navigation.PushModalAsync(new NavigationPage(new Summary(12)));
+                }
         }
     }
 }

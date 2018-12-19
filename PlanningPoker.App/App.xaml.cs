@@ -78,6 +78,7 @@ namespace PlanningPoker.App
             services.AddScoped<UsersViewModel>();
             services.AddScoped<LobbyViewModel>();
             services.AddScoped<SummaryViewModel>();
+            services.AddScoped<SessionViewModel>();
 
             return services.BuildServiceProvider();
         }

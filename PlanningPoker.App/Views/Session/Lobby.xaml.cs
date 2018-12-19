@@ -1,6 +1,7 @@
 namespace PlanningPoker.App.Views.Session
 {
     using System;
+    using System.Diagnostics;
     using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
     using OpenJobScheduler;
@@ -31,7 +32,15 @@ namespace PlanningPoker.App.Views.Session
 
             this.jobScheduler.Stop();
             this.lobbyViewModel.StopFetchingUsers.Execute(null);
+            try { 
             await this.Navigation.PushModalAsync(new NavigationPage(new Session(this.lobbyViewModel.Key)));
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Type: " + e.GetType());
+                Debug.WriteLine("Message: " + e.Message);
+                Debug.WriteLine("stack: " + e.StackTrace);
+            }
         }
 
         protected override void OnAppearing()

@@ -29,7 +29,6 @@ namespace PlanningPoker.App.Views.Components
         {
             Debug.WriteLine(this.usersViewModel.LoadCommand);
             Debug.WriteLine(this.usersViewModel.Users);
-            this.Navigation.PushAsync(new Session.Session());
         }
     }
 }

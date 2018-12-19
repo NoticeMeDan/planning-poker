@@ -2,6 +2,7 @@ namespace PlanningPoker.App.ViewModels.util
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
     using PlanningPoker.App.Models;
@@ -25,17 +26,22 @@ namespace PlanningPoker.App.ViewModels.util
         {
             this.client = client;
             this.SessionKey = sessionKey;
+            this.Users = new ObservableCollection<UserDTO>();
         }
 
         public async Task Initialize()
         {
+            Debug.WriteLine("ini Gameinfo");
             this.Session = await this.GetSession();
+            Debug.WriteLine("game ini session: " + this.Session);
             if (this.Session != null)
             {
                 this.SetUserS(this.Session.Users);
+                Debug.WriteLine("ini Gameinfo setUsers complete");
                 this.UserState = await this.GetWhoAmI();
                 this.PlayerNickname = this.GetNickname();
             }
+            Debug.WriteLine("ini Gameinfo success");
         }
 
         public async Task<ItemDTO> GetCurrentItem()

@@ -2,10 +2,10 @@ namespace PlanningPoker.App.ViewModels
 {
     using System;
     using System.Collections.ObjectModel;
+    using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows.Input;
-    using OpenJobScheduler;
     using PlanningPoker.App.Models;
     using PlanningPoker.App.ViewModels.util;
     using PlanningPoker.Shared;
@@ -17,8 +17,6 @@ namespace PlanningPoker.App.ViewModels
         private GameInfo GameInfo { get; set; }
 
         private int RoundId { get; set; }
-
-        private JobScheduler jobScheduler;
 
         public bool Waiting { get; set; }
 
@@ -44,13 +42,16 @@ namespace PlanningPoker.App.ViewModels
 
         public SessionViewModel(ISessionClient client)
         {
+            Debug.WriteLine("create VM");
             this.client = client;
             this.End = false;
+            this.PlayerList = new ObservableCollection<UserDTO>();
+            this.Votes = new ObservableCollection<Cards>();
             this.Vote = new RelayCommand(async estimate => await this.Sendvote(estimate));
             this.NewRound = new RelayCommand(async _ => await this.StartNewRound());
             this.NextItem = new RelayCommand(async _ => await this.StartNextItem());
             this.LoadCommand = new RelayCommand(async _ => await this.Initialize());
-            this.jobScheduler = this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(3), new Action(async () => { await this.FetchVotes(); }));
+            Debug.WriteLine("create success");
         }
 
         private async Task StartNextItem()
@@ -60,6 +61,7 @@ namespace PlanningPoker.App.ViewModels
                 return;
             }
 
+            Debug.WriteLine("StartNextItem");
             this.IsBusy = true;
 
             var item = await this.client.NextItemAsync(this.sessionKey);
@@ -80,6 +82,7 @@ namespace PlanningPoker.App.ViewModels
                 return;
             }
 
+            Debug.WriteLine("StartNewRound");
             this.IsBusy = true;
 
             var newRound = await this.client.NextRoundAsync(this.SessionKey);
@@ -95,20 +98,22 @@ namespace PlanningPoker.App.ViewModels
             this.IsBusy = false;
         }
 
-        private async Task FetchVotes()
+        public async Task FetchVotes()
         {
-            if (this.PlayerList.Count == this.Votes.Count || this.End)
-            {
-                this.jobScheduler.Stop();
-                return;
-            }
-
             if (this.IsBusy)
             {
                 return;
             }
 
+            Debug.WriteLine("FetchVotes");
             this.IsBusy = true;
+
+            await this.CheckCurrentRound();
+
+            if (this.PlayerList.Count == this.Votes.Count || this.End)
+            {
+                return;
+            }
 
             await this.UpdateVoteCollection();
 
@@ -117,6 +122,7 @@ namespace PlanningPoker.App.ViewModels
 
         private async Task UpdateVoteCollection()
         {
+            Debug.WriteLine("UpdateVotes");
             this.Votes.Clear();
 
             var round = await this.GameInfo.GetCurrentRound();
@@ -139,6 +145,7 @@ namespace PlanningPoker.App.ViewModels
 
         private async Task UpdateRound(RoundDTO newRound)
         {
+            Debug.WriteLine("UpdateRound");
             this.IsBusy = true;
             this.Votes.Clear();
 
@@ -150,6 +157,7 @@ namespace PlanningPoker.App.ViewModels
 
         private async Task Sendvote(object estimate)
         {
+            Debug.WriteLine("SendVote");
             var vote = new VoteDTO
             {
                 Estimate = (int)estimate,
@@ -157,16 +165,20 @@ namespace PlanningPoker.App.ViewModels
             };
 
             await this.client.Vote(this.SessionKey, vote);
-
-            this.jobScheduler.Start();
-
+            
             this.Waiting = true;
         }
 
         public async Task Initialize()
         {
+            Debug.WriteLine("start ini");
+
             this.GameInfo = new GameInfo(this.client, this.SessionKey);
+            Debug.WriteLine("gameinfo success");
+
             await this.GameInfo.Initialize();
+            Debug.WriteLine("gameinfo ini success");
+
             this.PlayerList = this.GameInfo.Users;
             var currentItem = await this.GameInfo.GetCurrentItem();
             this.Title = currentItem.Title;
@@ -184,14 +196,10 @@ namespace PlanningPoker.App.ViewModels
             set => this.SetProperty(ref this.title, value);
         }
 
-        private async Task<RoundDTO> CheckCurrentRound()
+        public async Task<RoundDTO> CheckCurrentRound()
         {
+            Debug.WriteLine("ChecCurrentRound");
             var currentRound = await this.GameInfo.GetCurrentRound();
-            if (this.RoundId != currentRound.Id)
-            {
-                await this.UpdateRound(currentRound);
-                this.IsBusy = false;
-            }
 
             return currentRound;
         }
