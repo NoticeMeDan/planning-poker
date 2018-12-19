@@ -24,7 +24,7 @@ namespace PlanningPoker.App.Views.Session
 
         private async Task BeginSessionClicked()
         {
-            if (!this.lobbyViewModel.IsHost)
+            if (!this.lobbyViewModel.IsHost || this.lobbyViewModel.Users.Count < 2)
             {
                 return;
             }

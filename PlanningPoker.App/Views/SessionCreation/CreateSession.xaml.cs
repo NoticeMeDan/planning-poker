@@ -35,6 +35,11 @@ namespace PlanningPoker.App.Views.SessionCreation
 
         private void OnAddItem_Clicked(object sender, EventArgs e)
         {
+            if (this.sessionViewModel.Title == null)
+            {
+                return;
+            }
+
             this.sessionViewModel.AddItemCommand.Execute(null);
         }
     }
