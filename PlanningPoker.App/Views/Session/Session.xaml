@@ -2,14 +2,63 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:components="clr-namespace:PlanningPoker.App.Views.Components;assembly=PlanningPoker.App"
+    xmlns:controls="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
     x:Class="PlanningPoker.App.Views.Session.Session"
-
+    Title="Voting"
 >
     <StackLayout>
-        <Label Text="Title"/>
-        <Label Text="Description"/>
+        <!-- Item of the current item -->
+        <Label Text="Item title" HorizontalTextAlignment="Center" FontSize="20" />
 
-        <components:VotingNumbers />
+        <!-- List over the participating players -->
+        <Label Text="Players:" Margin="10,10,10,50" />
+        
+        <!-- List over the chosen estimate by players -->
+        <Label Text="Votes:" Margin="10"/>
+        
+
+        <!-- Available cards to play-->
+        <Grid
+            VerticalOptions="Center"
+              >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Text="1" Grid.Row="0" Grid.Column="0"/>
+            <Button Text="3" Grid.Row="0" Grid.Column="1"/>
+            <Button Text="5" Grid.Row="0" Grid.Column="2"/>
+            <Button Text="8" Grid.Row="0" Grid.Column="3"/>
+            <Button Text="13" Grid.Row="0" Grid.Column="4"/>
+            <Button Text="20" Grid.Row="0" Grid.Column="5"/>
+        </Grid>
+
+        <!-- Buttons for Play Nitpicker, Re-vote and Next item -->
+        <Grid
+            Margin="10"
+            >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Text="Nitpicker" Grid.Row="0" Grid.Column="0" />
+            <Button Text="Re-vote" Grid.Row="0" Grid.Column="1" />
+            <Button Text="Next Item" Grid.Row="0" Grid.Column="2" Clicked="Btn_clicked"/>
+        </Grid>
+
     </StackLayout>
 </ContentPage>

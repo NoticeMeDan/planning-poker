@@ -7,7 +7,6 @@
 
 
     <StackLayout>
-        <Label TextColor="#009CE7" FontSize = "32" Text="Session Overview"></Label>
         <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
