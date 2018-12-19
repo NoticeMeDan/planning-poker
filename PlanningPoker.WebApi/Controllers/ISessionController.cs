@@ -8,7 +8,7 @@ namespace PlanningPoker.WebApi.Controllers
 
     public interface ISessionController
     {
-        Task<ActionResult<SessionDTO>> GetByKey(string sessionKey);
+        Task<ActionResult<SessionDTO>> GetByKey(string authToken, string sessionKey);
 
         Task<ActionResult<SessionDTO>> Create(SessionCreateUpdateDTO session);
 

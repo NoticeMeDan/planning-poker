@@ -22,14 +22,20 @@
             MaxLength="7"
             Margin="5"
         />
-        <Button Text="Join"
+        <Button Text="     Join     "
+                BackgroundColor="#009CE7"
+                Margin="20"
+                TextColor="#FFFFFF"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="EndAndExpand"
                 Clicked="HandleClickedAsync" />
         <Button
-            Text="Login"
-            HorizontalOptions="CenterAndExpand"
-            Clicked="LoginCommand">
+                Text="     Login     "
+                BackgroundColor="#009CE7"
+                Margin="20"
+                TextColor="#FFFFFF"
+                HorizontalOptions="CenterAndExpand"
+                Clicked="LoginCommand">
         </Button>
     </StackLayout>
 
