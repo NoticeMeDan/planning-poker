@@ -58,6 +58,7 @@ namespace PlanningPoker.App.ViewModels
 
             this.finishedSession = false;
             this.render = true;
+            this.IsHost = false;
         }
 
         public ObservableCollection<UserDTO> Players { get; set; }
@@ -155,7 +156,7 @@ namespace PlanningPoker.App.ViewModels
                 this.render = false;
                 var session = this.client.GetByKeyAsync(this.sessionKey);
                 await this.CheckUserIsHost(session.Result);
-                if (this.IsHost)
+                if (!this.IsHost)
                 {
                     await this.ExecuteLoadSessionCommand();
                     return;
