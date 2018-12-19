@@ -39,14 +39,12 @@ namespace PlanningPoker.App.Views.Session
         {
             try
             {
-                if (await this.viewModel.CheckSessionStatus() == null)
+                if (this.viewModel.CheckSessionStatus())
                 {
                     var id = await this.viewModel.GetId();
                     Device.BeginInvokeOnMainThread(() => {
                         this.Navigation.PushModalAsync(new NavigationPage(new Summary(id)));
                     });
-
-
                 }
             }
             catch (Exception e) {

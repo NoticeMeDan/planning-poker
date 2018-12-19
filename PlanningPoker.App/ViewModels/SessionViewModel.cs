@@ -1,3 +1,5 @@
+using System.Net;
+
 namespace PlanningPoker.App.ViewModels
 {
     using System;
@@ -19,6 +21,7 @@ namespace PlanningPoker.App.ViewModels
         private JobScheduler jobSchedulerVotes;
         private JobScheduler jobSchedulerRounds;
         private RoundDTO currentRound;
+        private bool finishedSession;
 
         public SessionViewModel(ISessionClient client)
         {
@@ -50,6 +53,8 @@ namespace PlanningPoker.App.ViewModels
             this.jobSchedulerVotes = new JobScheduler(
                 TimeSpan.FromSeconds(5),
                 new Action(async () => await this.ShouldShowVotes()));
+
+            this.finishedSession = false;
         }
 
         public ObservableCollection<UserDTO> Players { get; set; }
@@ -149,7 +154,10 @@ namespace PlanningPoker.App.ViewModels
             this.IsBusy = true;
             this.VoteCards.Clear();
             Debug.WriteLine("Next Item clicked");
-            await this.client.NextItemAsync(this.sessionKey);
+            var response = await this.client.NextItemAsync(this.sessionKey);
+            if (response == null) {
+                this.finishedSession = true;
+            }
             await this.SetCurrentTitle();
             Debug.WriteLine(this.currentItemTitle);
 
@@ -358,9 +366,10 @@ namespace PlanningPoker.App.ViewModels
             return cards;
         }
 
-        public async Task<ItemDTO> CheckSessionStatus()
+        public bool CheckSessionStatus()
         {
-            return await this.client.GetCurrentItem(this.sessionKey);
+            //return await this.client.GetCurrentItem(this.sessionKey);
+            return this.finishedSession;
         }
 
         public class Card
