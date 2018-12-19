@@ -29,5 +29,7 @@ namespace PlanningPoker.App.Models
         Task<bool> ThrowNitpickerCard(string key);
 
         Task<bool> KickUser(string key, int userId);
+
+        Task<UserState> WhoAmI(string sessionKey);
     }
 }

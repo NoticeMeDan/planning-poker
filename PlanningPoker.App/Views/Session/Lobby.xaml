@@ -39,11 +39,9 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-
         <Button Text="Begin Session"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="EndAndExpand"
-                IsVisible="False"
                 Clicked="BeginSessionClicked"
                 />
     </StackLayout>
