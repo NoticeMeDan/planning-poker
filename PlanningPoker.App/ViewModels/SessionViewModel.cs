@@ -227,6 +227,12 @@ namespace PlanningPoker.App.ViewModels
             Debug.WriteLine("LoadSession clicked");
 
             var session = await this.client.GetByKeyAsync(this.sessionKey);
+
+            if (CurrentItemTitle == string.Empty)
+            {
+                await this.SetCurrentTitle();
+            }
+
             this.Players.Clear();
             var players = session.Users;
 
