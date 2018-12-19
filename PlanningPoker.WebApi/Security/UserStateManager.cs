@@ -3,6 +3,7 @@ namespace PlanningPoker.WebApi.Security
     using System;
     using Microsoft.Extensions.Caching.Memory;
     using Optional;
+    using PlanningPoker.Shared;
 
     public class UserStateManager
     {

@@ -40,6 +40,8 @@
             </ListView.ItemTemplate>
         </ListView>
         <Button Text="Begin Session"
+                BackgroundColor="#009CE7"
+                TextColor="White"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="EndAndExpand"
                 Clicked="BeginSessionClicked"

@@ -20,13 +20,12 @@
                 />
                 <Button
                     Text="+"
+                    BackgroundColor="#009CE7"
+                    TextColor="White"
                     Clicked="OnAddItem_Clicked"
                 />
             </StackLayout>
                 <ListView
-        xmlns="http://xamarin.com/schemas/2014/forms"
-        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-        x:Class="PlanningPoker.App.Views.Components.Items"
         ItemsSource="{Binding Items}"
         VerticalOptions="FillAndExpand"
         HasUnevenRows="true"
@@ -49,6 +48,8 @@
             </ListView.ItemTemplate>
         </ListView>
         <Button Text="CREATE SESSION"
+                BackgroundColor="#009CE7"
+                TextColor="White"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="EndAndExpand"
                 Clicked="CreateSessionClicked"/>
