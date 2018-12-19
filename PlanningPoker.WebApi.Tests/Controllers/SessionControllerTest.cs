@@ -19,9 +19,14 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         {
             var dto = new SessionDTO();
             var sessionRepo = new Mock<ISessionRepository>();
-            sessionRepo.Setup(s => s.FindByKeyAsync("ABC123")).ReturnsAsync(dto);
-            var controller = new SessionController(sessionRepo.Object, null, null);
-            var get = await controller.GetByKey("ABC123");
+            var cache = new MemoryCache(new MemoryCacheOptions());
+
+            sessionRepo.Setup(s => s.FindByKeyAsync("ABC1234")).ReturnsAsync(dto);
+            var controller = new SessionController(sessionRepo.Object, cache, null);
+
+            var token = CreateUserState(cache, 42, "ABC1234");
+
+            var get = await controller.GetByKey(token, "ABC1234");
             Assert.Equal(dto, get.Value);
         }
 
@@ -29,8 +34,12 @@ namespace PlanningPoker.WebApi.Tests.Controllers
         public async Task GetByKey_given_non_existing_key_returns_NotFound()
         {
             var sessionRepo = new Mock<ISessionRepository>();
-            var controller = new SessionController(sessionRepo.Object, null, null);
-            var get = await controller.GetByKey("ABC123");
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var controller = new SessionController(sessionRepo.Object, cache, null);
+
+            var token = CreateUserState(cache, 42, "ABC1234");
+
+            var get = await controller.GetByKey(token, "ABC1234");
             Assert.IsType<NotFoundResult>(get.Result);
         }
 
