@@ -147,11 +147,16 @@ namespace PlanningPoker.App.ViewModels
             }
 
             this.IsBusy = true;
+
             this.VoteCards.Clear();
             Debug.WriteLine("Next Item clicked");
-            await this.client.NextItemAsync(this.sessionKey);
-            await this.SetCurrentTitle();
-            Debug.WriteLine(this.currentItemTitle);
+            var next = await this.client.NextItemAsync(this.sessionKey);
+
+            if (next != null)
+            {
+                await this.SetCurrentTitle();
+                Debug.WriteLine(this.currentItemTitle);
+            }
 
             this.IsBusy = false;
             await this.ExecuteLoadSessionCommand();
@@ -203,8 +208,8 @@ namespace PlanningPoker.App.ViewModels
             Debug.WriteLine(voteEstimate);
 
             // Call repository.Vote with new VoteDTO
-            await this.client?.Vote(this.sessionKey, new VoteDTO { Estimate = voteEstimate });
-
+            await this.client.Vote(this.sessionKey, new VoteDTO { Estimate = voteEstimate });
+            this.StartJobSchedulerVotes();
             this.IsBusy = false;
         }
 
@@ -239,7 +244,6 @@ namespace PlanningPoker.App.ViewModels
 
             this.IsBusy = false;
             Debug.WriteLine("ExecuteLoadSession");
-            this.StartJobSchedulerVotes();
         }
 
         private async Task ExecuteLoadVotesCommand()
@@ -360,7 +364,7 @@ namespace PlanningPoker.App.ViewModels
 
         public async Task<ItemDTO> CheckSessionStatus()
         {
-            return await this.client.GetCurrentItem(this.sessionKey);
+            return await this.client.NextItemAsync(this.sessionKey);
         }
 
         public class Card
