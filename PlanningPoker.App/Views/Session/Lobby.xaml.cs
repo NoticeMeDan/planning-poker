@@ -24,6 +24,11 @@ namespace PlanningPoker.App.Views.Session
 
         private async Task BeginSessionClicked()
         {
+            if (!this.lobbyViewModel.IsHost || this.lobbyViewModel.Users.Count < 2)
+            {
+                return;
+            }
+
             this.jobScheduler.Stop();
             this.lobbyViewModel.StopFetchingUsers.Execute(null);
             Device.BeginInvokeOnMainThread(() =>

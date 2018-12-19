@@ -28,10 +28,15 @@ namespace PlanningPoker.WebApi.Controllers
         }
 
         // GET api/session/52A24B
-        [HttpGet("{key}")]
-        public async Task<ActionResult<SessionDTO>> GetByKey(string key)
+        [HttpGet("{sessionKey}")]
+        public async Task<ActionResult<SessionDTO>> GetByKey([FromHeader(Name = "PPAuthorization")] string authToken, string sessionKey)
         {
-            var session = await this.sessionRepository.FindByKeyAsync(key);
+            if (!SecurityFilter.RequestIsValid(authToken, sessionKey, this.userStateManager))
+            {
+                return this.Unauthorized();
+            }
+
+            var session = await this.sessionRepository.FindByKeyAsync(sessionKey);
             if (session == null)
             {
                 return this.NotFound();

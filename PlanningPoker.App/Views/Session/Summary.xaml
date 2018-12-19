@@ -7,15 +7,15 @@
 
 
     <StackLayout>
-        <Label Text="Session Overview" />
+        <Label TextColor="#009CE7" FontSize = "32" Text="Session Overview"></Label>
         <Grid Margin="5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label TextColor="#3F6AA5" FontSize = "20" Text="Item Title"
+            <Label TextColor="#009CE7" FontSize = "20" Text="Item Title"
                                     LineBreakMode="NoWrap" Grid.Column="0" />
-            <Label TextColor="#3F6AA5" FontSize = "20" Text="Estimation"
+            <Label TextColor="#009CE7" FontSize = "20" Text="Estimation"
                                     LineBreakMode="NoWrap" Grid.Column="1" />
         </Grid>
         <ListView
@@ -29,15 +29,15 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid Margin="5">
+                        <Grid Margin="10">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Label TextColor="#4d4d4d" FontSize = "18" Text="{Binding ItemTitle}"
+                            <Label TextColor="#4d4d4d" FontSize = "14" Text="{Binding ItemTitle}"
                                     LineBreakMode="NoWrap" Grid.Column="0" />
-                            <Label TextColor="#4d4d4d" FontSize = "18" Text="{Binding Estimate}"
+                            <Label TextColor="#4d4d4d" FontSize = "14" Text="{Binding Estimate}"
                                     LineBreakMode="NoWrap" Grid.Column="1" />
                         </Grid>
                     </ViewCell>
@@ -48,4 +48,3 @@
     </StackLayout>
 
 </ContentPage>
-
