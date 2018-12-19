@@ -49,7 +49,14 @@ namespace PlanningPoker.App.ViewModels
             this.sendVote = new RelayCommand(async _ => await this.Vote(this.estimate));
             this.fetchVote = new RelayCommand(async _ => await this.FetchVotes());
             this.fetchPlayers = new RelayCommand(async _ => await this.FetchPlayers());
-            this.newRound = new RelayCommand(async _ => await this.FetchPlayers());
+            this.newRound = new RelayCommand(async _ => await this.StartNewRound());
+        }
+
+        private async Task StartNewRound()
+        {
+            await this.client.NextRoundAsync(this.sessionKey);
+            this.Votes.Clear();
+            await this.UpdateCurrentRound();
         }
 
         private async Task UpdateSession()

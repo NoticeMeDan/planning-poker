@@ -94,7 +94,7 @@
 
             <Button Text="Nitpicker" Grid.Row="0" Grid.Column="0" Command="{Binding SendNitpickerCommand}" />
             <Button Text="Re-vote" Grid.Row="0" Grid.Column="1" Command="{Binding RevoteCommand}" />
-            <Button Text="Next Item" Grid.Row="0" Grid.Column="2" Command="{Binding NextItemCommand}" />
+            <Button Text="Next Item" Grid.Row="0" Grid.Column="2" Clicked="Next_Clicked" />
         </Grid>
 
     </StackLayout>

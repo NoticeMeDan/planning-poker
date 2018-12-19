@@ -26,34 +26,23 @@ namespace PlanningPoker.App.Views.Session
         protected override void OnAppearing()
         {
             this.viewModel.NextItemCommand.Execute(null);
-            this.StartCheckSessionThread();
         }
 
-        private void StartCheckSessionThread()
+        private async Task Next_Clicked()
         {
-            this.jobScheduler = new JobScheduler(TimeSpan.FromSeconds(5), new Action(async () => { await this.CheckSessionStatus(); }));
-            this.jobScheduler.Start();
-        }
+            var x = await this.viewModel.CheckSessionStatus();
 
-        private async Task CheckSessionStatus()
-        {
-            try
+            if (x == null)
             {
-                if (await this.viewModel.CheckSessionStatus() == null)
+                var id = await this.viewModel.GetId();
+                Device.BeginInvokeOnMainThread(() =>
                 {
-                    var id = await this.viewModel.GetId();
-                    Device.BeginInvokeOnMainThread(() => {
-                        this.Navigation.PushModalAsync(new NavigationPage(new Summary(id)));
-                    });
-
-
-                }
+                    this.Navigation.PushModalAsync(new NavigationPage(new Summary(id)));
+                });
             }
-            catch (Exception e) {
-                Debug.WriteLine("No fucking way man");
-                this.jobScheduler.Stop();
-                this.jobScheduler = null;
-                this.StartCheckSessionThread();
+            else
+            {
+                this.viewModel.NextItemCommand.Execute(null);
             }
         }
     }
