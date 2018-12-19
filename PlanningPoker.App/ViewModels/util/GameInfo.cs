@@ -1,27 +1,27 @@
-using PlanningPoker.App.Models;
-using PlanningPoker.Shared;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace PlanningPoker.App.ViewModels.util
 {
-    public class GameOptions
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using PlanningPoker.App.Models;
+    using PlanningPoker.Shared;
+
+    public class GameInfo
     {
         private string SessionKey { get; set; }
 
         private SessionDTO Session { get; set; }
 
-        private readonly SessionClient client;
+        private readonly ISessionClient client;
 
         public ObservableCollection<UserDTO> Users { get; }
 
+        public UserState UserState { get; set; }
+
         public string PlayerNickname { get; set; }
 
-        public GameOptions(SessionClient client, string sessionKey)
+        public GameInfo(ISessionClient client, string sessionKey)
         {
             this.client = client;
             this.SessionKey = sessionKey;
@@ -33,7 +33,8 @@ namespace PlanningPoker.App.ViewModels.util
             if (this.Session != null)
             {
                 this.SetUserS(this.Session.Users);
-                this.PlayerNickname = await this.GetNickname();
+                this.UserState = await this.GetWhoAmI();
+                this.PlayerNickname = this.GetNickname();
             }
         }
 
@@ -47,13 +48,11 @@ namespace PlanningPoker.App.ViewModels.util
             return await this.client.GetCurrentRound(this.SessionKey);
         }
 
-        private async Task<string> GetNickname()
+        private string GetNickname()
         {
-            var userState = await this.GetWhoAmI();
-
-            if (this.Users != null && userState != null)
+            if (this.Users != null && this.UserState != null)
             {
-                return this.Users.ToList().Where(u => u.Id == userState.Id).Select(u => u.Nickname).FirstOrDefault();
+                return this.Users.ToList().Where(u => u.Id == this.UserState.Id).Select(u => u.Nickname).FirstOrDefault();
             }
 
             return null;
