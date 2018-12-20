@@ -77,6 +77,11 @@ namespace PlanningPoker.App.ViewModels
 
         private async Task ExecuteJoinCommand()
         {
+            if (this.Key == null)
+            {
+                return;
+            }
+
             this.User.Nickname = this.nickname;
 
             this.joinHelper = new JoinHelper(this.client, this.key, this.User);
