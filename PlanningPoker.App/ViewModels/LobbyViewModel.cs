@@ -61,13 +61,8 @@ namespace PlanningPoker.App.ViewModels
             }
 
             this.loading = true;
-
+            Debug.WriteLine("fetch");
             this.session = await this.repository.GetByKeyAsync(this.Key);
-
-            if (this.Items.Count < 1)
-            {
-                await this.CheckUserIsHost(this.session);
-            }
 
             Device.BeginInvokeOnMainThread(() =>
             {
